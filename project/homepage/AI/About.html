@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>From Zero to AI Expert</title>
+        <link rel="stylesheet" href="style AI.css">
+    </head>
+
+    <body>
+        <div class="container">
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="profile-avatar">🚀</div>
+                <h1 class="hero-title">From Zero to AI Expert</h1>
+                <p class="hero-subtitle">AI Enthusiast • Machine Learning Engineer • Prompt Engineer</p>
+                <p class="hero-description">
+                    From a beginner to mastering AI, Machine Learning, and building AI Agents. This is the story of my
+                    journey into the world of artificial intelligence.
+                </p>
+            </section>
+
+            <!-- Stats Section -->
+            <section class="stats-section">
+                <div class="stat-card">
+                    <div class="stat-number" data-target="18">0</div>
+                    <div class="stat-label">Months</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="25+">0</div>
+                    <div class="stat-label">Finished Projects</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="8">0</div>
+                    <div class="stat-label">AI/ML Certificates</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="500">0</div>
+                    <div class="stat-label">Practice Hours</div>
+                </div>
+            </section>
+
+            <script>
+                function animateCountUp(element, target) {
+                    let count = 0;
+                    const increment = target / 100; // speed
+                    const timer = setInterval(() => {
+                        count += increment;
+                        if (count >= target) {
+                            element.textContent = target + (target >= 18 ? '+' : ''); // keep the "+"
+                            clearInterval(timer);
+                        } else {
+                            element.textContent = Math.floor(count);
+                        }
+                    }, 20);
+                }
+
+                // Show cards when in view
+                const observer = new IntersectionObserver(entries => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            const num = entry.target.querySelector('.stat-number');
+                            animateCountUp(num, parseInt(num.dataset.target));
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.3 });
+
+                document.querySelectorAll('.stat-card').forEach(card => {
+                    observer.observe(card);
+                });
+            </script>
+            <!-- Journey Timeline -->
+            <section class="journey-section">
+                <h2 class="section-title">🛤️ My AI Journey</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-date">Tháng 1/2023</div>
+                            <h3 class="timeline-title">Getting Started - The Basics</h3>
+                            <p class="timeline-description">
+                                Get started with Python basics, math for AI, and first Machine Learning concepts.
+                                Complete the "Machine Learning for Everyone" course on Coursera.
+                            </p>
+                            <div class="skills-achieved">
+                                <span class="skill-tag">Python</span>
+                                <span class="skill-tag">NumPy</span>
+                                <span class="skill-tag">Pandas</span>
+                                <span class="skill-tag">Matplotlib</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-date">Tháng 4/2023</div>
+                            <h3 class="timeline-title">A Machine Learning Newbie</h3>
+                            <p class="timeline-description">
+                                Deep dive into ML algorithms, do my first project on house price prediction. Participate
+                                in my first Kaggle competition and get top 30%.
+                            </p>
+                            <div class="skills-achieved">
+                                <span class="skill-tag">Scikit-learn</span>
+                                <span class="skill-tag">Linear Regression</span>
+                                <span class="skill-tag">Random Forest</span>
+                                <span class="skill-tag">Cross Validation</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-date">Tháng 7/2023</div>
+                            <h3 class="timeline-title">Deep Learning & Neural Networks</h3>
+                            <p class="timeline-description">
+                                Explore the world of Deep Learning with TensorFlow and PyTorch.
+                                Build the first CNN to classify images with 94% accuracy.
+                            </p>
+                            <div class="skills-achieved">
+                                <span class="skill-tag">TensorFlow</span>
+                                <span class="skill-tag">PyTorch</span>
+                                <span class="skill-tag">CNN</span>
+                                <span class="skill-tag">Computer Vision</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-date">Tháng 10/2023</div>
+                            <h3 class="timeline-title">NLP & Transformers</h3>
+                            <p class="timeline-description">
+                                Learn about natural language processing and Transformer architecture. Fine-tune BERT for
+                                Vietnamese sentiment analysis.
+                            </p>
+                            <div class="skills-achieved">
+                                <span class="skill-tag">BERT</span>
+                                <span class="skill-tag">Transformers</span>
+                                <span class="skill-tag">Hugging Face</span>
+                                <span class="skill-tag">NLP</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-date">Tháng 1/2024</div>
+                            <h3 class="timeline-title">LLMs & Prompt Engineering</h3>
+                            <p class="timeline-description">
+                                Discover the power of GPT-4, Claude, and other LLMs.
+                                Master prompt engineering and build intelligent AI applications.
+                            </p>
+                            <div class="skills-achieved">
+                                <span class="skill-tag">GPT-4</span>
+                                <span class="skill-tag">Claude</span>
+                                <span class="skill-tag">Prompt Engineering</span>
+                                <span class="skill-tag">OpenAI API</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-date">Tháng 5/2024</div>
+                            <h3 class="timeline-title">AI Agents & Automation</h3>
+                            <p class="timeline-description">
+                                Build the first AI Agent capable of automating workflows. Integrate with external tools
+                                and create a multi-agent system.
+                            </p>
+                            <div class="skills-achieved">
+                                <span class="skill-tag">LangChain</span>
+                                <span class="skill-tag">AutoGPT</span>
+                                <span class="skill-tag">Vector DB</span>
+                                <span class="skill-tag">Agent Framework</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Projects Section -->
+            <section class="projects-section">
+                <h2 class="section-title">🚀 Dự Án Nổi Bật</h2>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <div class="project-header">
+                            <div class="project-icon">🤖</div>
+                            <h3 class="project-title">AI Customer Support Agent</h3>
+                            <p class="project-type">AI Agent Project</p>
+                        </div>
+                        <div class="project-content">
+                            <p class="project-description">
+                                Xây dựng AI Agent tự động trả lời câu hỏi khách hàng, tích hợp với CRM và có khả năng
+                                escalate phức tạp.
+                            </p>
+                            <div class="project-tech">
+                                <span class="tech-tag">LangChain</span>
+                                <span class="tech-tag">GPT-4</span>
+                                <span class="tech-tag">FastAPI</span>
+                                <span class="tech-tag">PostgreSQL</span>
+                            </div>
+                            <div class="project-status">
+                                <span class="status-badge status-completed">Hoàn thành</span>
+                                <span>95% accuracy</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-header">
+                            <div class="project-icon">📊</div>
+                            <h3 class="project-title">Smart Analytics Dashboard</h3>
+                            <p class="project-type">ML + Visualization</p>
+                        </div>
+                        <div class="project-content">
+                            <p class="project-description">
+                                Dashboard thông minh với khả năng dự đoán xu hướng, phân tích anomaly và tự động tạo
+                                insights.
+                            </p>
+                            <div class="project-tech">
+                                <span class="tech-tag">Streamlit</span>
+                                <span class="tech-tag">Prophet</span>
+                                <span class="tech-tag">Plotly</span>
+                                <span class="tech-tag">Docker</span>
+                            </div>
+                            <div class="project-status">
+                                <span class="status-badge status-completed">Hoàn thành</span>
+                                <span>Live Demo</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-header">
+                            <div class="project-icon">💬</div>
+                            <h3 class="project-title">Vietnamese Chatbot</h3>
+                            <p class="project-type">NLP Project</p>
+                        </div>
+                        <div class="project-content">
+                            <p class="project-description">
+                                Chatbot tiếng Việt được fine-tune từ PhoBERT, có khả năng hiểu context và trả lời tự
+                                nhiên.
+                            </p>
+                            <div class="project-tech">
+                                <span class="tech-tag">PhoBERT</span>
+                                <span class="tech-tag">Transformers</span>
+                                <span class="tech-tag">Flask</span>
+                                <span class="tech-tag">Redis</span>
+                            </div>
+                            <div class="project-status">
+                                <span class="status-badge status-progress">Đang cải tiến</span>
+                                <span>v2.0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-header">
+                            <div class="project-icon">🎯</div>
+                            <h3 class="project-title">Multi-Agent Research System</h3>
+                            <p class="project-type">Advanced AI Project</p>
+                        </div>
+                        <div class="project-content">
+                            <p class="project-description">
+                                Hệ thống multi-agent có khả năng tự động research, tổng hợp thông tin và tạo báo cáo
+                                chuyên sâu.
+                            </p>
+                            <div class="project-tech">
+                                <span class="tech-tag">CrewAI</span>
+                                <span class="tech-tag">Claude-3</span>
+                                <span class="tech-tag">Tavily API</span>
+                                <span class="tech-tag">MongoDB</span>
+                            </div>
+                            <div class="project-status">
+                                <span class="status-badge status-planned">Đang phát triển</span>
+                                <span>Beta</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Current Focus -->
+            <section class="current-focus">
+                <h2 class="focus-title">🎯 Hiện Tại Tôi Đang Tập Trung Vào</h2>
+                <p class="focus-description">
+                    Những lĩnh vực tôi đang nghiên cứu và phát triển để nâng cao kỹ năng AI của mình.
+                </p>
+                <div class="focus-areas">
+                    <div class="focus-item">
+                        <div class="focus-item-title">Advanced RAG Systems</div>
+                        <div class="focus-item-desc">Xây dựng hệ thống RAG phức tạp với multi-modal retrieval</div>
+                    </div>
+                    <div class="focus-item">
+                        <div class="focus-item-title">AI Agent Orchestration</div>
+                        <div class="focus-item-desc">Phát triển framework để quản lý multiple AI agents</div>
+                    </div>
+                    <div class="focus-item">
+                        <div class="focus-item-title">Custom LLM Training</div>
+                        <div class="focus-item-desc">Fine-tuning và training LLM cho domain cụ thể</div>
+                    </div>
+                    <div class="focus-item">
+                        <div class="focus-item-title">AI Ethics & Safety</div>
+                        <div class="focus-item-desc">Nghiên cứu về AI alignment và responsible AI</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact Section -->
+            <section class="contact-section">
+                <div class="container px-4 py-5 milestones-section" id="featured-3">
+                    <div class="section-header">
+                        <h2 class="pb-2 milestones-title">
+                            <span class="title-icon">🤝</span>
+                            Contact me
+                        </h2>
+                    </div>
+                    <p class="lead">
+                        I am always willing to share my experience and learn from IT community. Connect with me now!
+                    </p>
+                    <div class="social-links">
+                        <a href="mailto:scorpiuslinh@gmail.com" class="social-link">
+                            <span>📧</span>
+                            <span>Email</span>
+                        </a>
+                        <a href="www.linkedin.com/in/tuong-linh-nghiem" class="social-link">
+                            <span>💼</span>
+                            <span>LinkedIn</span>
+                        </a>
+                        <a href="https://github.com/TuongLinhNghiem" class="social-link">
+                            <span>🐙</span>
+                            <span>GitHub</span>
+                        </a>
+                        <a href="https://web.facebook.com/tuong.linh.nghiem.2025" class="social-link">
+                            <span>🐦</span>
+                            <span>Facebook</span>
+                        </a>
+                        <a href="https://www.youtube.com/@tusmorke9116" class="social-link">
+                            <span>▶️</span>
+                            <span>Youtube</span>
+                        </a>
+                        <a href="./hobbies.html" class="social-link">
+                            <span>🤷</span>
+                            <span>Others</span>
+                        </a>
+                    </div>
+            </section>
+        </div>
+
+        <script>
+            // Smooth animations on scroll
+            document.addEventListener('DOMContentLoaded', function() {
+                const observerOptions = {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -50px 0px'
+                };
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.style.opacity = '1';
+                            entry.target.style.transform = 'translateY(0)';
+                        }
+                    });
+                }, observerOptions);
+
+                // Animate timeline items
+                const timelineItems = document.querySelectorAll('.timeline-item');
+                timelineItems.forEach((item, index) => {
+                    item.style.opacity = '0';
+                    item.style.transform = 'translateY(50px)';
+                    item.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+                    observer.observe(item);
+                });
+
+                // Animate project cards
+                const projectCards = document.querySelectorAll('.project-card');
+                projectCards.forEach((card, index) => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(30px)';
+                    card.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+                    observer.observe(card);
+                });
+
+
+                // Add click effects to project cards
+                projectCards.forEach(card => {
+                    card.addEventListener('click', function() {
+                        this.style.transform = 'scale(1.02)';
+                        setTimeout(() => {
+                            this.style.transform = 'scale(1)';
+                        }, 200);
+                    });
+                });
+            });
+
+            // Add typing effect to hero title
+            function typeWriter(element, text, speed = 100) {
+                let i = 0;
+                element.innerHTML = '';
+
+
+                function type() {
+                    if (i < text.length) {
+                        element.innerHTML += text.charAt(i);
+                        i++;
+                        setTimeout(type, speed);
+                    }
+                }
+                type();
+            }
+
+            // Initialize typing effect
+            window.addEventListener('load', function() {
+                const heroTitle = document.querySelector('.hero-title');
+                const originalText = heroTitle.textContent;
+                typeWriter(heroTitle, originalText, 80);
+            });
+
+            // Add parallax effect to hero section
+            window.addEventListener('scroll', function() {
+                const scrolled = window.pageYOffset;
+                const heroSection = document.querySelector('.hero-section');
+                const speed = 0.5;
+
+                heroSection.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+
+            // Add progress bar for timeline
+            function updateTimelineProgress() {
+                const timeline = document.querySelector('.timeline');
+                const timelineItems = document.querySelectorAll('.timeline-item');
+                const scrollTop = window.pageYOffset;
+                const windowHeight = window.innerHeight;
+
+                timelineItems.forEach((item, index) => {
+                    const itemTop = item.offsetTop;
+                    const itemHeight = item.offsetHeight;
+
+                    if (scrollTop + windowHeight > itemTop + itemHeight / 2) {
+                        item.classList.add('active');
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', updateTimelineProgress);
+
+            // Add skill tag hover effects
+            document.querySelectorAll('.skill-tag, .tech-tag').forEach(tag => {
+                tag.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.1)';
+                    this.style.transition = 'transform 0.2s ease';
+                });
+
+                tag.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            });
+
+            // Add dynamic background particles
+            function createParticles() {
+                const particlesContainer = document.createElement('div');
+                particlesContainer.style.position = 'fixed';
+                particlesContainer.style.top = '0';
+                particlesContainer.style.left = '0';
+                particlesContainer.style.width = '100%';
+                particlesContainer.style.height = '100%';
+                particlesContainer.style.pointerEvents = 'none';
+                particlesContainer.style.zIndex = '-1';
+                document.body.appendChild(particlesContainer);
+
+                for (let i = 0; i < 50; i++) {
+                    const particle = document.createElement('div');
+                    particle.style.position = 'absolute';
+                    particle.style.width = '2px';
+                    particle.style.height = '2px';
+                    particle.style.background = 'rgba(255, 255, 255, 0.1)';
+                    particle.style.borderRadius = '50%';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.top = Math.random() * 100 + '%';
+                    particle.style.animation = `float ${3 + Math.random() * 4}s ease-in-out infinite`;
+                    particle.style.animationDelay = Math.random() * 2 + 's';
+                    particlesContainer.appendChild(particle);
+                }
+            }
+
+            createParticles();
+        </script>
+
+    </body>
+
+</html>

@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Elysian Realm (compile by me)</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet">
+        <link rel="stylesheet" href="styles.css">
+    </head>
+
+
+
+    <!-- Floating Particles -->
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" style="-webkit-text-stroke: 0.5px #5884CC" href="#"><i
+                    class="fa-solid fa-gamepad"></i> Honkai Impact 3rd</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item" style="-webkit-text-stroke: 0.3px #5884CC">
+                        <a class="nav-link" href="index.html">Story</a>
+                    </li>
+                    <li class="nav-item" style="-webkit-text-stroke: 0.3px #5884CC">
+                        <a class="nav-link" href="#story">Timeline</a>
+                    </li>
+                    <li class="nav-item" style="-webkit-text-stroke: 0.3px #5884CC">
+                        <a class="nav-link" href="#character">Characters</a>
+                    </li>
+                    <li class="nav-item" style="-webkit-text-stroke: 0.3px #5884CC">
+                        <a class="nav-link" href="#projects">Animation</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title" style="-webkit-text-stroke: 0.3px #5884CC">Honkai Impact 3rd</h1>
+            <p class="hero-subtitle">Exploring the fascinating and charming journey of Honkai Impact 3rd
+            </p>
+            <div class="mt-4 hero-buttons">
+                <a href="index.html" class="btn btn-outline-light btn-lg me-3 hero-btn">
+                    <i class="fas fa-rocket me-2"></i>Explore Story
+                </a>
+                <a href="#character" class="btn btn-light btn-lg hero-btn">
+                    <i class="fas fa-code me-2"></i>View Characters
+                </a>
+            </div>
+        </div>
+        <div class="scroll-indicator" onclick="scrollToSection('journey')">
+            <i class="fas fa-chevron-down fa-2x"></i>
+        </div>
+    </section>
+
+    <!-- Story Section -->
+    <section id="story" class="timeline-section">
+        <div class="container">
+            <h2 class="section-title">Story Timeline</h2>
+            <p class="section-subtitle">Elysian Realm's Timeline</p>
+
+            <div class="timeline">
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">Part 1: The Beginning</div>
+                        <h3 class="timeline-title">Schicksal and the Valkyries</h3>
+                        <div class="timeline-description">
+                            <p>
+                                The world is plagued by the <span class="highlight"
+                                    data-tooltip="In the more grand scheme of things, Honkai is a form of natural selection, pruning weak worlds from the branches of the Imaginary Tree, to ensure that only strong worlds survive.">Honkai</span>,
+                                a
+                                mysterious force that
+                                corrupts humans, creates
+                                monsters, and manifests as <span class="highlight"
+                                    data-tooltip="also known as a Lawman, Lawmaker, or Ruler — is an envoy, or rather apostle of the Honkai, who inhabit human vessels that are capable of adapting to it, manifesting out of the host's negative emotions.">Herrschers</span>
+                                — beings of immense
+                                destructive power. To combat this,
+                                the organization <span class="highlight"
+                                    data-tooltip="Schicksal is one of the two main organizations that lead the fight against the Honkai. It was established in the fifth century and has been active ever since.">Schicksal</span>
+                                trains female warriors called
+                                Valkyries.</p>
+                            <ul>
+                                <li><a href="#kiana-card" class="highlight1">Kiana Kaslana</a>, a reckless yet
+                                    determined
+                                    Valkyrie-in-training, is introduced alongside
+                                    her classmates <a href="#kiana-card" class="highlight1">Mei Raiden</a> and <a
+                                        href="#kiana-card" class="highlight1">Bronya Zaychik</a>.</li>
+
+                                <li>They train under Himeko Murata, a veteran Valkyrie,
+                                    and
+                                    soon realize that the Honkai
+                                    threat is far greater than what they imagined.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <div class="timeline-date">Part 2</div>
+                        <h3 class="timeline-title">Awakening of the Herrschers</h3>
+                        <div class="timeline-description">
+                            <p>
+                                Dark truths begin to unfold as each girl confronts her destiny.
+                            </p>
+                            <ul>
+                                <li>Mei becomes the <span class="highlight"
+                                        data-tooltip="Wields storms and lightning, channeling devastating electrical energy with precise control. Wielder: Raiden Mei">Herrscher
+                                        of Thunder</span>, losing control
+                                    of
+                                    herself before being stopped by
+                                    Kiana.</li>
+
+                                <li>Bronya struggles with her cybernetic enhancements and loyalty to her homeland,
+                                    <span class="highlight"
+                                        data-tooltip="Anti-Entropy is a large, worldwide organization rivaled to Schicksal. Its primary goal is to fight the Honkai and protect humanity, utilizing advanced technology, quantum physics, and the potential of the human brain.">Anti-Entropy</span>.
+                                </li>
+
+                                <li>Kiana learns she is not who she thought — she carries the genes of Kiana Kaslana but
+                                    the
+                                    body of Kiana clone “K-423”, created by <a href="#hua-card" class="highlight1">Otto
+                                        Apocalypse</a>,
+                                    the Overseer of Schicksal.</li>
+
+                                <li>The <span class="highlight"
+                                        data-tooltip="Commands spatial distortion, teleportation, and void-based weaponry capable of erasing matter. Wielder: Sirin, Kiana Kaslana (K-423)">Herrscher
+                                        of the Void (HoV)</span> awakens inside Kiana,
+                                    unleashing devastation and setting
+                                    the stage for tragedy.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">Part 3</div>
+                        <h3 class="timeline-title">Himeko’s Final Lesson</h3>
+                        <div class="timeline-description">
+                            <p>
+                                As the Herrscher of the Void grows stronger, Kiana loses control.</p>
+                            <ul>
+                                <li>Himeko confronts her in a desperate battle, knowing it will cost her life.</li>
+
+                                <li>In her final act, Himeko sacrifices herself to save her students, leaving Kiana with
+                                    the
+                                    will to keep fighting.</li>
+
+                                <li>This moment becomes the emotional core of Kiana’s journey, pushing her from a
+                                    carefree
+                                    student into a determined warrior.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <div class="timeline-date">Part 4</div>
+                        <h3 class="timeline-title">Separation and Struggle</h3>
+                        <div class="timeline-description">
+                            <p>
+                                The team scatters as they pursue different paths.</p>
+                            <ul>
+                                <li>Mei, burdened by her Herrscher identity and her desire to protect Kiana, eventually
+                                    joins <span class="highlight"
+                                        data-tooltip="World Serpent is a secret, ancient terrorist organization, dedicated to eradicating Honkai through extreme measures, including mass human experimentation and the controversial Project STIGMA.">World
+                                        Serpent</span>, the secret
+                                    organization led by <a href="#arc-card" class="highlight1">Kevin Kaslana</a>, who
+                                    seeks to preserve humanity by any means.</li>
+
+                                <li>Kiana isolates herself, wracked by guilt and fear of hurting others, as the
+                                    Herrscher of
+                                    the Void continues to consume her.</li>
+
+                                <li>Bronya dives deeper into Anti-Entropy’s struggles, guided by her mentor Welt and the
+                                    legacy of the <span class="highlight"
+                                        data-tooltip="Creates and manipulates complex physical constructs, from weapons to vehicles, directly from Honkai energy. Wielder: Welt Joyce, Welt Yang (Joachim Nokianvirtanen), Bronya Zaychik">Herrscher
+                                        of Reason</span>.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">Part 5</div>
+                        <h3 class="timeline-title">Rebirth and Hope</h3>
+                        <div class="timeline-description">
+                            <p>
+                                Through hardship and self-discovery, Kiana learns to accept her Herrscher power without
+                                succumbing to it.</p>
+                            <ul>
+                                <li>With the guidance of <a href="#hua-card" class="highlight1">Fu Hua</a>, Bronya and
+                                    the memory of Himeko, Kiana
+                                    awakens as the <span class="highlight"
+                                        data-tooltip="Harnesses extreme heat and nuclear firepower, incinerating anything within reach. Wielder: HIMEKO (PE), Himeko, Kiana Kaslana">Herrscher
+                                        of Flamescion</span>.</li>
+
+                                <li>This rebirth marks her transition into humanity’s beacon of hope, wielding flames
+                                    that
+                                    burn away despair.</li>
+
+                                <li>Meanwhile, Fu Hua battles her own inner conflict with the <span class="highlight"
+                                        data-tooltip="Dominates consciousness and memories, creating independent bodies and overwhelming mental control. Wielder: Senti (Herrscher of Sentience herself)">Herrscher
+                                        of Sentience</span>,
+                                    eventually regaining her true self.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <div class="timeline-date">Part 6</div>
+                        <h3 class="timeline-title">The Elysian Realm</h3>
+                        <div class="timeline-description">
+                            <p>
+                                Mei enters the digital world of the <a href="#arc-card" class="highlight1">Elysian
+                                    Realm</a>, where the souls of the <span class="highlight"
+                                    data-tooltip="A group of 13 MANTIS soldiers from the Previous Era who survived fusion experiments and became legends in the fight against Honkai.">Flame-Chasers</span>
+                                —
+                                warriors of the Previous Era — remain.</p>
+                            <ul>
+                                <li>She faces trials against figures like Kalpas, Aponia, the <span class="highlight"
+                                        data-tooltip="Spreads a corruptive virus-like influence, infecting minds and bodies to bend them to its will.">Herrscher
+                                        of Corruption</span>,
+                                    and
+                                    finally Elysia herself.</li>
+
+                                <li>Through these encounters, Mei gains strength and clarity, but also inherits the will
+                                    of
+                                    the Flame-Chasers, carrying their ideals into the present.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">Part 7</div>
+                        <h3 class="timeline-title">Otto’s Gambit</h3>
+                        <div class="timeline-description">
+                            <p>
+                                Otto Apocalypse enacts his final plan: to use the power of the <span class="highlight"
+                                    data-tooltip="A cosmic structure in Honkai lore that represents the root of countless possible worlds and realities">Imaginary
+                                    Tree</span> to
+                                resurrect
+                                Kallen, the woman he loved.</p>
+                            <ul>
+                                <li>To achieve this, he manipulates events and even aids the Valkyries at times, leading
+                                    to
+                                    the great conflict at Schicksal HQ.</li>
+
+                                <li>Kiana and her sister - <a href="#hua-card" class="highlight1">Durandal</a> (Real
+                                    Kiana) confront Otto in a climactic battle. In the end, Otto accepts
+                                    his
+                                    fate, sacrifices himself, and entrusts the future to Kiana.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <div class="timeline-date">Part 8</div>
+                        <h3 class="timeline-title">The Final Battle Against Kevin</h3>
+                        <div class="timeline-description">
+                            <p>
+                                With Otto gone, Kevin becomes the ultimate obstacle.</p>
+                            <ul>
+                                <li>His vision is a world reshaped by <span class="highlight"
+                                        data-tooltip="Special genetic marks or imprints that grant Valkyries enhanced powers, often connected to heroes or memories of the past.">stigmata</span>,
+                                    where humanity can survive at the cost
+                                    of
+                                    individuality and freedom.</li>
+
+                                <li>Kiana, Mei, Bronya, and their reunited allies stand against him, determined to
+                                    protect
+                                    humanity’s right to choose its future.</li>
+
+                                <li>In an epic showdown, Kevin is defeated, and Mei finally returns to Kiana’s side.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">Part 9</div>
+                        <h3 class="timeline-title">The final battle against Honkai</h3>
+                        <div class="timeline-description">
+                            <p>
+                                As the ultimate Honkai entity, the <span class="highlight"
+                                    data-tooltip="The ultimate Herrscher, embodying the complete will of Honkai with the power to overwrite reality its self">Herrscher
+                                    of
+                                    the End</span>, awakens to destroy the world,
+                                the
+                                Valkyries unite for their last stand.</p>
+                            <ul>
+                                <li>Kiana transcends into the <span class="highlight"
+                                        data-tooltip="Represents inevitability, manipulating time and enforcing absolute endings in all things. Wielder: Kiana Kaslana">Herrscher
+                                        of
+                                        Finality</span>, embracing her destiny as humanity’s
+                                    protector.</li>
+
+                                <li>Together with Mei - <span class="highlight"
+                                        data-tooltip="Possesses the ability to create, reconstruct, and unify, drawing upon all preceding Herrscher authorities. Wielder: Raiden Mei">Herrscher
+                                        of
+                                        Origin</span>, Bronya - <span class="highlight"
+                                        data-tooltip="Expands upon Reason, conjuring limitless constructs and simulations with perfect precision and adaptability. Wielder: Bronya Zaychik">Herrscher
+                                        of
+                                        Truth</span>, and their companions, she fights the End to preserve the
+                                    world and the bonds they’ve built.</li>
+
+                                <li>The saga concludes with hope: the Valkyries, once scattered and broken, now stand as
+                                    one
+                                    against the future.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Animation Section -->
+    <section id="character" class="projects-section">
+        <div class="container">
+            <h2 class="section-title">13 Flamechasers</h2>
+            <p class="section-subtitle">From Valkyrie Kiana to Kiana the Goddess of Earth.
+            </p>
+            <!-- Row 1 -->
+            <div class="row">
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card kevin">
+                        <div class="project-header">
+                            <h3 class="project-title">Deliverance</h3>
+                            <p class="project-subtitle">Kevin Kaslana</p>
+                        </div>
+                        <div class="project-body">
+                            <p class="project-description">
+                                The world is plagued by the Honkai, a mysterious force that corrupts humans, creates
+                                monsters, and manifests as Herrschers — beings of immense destructive power. To combat
+                                this, the organization Schicksal trains female warriors called Valkyries. Kiana Kaslana,
+                                a reckless yet determined Valkyrie-in-training, is introduced alongside her classmates
+                                Mei Raiden and Bronya Zaychik.
+                            </p>
+                            <div class="tech-tags">
+                                <span class="tech-tag"
+                                    onclick="window.location.href='https://www.youtube.com/watch?v=ppDfdCnOF1o&t=1s'">Watch
+                                    now →</span>
+                                <span class="tech-tag"
+                                    onclick="window.location.href='https://www.youtube.com/watch?v=cYN79ADDj3o'">Spotify
+                                    →</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card elysia">
+                        <div class="project-header">
+                            <h3 class="project-title">Ego</h3>
+                            <p class="project-subtitle">Elysia</p>
+                        </div>
+                        <div class="project-body">
+                            <p class="project-description">
+                                The Valkyries storm Schicksal to rescue Kiana from Otto’s grasp, knowing every step
+                                could be their last. The conflict intensifies as Kiana’s Herrscher power threatens to
+                                spiral out of control. Mei, Bronya, and the others fight with desperation, unwilling to
+                                abandon her again. This short marks a turning point, as their bonds are tested against
+                                destiny itself.
+                            </p>
+                            <div class="tech-tags">
+                                <span class="tech-tag"
+                                    onclick="window.location.href='https://www.youtube.com/watch?v=Q-b6rdyIJsY&list=RDQ-b6rdyIJsY&start_radio=1'">Watch
+                                    now →</span>
+                                <span class="tech-tag"
+                                    onclick="window.location.href='https://www.youtube.com/watch?v=dxLsI5AKLpE&list=RDdxLsI5AKLpE&start_radio=1'">Befall
+                                    →</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card aponia">
+                        <div class="project-header">
+                            <h3 class="project-title">Discipline</h3>
+                            <p class="project-subtitle">Aponia</p>
+                        </div>
+                        <div class="project-body">
+                            <p class="project-description">
+                                Himeko confronts the Herrscher of the Void in a battle that pushes her beyond her
+                                limits. Knowing her body is already failing, she chooses to fight anyway, giving her
+                                students a chance to survive. Kiana watches helplessly as her beloved teacher sacrifices
+                                everything to protect her. In her last moments, Himeko entrusts her will and final
+                                lesson to Kiana, igniting a flame that will guide the Valkyries forward.
+                            </p>
+                            <div class="tech-tags">
+                                <span class="tech-tag"
+                                    onclick="window.location.href='https://www.youtube.com/watch?v=8dmvNGxYPCU&t=106s'">Watch
+                                    now →</span>
+                                <span class="tech-tag"
+                                    onclick="window.location.href='https://open.spotify.com/search/Nightglow'">Nightglow
+                                    →</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Row 2 -->
+            <div class="row">
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card eden">
+                        <div class="project-header">
+                            <h3 class="project-title">Gold</h3>
+                            <p class="project-subtitle">Eden</p>
+                        </div>
+                        <div class="project-body">
+                            <p class="project-description">
+                                During a desperate battle, Bronya is forced to confront the destiny left behind by Welt
+                                Yang. As danger mounts, she awakens as the Herrscher of Reason, embracing the power once
+                                denied to her. She struggles with fear and hesitation, but ultimately accepts her role
+                                as Welt’s successor. With newfound confidence, she wields incredible power to shield her
+                                friends and carry humanity’s hope.
+                            </p>
+                            <div class="tech-tags">
+                                <span class="tech-tag"
+                                    onclick="window.location.href='https://www.youtube.com/watch?v=N-VNG8vW5RA&list=RDN-VNG8vW5RA&start_radio=1'">Watch
+                                    now →</span>
+                                <span class="tech-tag"
+                                    onclick="window.location.href='https://open.spotify.com/search/Cyberangel'">Cyberangel
+                                    →</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card vill-v">
+                        <div class="project-header">
+                            <h3 class="project-title">Helix</h3>
+                            <p class="project-subtitle">Vill-V</p>
+                        </div>
+                        <div class="project-body">
+                            <p class="project-description">
+                                Seele and her alter ego Veliona descend into the depths of their shared soul,
+                                confronting the Abyss within. At first, they are at odds, torn between fear and
+                                aggression. But as the struggle deepens, they learn to accept each other as two halves
+                                of a whole. Emerging from the darkness together, Seele and Veliona become one — stronger
+                                and unshakable.
+                            </p>
+                            <div class="tech-tags">
+                                <span class="tech-tag"
+                                    onclick="window.location.href='https://www.youtube.com/watch?v=xTK8P6vRiIg&list=RDxTK8P6vRiIg&start_radio=1'">Watch
+                                    now →</span>
+                                <span class="tech-tag"
+                                    onclick="window.location.href='https://open.spotify.com/search/Dual-ego'">Dual-Ego
+                                    →</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card ">
+                        <div class="project-header">
+                            <h3 class="project-title">Decimation</h3>
+                            <p class="project-subtitle">Kalpas</p>
+                        </div>
+                        <div class="project-body">
+                            <p class="project-description">
+                                Without warning, a meteor catastrophe rains destruction on the earth. Countless lives
+                                are endangered as cities fall under fire. The Valkyries rush into the chaos, risking
+                                everything to evacuate civilians. Amid despair, their bravery shines through, proving
+                                that even in disaster, humanity will not be abandoned.
+                            </p>
+                            <div class="tech-tags">
+                                <span class="tech-tag"
+                                    onclick="window.location.href='https://www.youtube.com/watch?v=gVHD6ieRmTI&list=RDgVHD6ieRmTI&start_radio=1'">Watch
+                                    now →</span>
+                                <span class="tech-tag"
+                                    onclick="window.location.href='https://open.spotify.com/search/Starfall'">Starfall
+                                    →</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Row 3 -->
+            <div class="row">
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card hot">
+                        <div class="project-header">
+                            <h3 class="project-title">Bodhi</h3>
+                            <p class="project-subtitle">Su</p>
+                        </div>
+                        <div class="project-body">
+                            <p class="project-description">
+                                Mei awakens as the Herrscher of Thunder, her heart torn between love for Kiana and the
+                                destiny forced upon her. In their confrontation, she chooses to leave Kiana behind,
+                                carrying the burden of her power alone. The separation leaves wounds on them both, but
+                                also a determination to keep fighting. In her sorrow, Mei finds new resolve to carve a
+                                path toward saving the one she loves.
+                            </p>
+                            <div class="tech-tags">
+                                <span class="tech-tag"
+                                    onclick="window.location.href='https://www.youtube.com/watch?v=v1sd5CzR504&list=RDv1sd5CzR504&start_radio=1'">Watch
+                                    now →</span>
+                                <span class="tech-tag"
+                                    onclick="window.location.href='https://open.spotify.com/search/Honkai%20World%20Diva'">Honkai
+                                    World Diva →</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card hos">
+                        <div class="project-header">
+                            <h3 class="project-title">Setsuna</h3>
+                            <p class="project-subtitle">Sakura</p>
+                        </div>
+                        <div class="project-body">
+                            <p class="project-description">
+                                Fu Hua finds herself trapped in a struggle against the Herrscher of Sentience, a
+                                manifestation of her fractured soul. The Herrscher tries to overwrite her will and erase
+                                the person she once was. Kiana reaches out to her, refusing to let her teacher vanish
+                                into despair. Through their bond, Fu Hua regains her strength, defeats the Herrscher of
+                                Sentience, and accepts her own past and future.
+                            </p>
+                            <div class="tech-tags">
+                                <span class="tech-tag"
+                                    onclick="window.location.href='https://www.youtube.com/watch?v=NQdVJcEE0m4&t=1s'">Watch
+                                    now →</span>
+                                <span class="tech-tag"
+                                    onclick="window.location.href='https://open.spotify.com/search/Rubia'">Rubia
+                                    →</span>
+                                <span class="tech-tag"
+                                    onclick="window.location.href='https://open.spotify.com/album/4z0IR28bf2m4xkPrkkIB26'">Feather
+                                    of Millennium →</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card hof">
+                        <div class="project-header">
+                            <h3 class="project-title">Daybreak</h3>
+                            <p class="project-subtitle">Kosma</p>
+                        </div>
+                        <div class="project-body">
+                            <p class="project-description">
+                                The world faces ruin once again as Kiana stands against the Herrscher of the Domination
+                                in a
+                                climactic battle. The memories of Himeko and the support of her friends guide her
+                                through the darkest hour. Though the Herrscher’s power nearly overwhelms her, Kiana
+                                refuses to surrender. With courage and unity, she turns despair into strength,
+                                reigniting humanity’s hope with the flames of victory.
+                            </p>
+                            <div class="tech-tags">
+                                <span class="tech-tag"
+                                    onclick="window.location.href='https://www.youtube.com/watch?v=U9e3MFZI3zE'">Watch
+                                    now →</span>
+                                <span class="tech-tag"
+                                    onclick="window.location.href='https://open.spotify.com/search/Moon%20Halo'">Moon
+                                    Halo →</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Row 4 -->
+            <div class="row">
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card otto">
+                        <div class="project-header">
+                            <h3 class="project-title">Infinity</h3>
+                            <p class="project-subtitle">Mobius</p>
+                        </div>
+                        <div class="project-body">
+                            <p class="project-description">
+                                Otto Apocalypse uses the power of the Imaginary Tree to rewrite and replay countless
+                                timelines. Each time, he searches for a way to save Kallen, the woman he loved and lost.
+                                Despite every failure, he refuses to let go, consumed by obsession. At last, he accepts
+                                his fate, sacrificing himself to give Kiana the chance to lead humanity forward — a
+                                future brighter than any he could build alone.
+                            </p>
+                            <div class="tech-tags">
+                                <span class="tech-tag"
+                                    onclick="window.location.href='https://www.youtube.com/watch?v=oopMlNX5O24'">Watch
+                                    now →</span>
+                                <span class="tech-tag"
+                                    onclick="window.location.href='https://open.spotify.com/search/Regression'">Regression
+                                    →</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card ely">
+                        <div class="project-header">
+                            <h3 class="project-title">Stars</h3>
+                            <p class="project-subtitle">Griseo</p>
+                        </div>
+                        <div class="project-body">
+                            <p class="project-description">
+                                Elysia, the heart of the Flame-Chasers, stands for the final time against the fate that
+                                looms over her and her companions. She fights not only to preserve her own ideals but
+                                also the legacy of those who came before. Each strike is filled with the love and
+                                memories of the comrades she cherished. When her end arrives, she leaves her dream in
+                                Mei’s hands, ensuring the spirit of the Flame-Chasers lives on.
+                            </p>
+                            <div class="tech-tags">
+                                <span class="tech-tag"
+                                    onclick="window.location.href='https://www.youtube.com/watch?v=RUe2BDz6RO4&list=RDRUe2BDz6RO4&start_radio=1'">Watch
+                                    now →</span>
+                                <span class="tech-tag"
+                                    onclick="window.location.href='https://open.spotify.com/search/TruE'">TruE →</span>
+                                <span class="tech-tag"
+                                    onclick="window.location.href='https://open.spotify.com/track/7I36ScvKY6rqc6kICBD07x'">Lyin
+                                    →</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card kiana">
+                        <div class="project-header">
+                            <h3 class="project-title">Vicissitude</h3>
+                            <p class="project-subtitle">Hua</p>
+                        </div>
+                        <div class="project-body">
+                            <p class="project-description">
+                                After countless battles, Kiana and her friends finally find a moment of peace. They
+                                embark on a graduation trip together, reflecting on their journey and the sacrifices
+                                that brought them here. The smiles and laughter carry bittersweet memories of those they
+                                lost. It is a heartfelt farewell and a promise that their bonds will last beyond the
+                                battlefield.
+                            </p>
+                            <div class="tech-tags">
+                                <span class="tech-tag"
+                                    onclick="window.location.href='https://www.youtube.com/watch?v=VeWCBissZy8&list=RDVeWCBissZy8&start_radio=1'">Watch
+                                    now →</span>
+                                <span class="tech-tag"
+                                    onclick="window.location.href='https://open.spotify.com/search/Da%20Capo'">Da Capo
+                                    →</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Row 5 - Concerts-->
+            <div class="row">
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card st">
+                        <div class="project-header">
+                            <h3 class="project-title">Reverie</h3>
+                            <p class="project-subtitle">Pardofelis</p>
+                        </div>
+                        <div class="project-body">
+                            <p class="project-description">
+                                The first major Honkai concert centered on the Valkyries’ determination to fight against
+                                despair. Songs like Moon Halo and battle arrangements highlighted the tragedies and
+                                courage of heroines such as Kiana, Mei, Bronya, and Himeko. Himeko’s sacrifice was one
+                                of the emotional pillars, while the starfire motif symbolized the Valkyries’ willingness
+                                to burn brightly even if only for a fleeting moment.
+                            </p>
+                            <div class="tech-tags">
+                                <span class="tech-tag"
+                                    onclick="window.location.href='https://www.youtube.com/watch?v=v1sd5CzR504&list=RDv1sd5CzR504&start_radio=1'">Watch
+                                    now →</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card dr">
+                        <div class="project-header">
+                            <h3 class="project-title">Dreamy Euphony</h3>
+                            <p class="project-subtitle">2022</p>
+                        </div>
+                        <div class="project-body">
+                            <p class="project-description">
+                                This concert explored the emotional connections that define the Valkyries’ journey. The
+                                dreamlike staging and softer arrangements drew attention to the inner struggles of
+                                Kiana, Mei, Bronya, and Elysia, as well as the importance of friendship within the
+                                Elysian Realm. The music reflected the fragile beauty of dreams — some destined to fade,
+                                others becoming eternal memories that carry the girls forward.
+                            </p>
+                            <div class="tech-tags">
+                                <span class="tech-tag"
+                                    onclick="window.location.href='https://www.youtube.com/watch?v=NQdVJcEE0m4&t=1s'">Watch
+                                    now →</span>
+                                <span class="tech-tag"
+                                    onclick="window.location.href='https://open.spotify.com/search/Honkai%20World%20Diva'">Spotify →</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card fo">
+                        <div class="project-header">
+                            <h3 class="project-title">Forest Capriccio</h3>
+                            <p class="project-subtitle">2023</p>
+                        </div>
+                        <div class="project-body">
+                            <p class="project-description">
+                                The third concert shifted toward lighter, whimsical tones, portraying the Valkyries’
+                                world as a forest where hope and renewal bloom after hardship. Songs celebrated
+                                characters like Elysia and the Flame-Chasers, whose presence tied the natural imagery to
+                                the legacy of the Previous Era. Through folk-inspired melodies and bright visuals, the
+                                concert framed the Valkyries not just as warriors but as guardians of life and symbols
+                                of future growth.
+                            </p>
+                            <div class="tech-tags">
+                                <span class="tech-tag"
+                                    onclick="window.location.href='https://www.youtube.com/watch?v=U9e3MFZI3zE'">Watch
+                                    now →</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center py-4" style="background: rgba(0,0,0,0.2); color: white;">
+        <div class="container">
+            <p>© 2025 Honkai Impact 3rd • compile by Nghiem Tuong linh.</p>
+            <div class="mt-3">
+                <a href="https://github.com/TuongLinhNghiem" class="text-white me-3"
+                    style="transition: all 0.3s ease;"><i class="fab fa-github fa-2x"></i></a>
+                <a href="https://www.linkedin.com/in/tuong-linh-nghiem/" class="text-white me-3"
+                    style="transition: all 0.3s ease;"><i class="fab fa-linkedin fa-2x"></i></a>
+                <a href="mailto:scorpiuslinh@gmail.com" class="text-white" style="transition: all 0.3s ease;"><i
+                        class="fas fa-envelope fa-2x"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Page loader
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                document.getElementById('pageLoader').classList.add('hidden');
+            }, 1500);
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Scroll to section function
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        }
+
+        // Enhanced navbar background change on scroll
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            const scrolled = window.scrollY > 100;
+
+            if (scrolled) {
+                navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+                navbar.style.backdropFilter = 'blur(20px)';
+                navbar.style.borderBottom = '1px solid rgba(0,0,0,0.1)';
+                navbar.querySelectorAll('.navbar-brand, .nav-link').forEach(el => {
+                    el.style.color = '#333 !important';
+                });
+            } else {
+                navbar.style.background = 'rgba(255, 255, 255, 0.1)';
+                navbar.style.backdropFilter = 'blur(20px)';
+                navbar.style.borderBottom = '1px solid rgba(255, 255, 255, 0.1)';
+                navbar.querySelectorAll('.navbar-brand, .nav-link').forEach(el => {
+                    el.style.color = 'white !important';
+                });
+            }
+        });
+
+        // Enhanced Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+
+                    // Add special effects for different elements
+                    if (entry.target.classList.contains('timeline-item')) {
+                        entry.target.style.transform = 'translateX(0) scale(1)';
+                        entry.target.style.opacity = '1';
+                    }
+
+                    if (entry.target.classList.contains('skill-card')) {
+                        entry.target.style.transform = 'translateY(0) rotateX(0deg)';
+                        entry.target.style.opacity = '1';
+                    }
+
+                    if (entry.target.classList.contains('project-card')) {
+                        entry.target.style.transform = 'translateY(0) scale(1)';
+                        entry.target.style.opacity = '1';
+                    }
+                }
+            });
+        }, observerOptions);
+
+        // Parallax effect for hero section
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const heroContent = document.querySelector('.hero-content');
+            const particles = document.querySelectorAll('.particle');
+
+            if (heroContent) {
+                heroContent.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+
+            // Animate particles based on scroll
+            particles.forEach((particle, index) => {
+                const speed = (index + 1) * 0.1;
+                particle.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        });
+
+        // Add hover sound effect (optional)
+        document.querySelectorAll('.timeline-content, .skill-card, .project-card').forEach(el => {
+            el.addEventListener('mouseenter', function() {
+                // You can add sound effects here if desired
+                this.style.transform = this.style.transform + ' scale(1.02)';
+            });
+
+            el.addEventListener('mouseleave', function() {
+                this.style.transform = this.style.transform.replace(' scale(1.02)', '');
+            });
+        });
+
+        // Dynamic particle generation
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            particle.style.animationDelay = Math.random() * 2 + 's';
+            document.querySelector('.particles').appendChild(particle);
+
+            // Remove particle after animation
+            setTimeout(() => {
+                if (particle.parentNode) {
+                    particle.parentNode.removeChild(particle);
+                }
+            }, 10000);
+        }
+
+        // Create new particles periodically
+        setInterval(createParticle, 3000);
+
+        // Add typing effect to hero title (optional enhancement)
+        function typeWriter(element, text, speed = 100) {
+            let i = 0;
+            element.innerHTML = '';
+
+            function type() {
+                if (i < text.length) { element.innerHTML += text.charAt(i); i++; setTimeout(type, speed); }
+            } type();
+        }
+        // Initialize typing effect after page load
+        setTimeout(() => {
+            const heroTitle = document.querySelector('.hero-title');
+            if (heroTitle) {
+                const originalText = heroTitle.textContent;
+                typeWriter(heroTitle, originalText, 80);
+            }
+        }, 2000);
+
+        // Add footer link hover effects
+        document.querySelectorAll('footer a').forEach(link => {
+            link.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-3px) scale(1.1)';
+                this.style.color = '#f093fb';
+            });
+
+            link.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+                this.style.color = 'white';
+            });
+        });
+    </script>
+    </body>
+
+    </html>

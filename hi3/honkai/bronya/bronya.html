@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bronya Zaychik - Herrscher of Reason Journey</title>
+  <link rel="stylesheet" href="bronya.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <!-- Loading Screen -->
+  <div id="loadingScreen" class="loading-screen">
+    <div class="loading-content">
+      <div class="loading-logo">🤖</div>
+      <div class="loading-title">BRONYA ZAYCHIK</div>
+      <div class="loading-subtitle">Herrscher of Reason</div>
+      <div class="loading-bar">
+        <div class="loading-progress" id="loadingProgress"></div>
+      </div>
+      <div class="loading-text">Initializing Project Bunny...</div>
+      <div class="loading-effects">
+        <div class="circuit-line"></div>
+        <div class="circuit-line"></div>
+        <div class="circuit-line"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Container -->
+  <div id="gameContainer" class="game-container">
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- Enhanced UI -->
+    <div class="game-ui">
+      <!-- Character Portraits -->
+      <div class="character-portraits">
+        <div class="player-portrait">
+          <div class="portrait-frame">
+            <img id="playerPortrait" src="bro-images/bronya-portrait.png" alt="Bronya">
+            <div class="portrait-glow"></div>
+          </div>
+          <div class="character-name">BRONYA</div>
+        </div>
+
+        <div class="enemy-portrait">
+          <div class="portrait-frame">
+            <img id="enemyPortrait" src="bro-images/enemy1-portrait.png" alt="Enemy">
+            <div class="portrait-glow"></div>
+          </div>
+          <div class="character-name" id="enemyName">MECHA UNITS</div>
+        </div>
+      </div>
+
+      <!-- Health Bars -->
+      <div class="health-bars">
+        <div class="enemy-health">
+          <div class="bar-container">
+            <div class="bar-fill" id="enemyHP"></div>
+            <div class="bar-text">80/80</div>
+          </div>
+          <div class="bar-label">ENEMY HP</div>
+        </div>
+
+        <div class="player-health">
+          <div class="bar-container">
+            <div class="bar-fill" id="playerHP"></div>
+            <div class="bar-text">80/80</div>
+          </div>
+          <div class="bar-label">BRONYA HP</div>
+        </div>
+      </div>
+
+      <!-- Ultimate Gauge -->
+      <div class="player-ult">
+        <div class="bar-container">
+          <div class="bar-fill" id="ultGauge"></div>
+          <div class="bar-text">0/10</div>
+        </div>
+        <div class="bar-label">PROJECT BUNNY</div>
+      </div>
+
+      <!-- Control Instructions -->
+      <div class="controls-info">
+        <div class="control-item">
+          <span class="key">A/D</span>
+          <span class="action">Move</span>
+        </div>
+        <div class="control-item">
+          <span class="key">Auto</span>
+          <span class="action">Shoot</span>
+        </div>
+        <div class="control-item">
+          <span class="key">U</span>
+          <span class="action">Ultimate</span>
+        </div>
+        <div class="control-item">
+          <span class="key">P</span>
+          <span class="action">Pause</span>
+        </div>
+      </div>
+
+      <!-- Game Controls -->
+      <div class="game-controls">
+        <button id="pauseBtn" class="control-btn">
+          <span>⏸️</span>
+          <span>Pause</span>
+        </button>
+        <button id="skipBtn" class="control-btn">
+          <span>⏭️</span>
+          <span>Skip</span>
+        </button>
+        <button id="muteBtn" class="control-btn">
+          <span>🔊</span>
+          <span>Audio</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enhanced Story Modal -->
+  <div id="storyOverlay" class="story-overlay hidden">
+    <div class="story-content">
+      <div class="story-header">
+        <div class="story-icon">🤖</div>
+        <h2 id="story-title">Stage Complete!</h2>
+      </div>
+      <div class="story-body" id="storyContent">
+        <!-- Story content will be inserted here -->
+      </div>
+      <button id="continueBtn" class="story-btn">
+        <span>Continue Journey</span>
+        <div class="btn-glow"></div>
+      </button>
+    </div>
+  </div>
+
+  <script src="bronya.js"></script>
+</body>
+</html>

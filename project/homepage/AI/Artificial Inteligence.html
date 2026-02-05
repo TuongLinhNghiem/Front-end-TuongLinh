@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>Learning AI & AI Prompting — My Study Hub</title>
+        <style>
+            :root {
+                --bg: #0f1724;
+                --card: #0b1220;
+                --muted: #9aa4b2;
+                --accent: #6ee7b7;
+                --glass: rgba(255, 255, 255, 0.03);
+                --glass-2: rgba(255, 255, 255, 0.02);
+                font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+            }
+
+            * {
+                box-sizing: border-box
+            }
+
+            html,
+            body {
+                height: 100%
+            }
+
+            body {
+                margin: 0;
+                background: linear-gradient(180deg, #071226 0%, #071a2b 60%);
+                color: #e6eef6;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+                padding: 28px;
+                display: flex;
+                gap: 24px;
+                align-items: flex-start;
+                justify-content: center;
+            }
+
+            .container {
+                width: 1100px;
+                max-width: 100%;
+                display: grid;
+                grid-template-columns: 420px 1fr;
+                gap: 20px;
+            }
+
+            .card {
+                background: linear-gradient(180deg, var(--card), rgba(8, 14, 22, 0.8));
+                border-radius: 12px;
+                padding: 18px;
+                box-shadow: 0 6px 30px rgba(3, 6, 12, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.02);
+                border: 1px solid rgba(255, 255, 255, 0.03);
+            }
+
+            h1 {
+                font-size: 20px;
+                margin: 0 0 12px 0
+            }
+
+            h2 {
+                font-size: 15px;
+                margin: 0 0 10px 0;
+                color: var(--accent)
+            }
+
+            p {
+                margin: 6px 0;
+                color: var(--muted);
+                font-size: 13px;
+                line-height: 1.45
+            }
+
+            /* Left column */
+            .profile {
+                display: flex;
+                gap: 12px;
+                align-items: center;
+            }
+
+            .avatar {
+                width: 64px;
+                height: 64px;
+                border-radius: 12px;
+                background: linear-gradient(135deg, var(--accent), #4dd0e1);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 700;
+                color: #042022;
+                font-size: 22px;
+                box-shadow: 0 4px 18px rgba(6, 85, 70, 0.12);
+            }
+
+            .progress {
+                margin-top: 14px;
+            }
+
+            .checklist {
+                margin-top: 12px;
+                display: flex;
+                flex-direction: column;
+                gap: 8px
+            }
+
+            label.check {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+                background: var(--glass);
+                padding: 8px;
+                border-radius: 8px;
+            }
+
+            input[type=checkbox] {
+                width: 18px;
+                height: 18px
+            }
+
+            /* Right column - prompt lab */
+            .prompt-lab {
+                display: flex;
+                flex-direction: column;
+                height: 100%
+            }
+
+            .prompt-lab .controls {
+                display: flex;
+                gap: 8px;
+                margin-bottom: 10px;
+                flex-wrap: wrap
+            }
+
+            textarea#prompt {
+                width: 100%;
+                min-height: 150px;
+                resize: vertical;
+                padding: 12px;
+                border-radius: 8px;
+                border: 1px solid rgba(255, 255, 255, 0.03);
+                background: var(--glass-2);
+                color: inherit;
+                font-size: 14px;
+                line-height: 1.45;
+            }
+
+            .btn {
+                background: linear-gradient(180deg, #0ea5a3, #059669);
+                color: #042022;
+                padding: 8px 12px;
+                border-radius: 8px;
+                border: none;
+                font-weight: 600;
+                cursor: pointer;
+                box-shadow: 0 6px 20px rgba(4, 120, 87, 0.12);
+            }
+
+            .btn.secondary {
+                background: transparent;
+                color: var(--accent);
+                border: 1px solid rgba(110, 231, 183, 0.12)
+            }
+
+            .templates {
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+                margin-top: 10px
+            }
+
+            .template {
+                background: rgba(255, 255, 255, 0.03);
+                padding: 8px 10px;
+                border-radius: 8px;
+                font-size: 13px;
+                cursor: pointer;
+                border: 1px solid rgba(255, 255, 255, 0.02)
+            }
+
+            .result {
+                margin-top: 12px;
+                background: var(--glass);
+                padding: 12px;
+                border-radius: 8px;
+                min-height: 80px;
+            }
+
+            .muted {
+                color: var(--muted);
+                font-size: 13px
+            }
+
+            /* small helpers */
+            .row {
+                display: flex;
+                gap: 8px;
+                align-items: center
+            }
+
+            .small {
+                font-size: 12px;
+                color: var(--muted)
+            }
+
+            .tag {
+                background: rgba(255, 255, 255, 0.02);
+                padding: 6px 8px;
+                border-radius: 999px;
+                font-size: 12px;
+                color: var(--muted)
+            }
+
+            footer {
+                margin-top: 18px;
+                text-align: center;
+                color: var(--muted);
+                font-size: 12px
+            }
+
+            @media(max-width:980px) {
+                .container {
+                    grid-template-columns: 1fr;
+                    padding: 0 12px
+                }
+
+                body {
+                    padding: 14px
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="container" role="main">
+            <section class="card" aria-labelledby="meTitle">
+                <div class="profile">
+                    <div class="avatar" id="avatar">ME</div>
+                    <div>
+                        <h1 id="meTitle">Me — Learning AI & Prompting</h1>
+                        <p class="muted">A personal study hub to track progress, practice prompt-writing, and store
+                            notes.</p>
+                        <div class="row" style="margin-top:10px">
+                            <span class="tag">Beginner → Intermediate</span>
+                            <span class="tag" id="lastSaved">No saves yet</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="progress">
+                    <h2>Learning plan</h2>
+                    <p class="muted">Suggested path — tick items as you finish. Progress saves automatically.</p>
+                    <div class="checklist" id="checklist">
+                        <label class="check"><input type="checkbox" data-key="basics"> Learn AI fundamentals (ML vs DL,
+                            supervised/unsupervised)</label>
+                        <label class="check"><input type="checkbox" data-key="python"> Brush up Python & data libs
+                            (numpy, pandas)</label>
+                        <label class="check"><input type="checkbox" data-key="models"> Study models (transformers,
+                            LLMs)</label>
+                        <label class="check"><input type="checkbox" data-key="prompt"> Practice prompt
+                            engineering</label>
+                        <label class="check"><input type="checkbox" data-key="ethics"> Read AI ethics & safety
+                            basics</label>
+                    </div>
+
+                    <h2 style="margin-top:14px">Notes</h2>
+                    <textarea id="notes"
+                        style="width:100%;height:90px;border-radius:8px;padding:10px;background:var(--glass-2);border:1px solid rgba(255,255,255,0.03);color:inherit;font-size:13px"
+                        placeholder="Quick study notes..."></textarea>
+
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
+                        <div class="small">Progress: <span id="progressPct">0%</span></div>
+                        <button class="btn secondary" id="resetProgress" title="Reset saved progress">Reset</button>
+                    </div>
+                </div>
+
+            </section>
+
+            <section class="card prompt-lab" aria-labelledby="labTitle">
+                <h2 id="labTitle">Prompt Lab</h2>
+                <p class="muted">Write prompts, try templates, and get instant suggestions. This simulates iterative
+                    prompting — great for practice.</p>
+
+                <div class="controls">
+                    <button class="btn" id="runBtn">Run (simulate)</button>
+                    <button class="btn secondary" id="improveBtn">Suggest improvements</button>
+                    <button class="btn secondary" id="copyBtn">Copy prompt</button>
+                    <div style="margin-left:auto" class="small">Saved prompts: <span id="savedCount">0</span></div>
+                </div>
+
+                <textarea id="prompt"
+                    placeholder="Write an AI prompt here — e.g. 'Write a friendly blog intro about transfer learning for beginners.'"></textarea>
+
+                <div class="templates" aria-label="Prompt templates">
+                    <div class="template" data-tpl="Explain like I'm 5: {topic}">Explain like I'm 5</div>
+                    <div class="template" data-tpl="Step-by-step tutorial: {topic}">Step-by-step tutorial</div>
+                    <div class="template" data-tpl="Compare {a} vs {b} and recommend">Compare & recommend</div>
+                    <div class="template" data-tpl="Create a prompt for extracting key points from: {text}">Extraction
+                    </div>
+                    <div class="template" data-tpl="Generate quiz questions about: {topic}">Quiz generator</div>
+                </div>
+
+                <div class="result" id="result" aria-live="polite">
+                    <div class="muted">Result will appear here when you run the prompt.</div>
+                </div>
+
+                <h2 style="margin-top:12px">Prompt suggestions</h2>
+                <p class="muted">Quick tips to make prompts better: be specific, give examples, show desired format, set
+                    tone & length.</p>
+                <ul class="muted" style="margin:6px 0 0 18px">
+                    <li>Specify role: "You are an expert ML engineer..."</li>
+                    <li>Set format: "Give answer as bullet points" or "Provide code only"</li>
+                    <li>Include examples: "Example input → output:"</li>
+                </ul>
+
+                <footer>
+                    Tip: you can save prompts locally (they stay in your browser). Try the "Suggest improvements" button
+                    to see iterative edits.
+                </footer>
+            </section>
+
+            <!-- A small hidden area for saved prompts list (optional) -->
+            <div id="savedArea" style="display:none"></div>
+        </div>
+
+        <script>
+            /* ---------------------------
+               Simple app logic (no network)
+               --------------------------- */
+
+            /* Utilities */
+            const $ = sel => document.querySelector(sel);
+            const $$ = sel => Array.from(document.querySelectorAll(sel));
+
+            /* Load / save to localStorage */
+            const STORAGE_KEY = 'learn.ai.hub.v1';
+            function loadState() {
+                try {
+                    const raw = localStorage.getItem(STORAGE_KEY);
+                    return raw ? JSON.parse(raw) : {};
+                } catch (e) { return {} }
+            }
+            function saveState(state) {
+                try {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+                    $('#lastSaved').textContent = 'Saved ' + new Date().toLocaleString();
+                } catch (e) { }
+            }
+
+            /* Initialize checklist and notes */
+            const state = loadState();
+            const checklistInputs = $$('[data-key]');
+            const notesEl = $('#notes');
+            function updateProgressUI() {
+                const total = checklistInputs.length;
+                const done = checklistInputs.filter(i => i.checked).length;
+                const pct = Math.round(100 * done / total);
+                $('#progressPct').textContent = pct + '%';
+            }
+            checklistInputs.forEach(inp => {
+                const key = inp.dataset.key;
+                inp.checked = !!(state.checklist && state.checklist[key]);
+                inp.addEventListener('change', () => {
+                    state.checklist = state.checklist || {};
+                    state.checklist[key] = inp.checked;
+                    saveState(state);
+                    updateProgressUI();
+                });
+            });
+            notesEl.value = state.notes || '';
+            notesEl.addEventListener('input', () => { state.notes = notesEl.value; saveState(state); });
+
+            updateProgressUI();
+
+            /* Reset */
+            $('#resetProgress').addEventListener('click', () => {
+                if (!confirm('Reset saved progress and notes?')) return;
+                localStorage.removeItem(STORAGE_KEY);
+                location.reload();
+            });
+
+            /* Prompt Lab actions */
+            const promptEl = $('#prompt');
+            const resultEl = $('#result');
+            const savedArea = $('#savedArea');
+
+            function getSavedPrompts() {
+                return state.prompts || [];
+            }
+            function setSavedPrompts(list) {
+                state.prompts = list;
+                saveState(state);
+                $('#savedCount').textContent = list.length;
+            }
+
+            /* Populate saved count on load */
+            $('#savedCount').textContent = getSavedPrompts().length;
+
+            /* Run simulation (fake "AI" response) */
+            $('#runBtn').addEventListener('click', () => {
+                const text = promptEl.value.trim();
+                if (!text) { resultEl.innerHTML = '<div class="muted">Write a prompt first.</div>'; return; }
+
+                // A deterministic pseudo-response using simple transformations
+                const now = new Date().toLocaleTimeString();
+                const response = simulateAssistant(text);
+                resultEl.innerHTML = `<strong>Simulated assistant response — ${now}</strong><div style="margin-top:8px;color:#dbeef2">${escapeHtml(response)}</div>`;
+                // Save this prompt to history (most recent first)
+                const saved = getSavedPrompts();
+                saved.unshift({ prompt: text, time: new Date().toISOString() });
+                setSavedPrompts(saved.slice(0, 30)); // keep up to 30
+            });
+
+            /* Suggest improvements: make prompt clearer by adding role, format, examples */
+            $('#improveBtn').addEventListener('click', () => {
+                const orig = promptEl.value.trim();
+                if (!orig) { resultEl.innerHTML = '<div class="muted">Write a prompt first to get suggestions.</div>'; return; }
+                const improved = suggestImprovements(orig);
+                resultEl.innerHTML = `<strong>Suggested improved prompt</strong><pre style="white-space:pre-wrap;margin-top:8px;color:#dbeef2;padding:8px;background:rgba(0,0,0,0.12);border-radius:8px">${escapeHtml(improved)}</pre>`;
+            });
+
+            /* Copy prompt */
+            $('#copyBtn').addEventListener('click', async () => {
+                try {
+                    await navigator.clipboard.writeText(promptEl.value);
+                    $('#copyBtn').textContent = 'Copied ✓';
+                    setTimeout(() => $('#copyBtn').textContent = 'Copy prompt', 900);
+                } catch (e) {
+                    alert('Copy failed — select the prompt and press Ctrl/Cmd+C.');
+                }
+            });
+
+            /* Templates insertion */
+            $$('.template').forEach(t => {
+                t.addEventListener('click', () => {
+                    const tpl = t.dataset.tpl;
+                    // place cursor or append
+                    const insert = tpl.replace(/\{[^}]+\}/g, '').trim();
+                    promptEl.value = insert + (promptEl.value ? '\n\n' + promptEl.value : '');
+                    promptEl.focus();
+                });
+            });
+
+            /* Small helpers used by the simulated assistant */
+            function escapeHtml(s) { return s.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;'); }
+
+            function simulateAssistant(promptText) {
+                // Very simple, deterministic "response" that gives structure + example
+                const firstLine = promptText.split(/[.\n]/, 1)[0];
+                const role = /expert|engineer|teacher|guide/i.test(promptText) ? '' : 'You are an expert in the subject.';
+                const bullets = [
+                    `${role} Goal: Answer the user clearly and concisely.`,
+                    'Step 1 — Short explanation (2–3 sentences).',
+                    'Step 2 — Give an example or code snippet if relevant.',
+                    'Step 3 — Provide next learning steps or resources.'
+                ];
+                const example = `Example output for: "${firstLine}"\n- Key idea: ...\n- Short sample: ...\n- Next: Try a small exercise applying this idea.`;
+                return bullets.join('\\n') + '\\n\\n' + example;
+            }
+
+            /* Suggest improvements algorithm (simple heuristics) */
+            function suggestImprovements(p) {
+                // If missing role, add role line. If missing format, ask for format. If too short, request details.
+                let improved = p.trim();
+                if (!/you are an|as an expert|assistant,/i.test(improved)) {
+                    improved = 'You are an expert AI instructor. ' + improved;
+                }
+                if (!/format|bullet|list|json|markdown/i.test(improved)) {
+                    improved += ' Provide the answer as concise bullet points and include a short example.';
+                }
+                if (improved.split(/\s+/).length < 10) {
+                    improved += ' Add context: explain who the audience is and the desired depth.';
+                }
+                // Add explicit example
+                if (!/example/i.test(improved)) {
+                    improved += ' Example: "Input → Output" or a short code snippet.';
+                }
+                return improved;
+            }
+
+            /* Very small quiz (client-side) */
+            (function addSimpleQuiz() {
+                const qCard = document.createElement('div');
+                qCard.className = 'card';
+                qCard.style.marginTop = '16px';
+                qCard.innerHTML = `<h2>Quick quiz — Prompting</h2>
+    <p class="muted">Pick the best answer:</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn secondary" id="qA">A) Use one-word prompts</button>
+      <button class="btn" id="qB">B) Be specific & show format</button>
+      <button class="btn secondary" id="qC">C) Always ask for maximum tokens</button>
+    </div>
+    <p id="qFeedback" class="muted" style="margin-top:8px"></p>`;
+                document.querySelector('.container').appendChild(qCard);
+                $('#qA').addEventListener('click', () => $('#qFeedback').textContent = 'Wrong — too vague.');
+                $('#qC').addEventListener('click', () => $('#qFeedback').textContent = 'Not ideal — quality matters more than length.');
+                $('#qB').addEventListener('click', () => $('#qFeedback').textContent = 'Correct! Being specific and requesting a format helps a lot.');
+            })();
+
+            /* small helpers for state display */
+            $('#lastSaved').textContent = state._lastSaved ? 'Saved ' + new Date(state._lastSaved).toLocaleString() : 'No saves yet';
+
+            /* update savedCount */
+            $('#savedCount').textContent = getSavedPrompts().length;
+
+            /* Save timestamp in state on each saveState call (wrap original) */
+            const _origSave = saveState;
+            saveState = function(s) {
+                s = s || state;
+                s._lastSaved = new Date().toISOString();
+                try {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
+                    $('#lastSaved').textContent = 'Saved ' + new Date(s._lastSaved).toLocaleString();
+                } catch (e) { }
+            };
+
+            /* Accessibility focus outlines */
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Tab') document.body.classList.add('show-focus');
+            });
+
+            /* Helper: save on unload (redundant but safe) */
+            window.addEventListener('beforeunload', () => saveState(state));
+
+        </script>
+    </body>
+
+</html>

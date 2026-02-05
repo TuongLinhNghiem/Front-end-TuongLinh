@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Honkai Plants vs. Zombies</title>
+        <link rel="stylesheet" href="css/style.css">
+        <script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+    </head>
+
+    <body>
+        <div id="game-container">
+            <div id="main-menu" class="screen">
+                <h1>Honkai Plants vs. Zombies</h1>
+                <button id="start-game">Start Game</button>
+            </div>
+
+            <div id="game-screen" class="screen hidden">
+                <div id="top-bar">
+                    <div id="coin-counter">Coins: <span id="coins">150</span></div>
+                    <div id="stage-info">Stage: <span id="current-stage">1</span></div>
+                    <div id="zombie-counter">Zombies: <span id="zombies-killed">0</span>/<span
+                            id="zombies-target">20</span></div>
+                </div>
+
+                <div id="player-selection">
+                    <!-- Player selection cards will be dynamically added here -->
+                </div>
+
+                <div id="game-grid">
+                    <!-- Game grid will be dynamically created here -->
+                </div>
+
+                <!-- Game tools (instruction) -->
+                <div id="game-tools">
+                    <div id="instruction-tool" class="game-tool" title="Show instructions">
+                        <img src="assets/images/instruction.png" alt="Instructions">
+                    </div>
+                </div>
+
+                <div id="games-tools">
+                    <div id="controls">
+                        <button id="skip-btn">Skip</button>
+                        <button id="pause-btn">Pause</button>
+                        <button id="resume-btn" class="hidden">Resume</button>
+                        <button id="music-btn">Music: On</button>
+                    </div>
+                </div>
+
+                <!-- Instruction panel -->
+                <div id="instruction-panel">
+                    <h3>Available Characters</h3>
+                    <div id="instruction-content">
+                        <!-- Will be dynamically populated -->
+                    </div>
+                </div>
+            </div>
+
+            <div id="story-screen" class="screen hidden">
+                <div id="story-content"></div>
+                <button id="next-stage-btn">Next Stage</button>
+            </div>
+
+            <div id="pause-screen" class="screen hidden">
+                <h2>Game Paused</h2>
+                <button id="resume-game-btn">Resume Game</button>
+            </div>
+
+            <div id="game-over-screen" class="screen hidden">
+                <h2>Game Over</h2>
+                <button id="restart-game-btn">Restart Game</button>
+            </div>
+        </div>
+
+        <script src="js/config.js"></script>
+        <script src="js/utils.js"></script>
+        <script src="js/players.js"></script>
+        <script src="js/enemies.js"></script>
+        <script src="js/projectiles.js"></script>
+        <script src="js/stages.js"></script>
+        <script src="js/game.js"></script>
+    </body>
+
+</html>

@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Stigma - Flappy Bird 7 Stages</title>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+                background: #70c5ce;
+                font-family: Arial, sans-serif;
+            }
+
+            #gameContainer {
+                position: relative;
+                width: 800px;
+                height: 600px;
+                border: 2px solid #333;
+                overflow: hidden;
+            }
+
+            #gameCanvas {
+                display: block;
+                background: #70c5ce;
+            }
+
+            .ui-button {
+                position: absolute;
+                padding: 10px 15px;
+                background: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 14px;
+                font-weight: bold;
+                z-index: 10;
+            }
+
+            .ui-button:hover {
+                background: #45a049;
+            }
+
+            #pauseBtn {
+                bottom: 10px;
+                left: 10px;
+            }
+
+            #muteBtn {
+                bottom: 10px;
+                left: 100px;
+            }
+
+            #skipBtn {
+                bottom: 10px;
+                right: 10px;
+                background: #ff9800;
+            }
+
+            #skipBtn:hover {
+                background: #e68900;
+            }
+
+            #gameInfo {
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                color: white;
+                font-size: 18px;
+                font-weight: bold;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+                z-index: 5;
+            }
+
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 1000;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+            }
+
+            .modal-content {
+                background-color: #fefefe;
+                margin: 10% auto;
+                padding: 20px;
+                border: none;
+                border-radius: 10px;
+                width: 80%;
+                max-width: 500px;
+                text-align: center;
+            }
+
+            .modal-buttons {
+                margin-top: 20px;
+            }
+
+            .modal-button {
+                margin: 0 10px;
+                padding: 10px 20px;
+                font-size: 16px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            .next-btn {
+                background: #4CAF50;
+                color: white;
+            }
+
+            .resume-btn {
+                background: #2196F3;
+                color: white;
+            }
+
+            #gameOverScreen {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.8);
+                display: none;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                color: white;
+                font-size: 24px;
+                z-index: 100;
+            }
+
+            .restart-btn {
+                margin-top: 20px;
+                padding: 15px 30px;
+                font-size: 18px;
+                background: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="gameContainer">
+            <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+            <div id="gameInfo">
+                <div>Stage: <span id="currentStage">1</span></div>
+                <div>Score: <span id="currentScore">0</span></div>
+                <div>Lives: <span id="livesDisplay">❤️❤️❤️</span></div>
+            </div>
+
+            <button id="pauseBtn" class="ui-button">Pause</button>
+            <button id="skipBtn" class="ui-button">Skip</button>
+            <button id="muteBtn" class="ui-button"><span>🔊</span></button>
+
+            <div id="gameOverScreen">
+                <div id="gameOverText">Game Over!</div>
+                <button class="restart-btn" onclick="restartGame()">Restart</button>
+            </div>
+        </div>
+
+        <!-- Story Modal -->
+        <div id="storyModal" class="modal">
+            <div class="modal-content">
+                <h2 id="storyTitle">Stage Complete!</h2>
+                <p id="storyText"></p>
+                <div class="modal-buttons">
+                    <button class="modal-button next-btn" onclick="nextStage()">Next</button>
+                    <button class="modal-button resume-btn" onclick="resumeStage()">Resume</button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // Game variables
+            const canvas = document.getElementById('gameCanvas');
+            const ctx = canvas.getContext('2d');
+            const audioManager = {
+                    bgm: null,
+                    hasUserInteracted: false,
+                    isMuted: false,
+
+                    init() {
+                        const unlockAudio = (e) => {
+                            // Only SPACE starts the music
+                            if (e.type === "keydown" && e.code !== "Space") return;
+
+                            this.hasUserInteracted = true;
+
+                            if (!this.bgm) {
+                                this.bgm = new Audio("fin-images/background-music.mp3");
+                                this.bgm.loop = true;
+                                this.bgm.volume = 0.3;
+                                this.bgm.muted = this.isMuted;
+                            }
+
+                            this.play();
+                            document.removeEventListener("keydown", unlockAudio);
+                        };
+
+                        document.addEventListener("keydown", unlockAudio);
+                    },
+
+                    play() {
+                        if (!this.bgm || !this.hasUserInteracted) return;
+                        this.bgm.play().catch(() => { });
+                    },
+
+                    pause() {
+                        if (this.bgm) this.bgm.pause();
+                    },
+
+                    toggleMute() {
+                        this.isMuted = !this.isMuted;
+                        if (this.bgm) this.bgm.muted = this.isMuted;
+                    }
+                };
+
+            let currentStage = 1;
+            let score = 0;
+            let lives = 3;
+            let gameRunning = false;
+            let gamePaused = false;
+            let pillarsPassedInStage = 0;
+
+            // Game objects
+            let player = {
+                x: 100,
+                y: 300,
+                width: 50,
+                height: 50,
+                velocity: 0,
+                gravity: 0.5,
+                jumpPower: -8,
+                image: new Image(),
+                invincible: false,
+                invincibleTimer: 0,
+                blinkTimer: 0,
+                visible: true
+            };
+
+            let pillars = [];
+            let pillarSpeed = 2;
+            let pillarGap = 200;
+            let pillarWidth = 80;
+            let pillarSpacing = 300;
+
+            // Images
+            let backgrounds = [];
+            let playerImages = [];
+            let pillarImages = [];
+
+            // Stage stories
+            const stageStories = [
+                "Stage 1 Complete! You've mastered the basics of flight. The journey ahead will test your skills even further.",
+                "Stage 2 Complete! Your agility is improving. The winds grow stronger, but so do you.",
+                "Stage 3 Complete! Halfway through your journey. The obstacles become more challenging, but your determination never wavers.",
+                "Stage 4 Complete! Your precision is remarkable. The path ahead requires even greater focus.",
+                "Stage 5 Complete! You're becoming a master of the skies. Only two more stages remain.",
+                "Stage 6 Complete! Almost at the end of your epic journey. One final challenge awaits.",
+                "Final Stage Complete! Congratulations! You have conquered all seven stages and become a true master of flight!"
+            ];
+
+            // Load images
+            function loadImages() {
+                for (let i = 1; i <= 7; i++) {
+                    // Load backgrounds
+                    const bg = new Image();
+                    bg.src = `fin-images/bg${i}.jpg`;
+                    backgrounds.push(bg);
+
+                    // Load player images
+                    const playerImg = new Image();
+                    playerImg.src = `fin-images/player${i}.png`;
+                    playerImages.push(playerImg);
+
+                    // Load pillar images
+                    const pillarImg = new Image();
+                    pillarImg.src = `fin-images/pillar${i}.png`;
+                    pillarImages.push(pillarImg);
+                }
+
+                // Set initial player image
+                player.image = playerImages[0];
+            }
+
+            // Initialize game
+            function initGame() {
+                audioManager.init();
+                loadImages();
+                resetStage();
+                gameLoop();
+
+                // Event listeners
+                document.addEventListener('keydown', handleKeyPress);
+                canvas.addEventListener('click', jump);
+                document.getElementById("pauseBtn").addEventListener("click", () => {
+                    togglePause();
+                });
+
+                document.getElementById('skipBtn').addEventListener('click', skipStage);
+                document.getElementById("muteBtn").onclick = () => {
+                    const muteBtn = document.getElementById("muteBtn");
+                    const span = muteBtn.querySelector('span');
+
+                    audioManager.toggleMute();
+
+                    span.textContent = audioManager.isMuted ? "🔇" : "🔊";
+                };
+            }
+
+            function resetStage() {
+                player.x = 100;
+                player.y = 300;
+                player.velocity = 0;
+                pillars = [];
+                pillarsPassedInStage = 0;
+                pillarSpeed = 1.5 + (currentStage - 1) * 0.3; // Increase speed with stage
+                gameRunning = true;
+                gamePaused = false;
+
+                // Create initial pillars
+                for (let i = 0; i < 3; i++) {
+                    createPillar(canvas.width + i * pillarSpacing);
+                }
+
+                updateUI();
+            }
+
+            function createPillar(x) {
+                const gapY = Math.random() * (canvas.height - pillarGap - 100) + 50;
+                pillars.push({
+                    x: x,
+                    topHeight: gapY,
+                    bottomY: gapY + pillarGap,
+                    bottomHeight: canvas.height - (gapY + pillarGap),
+                    width: pillarWidth,
+                    passed: false
+                });
+            }
+
+            function handleKeyPress(e) {
+                if (e.code === 'Space' || e.code === 'ArrowUp') {
+                    e.preventDefault();
+                    jump();
+                }
+            }
+
+            function jump() {
+                if (gameRunning && !gamePaused) {
+                    player.velocity = player.jumpPower;
+                }
+            }
+
+            function togglePause() {
+                    if (!gameRunning) return;
+
+                    gamePaused = !gamePaused;
+                    document.getElementById('pauseBtn').textContent =
+                        gamePaused ? 'Resume' : 'Pause';
+
+                    if (gamePaused) {
+                        audioManager.pause();
+                    } else {
+                        audioManager.play();
+                    }
+                }
+
+
+            function skipStage() {
+                if (gameRunning) {
+                    showStoryModal();
+                }
+            }
+
+            function update() {
+                if (!gameRunning || gamePaused) return;
+
+                // Update player
+                player.velocity += player.gravity;
+                player.y += player.velocity;
+
+                // Check boundaries
+                if (player.y < 0 || player.y + player.height > canvas.height) {
+                    loseLife();
+                    return;
+                }
+
+                // Update pillars
+                for (let i = pillars.length - 1; i >= 0; i--) {
+                    const pillar = pillars[i];
+                    pillar.x -= pillarSpeed;
+
+                    // Check if pillar is passed
+                    if (!pillar.passed && pillar.x + pillar.width < player.x) {
+                        pillar.passed = true;
+                        score++;
+                        pillarsPassedInStage++;
+
+                        // Check if stage is complete
+                        if (pillarsPassedInStage >= 20) {
+                            showStoryModal();
+                            return;
+                        }
+                    }
+
+                    // Remove off-screen pillars and create new ones
+                    if (pillar.x + pillar.width < 0) {
+                        pillars.splice(i, 1);
+                        createPillar(pillars[pillars.length - 1].x + pillarSpacing);
+                    }
+
+                    // Check collision (skip if player is invincible)
+                    if (!player.invincible && checkCollision(player, pillar)) {
+                        loseLife();
+                        return;
+                    }
+
+                }
+
+                // Invincibility logic
+                if (player.invincible) {
+                    player.invincibleTimer -= 1 / 60;
+
+                    // Blink every 0.1s
+                    player.blinkTimer += 1 / 60;
+                    if (player.blinkTimer >= 0.1) {
+                        player.visible = !player.visible;
+                        player.blinkTimer = 0;
+                    }
+
+                    if (player.invincibleTimer <= 0) {
+                        player.invincible = false;
+                        player.visible = true;
+                    }
+                }
+
+                // Increase speed over time
+                pillarSpeed += 0.001;
+
+                updateUI();
+            }
+
+            function checkCollision(player, pillar) {
+                if (player.x < pillar.x + pillar.width &&
+                    player.x + player.width > pillar.x) {
+                    if (player.y < pillar.topHeight ||
+                        player.y + player.height > pillar.bottomY) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            function loseLife() {
+                lives--;
+                if (lives <= 0) {
+                    gameOver();
+                } else {
+                    // Reset position
+                    player.x = 100;
+                    player.y = 300;
+                    player.velocity = 0;
+
+                    // Enable invincibility
+                    player.invincible = true;
+                    player.invincibleTimer = 3; // seconds
+                    player.blinkTimer = 0;
+                    player.visible = true;
+
+                    updateUI();
+                }
+            }
+
+
+            function gameOver() {
+                gameRunning = false;
+                document.getElementById('gameOverScreen').style.display = 'flex';
+            }
+
+            function restartGame() {
+                currentStage = 1;
+                score = 0;
+                lives = 3;
+                player.image = playerImages[0];
+                document.getElementById('gameOverScreen').style.display = 'none';
+                resetStage();
+            }
+
+            function showStoryModal() {
+                gamePaused = true;
+                document.getElementById('storyTitle').textContent = `Stage ${currentStage} Complete!`;
+                document.getElementById('storyText').textContent = stageStories[currentStage - 1];
+                document.getElementById('storyModal').style.display = 'block';
+            }
+
+            function nextStage() {
+                document.getElementById('storyModal').style.display = 'none';
+                if (currentStage < 7) {
+                    currentStage++;
+                    player.image = playerImages[currentStage - 1];
+                    resetStage();
+                } else {
+                    // Game completed
+                    alert('Congratulations! You have completed all 7 stages!');
+                    restartGame();
+                }
+            }
+
+            function resumeStage() {
+                document.getElementById('storyModal').style.display = 'none';
+                gamePaused = false;
+            }
+
+            function updateUI() {
+                document.getElementById('currentStage').textContent = currentStage;
+                document.getElementById('currentScore').textContent = score;
+                document.getElementById('livesDisplay').textContent = '❤️'.repeat(lives);
+            }
+
+            function draw() {
+                // Clear canvas
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Draw background
+                if (backgrounds[currentStage - 1] && backgrounds[currentStage - 1].complete) {
+                    ctx.drawImage(backgrounds[currentStage - 1], 0, 0, canvas.width, canvas.height);
+                } else {
+                    // Fallback gradient background
+                    const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+                    gradient.addColorStop(0, '#87CEEB');
+                    gradient.addColorStop(1, '#98FB98');
+                    ctx.fillStyle = gradient;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                }
+
+                // Draw pillars
+                pillars.forEach(pillar => {
+                    if (pillarImages[currentStage - 1] && pillarImages[currentStage - 1].complete) {
+                        // Draw top pillar
+                        ctx.drawImage(pillarImages[currentStage - 1],
+                            pillar.x, 0, pillar.width, pillar.topHeight);
+                        // Draw bottom pillar
+                        ctx.drawImage(pillarImages[currentStage - 1],
+                            pillar.x, pillar.bottomY, pillar.width, pillar.bottomHeight);
+                    } else {
+                        // Fallback rectangle pillars
+                        ctx.fillStyle = '#228B22';
+                        ctx.fillRect(pillar.x, 0, pillar.width, pillar.topHeight);
+                        ctx.fillRect(pillar.x, pillar.bottomY, pillar.width, pillar.bottomHeight);
+                    }
+                });
+
+                // Draw player (with blinking)
+                if (!player.invincible || player.visible) {
+                    if (player.image && player.image.complete) {
+                        ctx.drawImage(player.image, player.x, player.y, player.width, player.height);
+                    } else {
+                        ctx.fillStyle = '#FFD700';
+                        ctx.fillRect(player.x, player.y, player.width, player.height);
+                    }
+                }
+
+
+                // Draw progress bar for stage completion
+                const progressWidth = 200;
+                const progressHeight = 10;
+                const progressX = canvas.width - progressWidth - 20;
+                const progressY = 20;
+
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+                ctx.fillRect(progressX, progressY, progressWidth, progressHeight);
+
+                ctx.fillStyle = '#4CAF50';
+                const progress = Math.min(pillarsPassedInStage / 20, 1);
+                ctx.fillRect(progressX, progressY, progressWidth * progress, progressHeight);
+
+                ctx.fillStyle = 'white';
+                ctx.font = '12px Arial';
+                ctx.fillText(`${pillarsPassedInStage}/20 Pillars`, progressX, progressY + 25);
+            }
+
+            function gameLoop() {
+                update();
+                draw();
+                requestAnimationFrame(gameLoop);
+            }
+
+            // Start the game when page loads
+            window.addEventListener('load', initGame);
+        </script>
+    </body>
+
+</html>
