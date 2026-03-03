@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>FlyMe2TheMoon (K-404) — Space Jump</title>
+        <style>
+            body {
+                margin: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background: #000;
+                color: #fff;
+                font-family: sans-serif
+            }
+
+            #wrap {
+                width: 720px;
+                max-width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center
+            }
+
+            header {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 14px;
+                background: rgba(17, 17, 17, 0.6);
+                /* trong suốt */
+                backdrop-filter: blur(6px);
+                /* làm mờ nền */
+                -webkit-backdrop-filter: blur(6px);
+                /* cho Safari */
+
+                color: #fff;
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: 1000;
+
+                font-family: sans-serif;
+                font-size: 16px;
+                transition: background 0.3s ease, box-shadow 0.3s ease;
+            }
+
+            /* Thêm bóng khi scroll xuống */
+            header.scrolled {
+                background: rgba(17, 17, 17, 0.8);
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+            }
+
+            /* Các cột */
+            .header-left {
+                flex: 1;
+                text-align: left;
+                font-weight: bold;
+            }
+
+            .header-center {
+                flex: 1;
+                text-align: center;
+            }
+
+            .header-right {
+                flex: 1;
+                text-align: right;
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                gap: 10px;
+            }
+
+            canvas {
+                display: block;
+                margin: 0 auto;
+                width: 100%;
+                height: auto
+            }
+
+            #menuOverlay {
+                position: absolute;
+                inset: 0;
+                background: url("2-images/bg-space.jpg") center/cover no-repeat;
+                background-color: rgba(0, 0, 0, 0.6);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 5;
+            }
+
+            .menuBox {
+                background: rgba(0, 0, 0, 0.55);
+                padding: 20px;
+                border-radius: 12px;
+                text-align: center;
+                color: #fff;
+                width: 80%;
+                max-width: 400px;
+            }
+
+            .menuBox h1 {
+                margin-bottom: 16px;
+                font-size: 32px
+            }
+
+            .menuBox button {
+                display: block;
+                width: 100%;
+                margin: 8px auto;
+                padding: 12px;
+                font-size: 20px;
+                font-weight: bold;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                background: #0fbbe0;
+                color: #012;
+            }
+
+            #menuBtn {
+                background: rgba(255, 255, 255, .2);
+                border: none;
+                border-radius: 6px;
+                padding: 4px 10px;
+                color: #fff;
+                cursor: pointer;
+                font-size: 18px;
+                z-index: 1100;
+                transition: background 0.2s, transform 0.2s;
+            }
+
+            #menuBtn:hover {
+                background: rgba(255, 255, 255, .35);
+                transform: scale(1.05);
+            }
+
+            #storyBox {
+                margin-top: 12px;
+                padding: 10px;
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 8px;
+                font-size: 16px;
+                line-height: 1.4;
+                display: none;
+            }
+
+            .small {
+                font-size: 13px;
+                margin-top: 4px;
+                text-align: center;
+                opacity: .85
+            }
+
+            #canvasContainer {
+                position: relative;
+                width: 100%
+            }
+
+            .hearts {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                z-index: 6;
+                font-size: 24px;
+            }
+
+            .victory {
+                background: linear-gradient(45deg, #ffd700, #ffed4e);
+                color: #000;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="wrap">
+            <header>
+                <div>Score: <span id="score">0</span> • High: <span id="high">0</span></div>
+                <div class="hearts" id="hearts">❤️❤️❤️</div>
+                <button id="menuBtn">||</button>
+            </header>
+
+            <div id="canvasContainer">
+                <canvas id="gameCanvas" width="720" height="1080"></canvas>
+                <div id="menuOverlay">
+                    <div class="menuBox" id="menuBox">
+                        <h1 id="menuTitle">FlyMe2TheMoon (K-404)</h1>
+                        <button id="startBtn">Start</button>
+                        <button id="resumeBtn" style="display:none">Resume</button>
+                        <button id="restartBtn" style="display:none">Restart</button>
+                        <button id="storyBtn">Story</button>
+                        <div id="storyBox" style="display:none;">
+                            <p>
+                                Long ago, humanity dreamed of flying beyond the stars.
+                                You are the last pilot on a mission to explore the unknown...
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <button id="menuBtn">||</button>
+            </div>
+
+            <div class="small">Controls: ← → / A D • Space = bay lên (giữ để tăng tốc) • Mobile: tap trái/phải</div>
+        </div>
+
+        <script>
+            const canvas = document.getElementById("gameCanvas");
+            const ctx = canvas.getContext("2d");
+            let W = canvas.width, H = canvas.height;
+
+            // images
+            const bgImg = new Image(); bgImg.src = "2-images/bg.png";
+            const bgFinalImg = new Image(); bgFinalImg.src = "2-images/bg-final.png"; // Background cuối
+            const playerImg = new Image(); playerImg.src = "2-images/player.png";
+            const playerLeftImg = new Image(); playerLeftImg.src = "2-images/player-left.png"; // Player quay trái
+            const playerRightImg = new Image(); playerRightImg.src = "2-images/player-right.png"; // Player quay phải
+            const starImg = new Image(); starImg.src = "2-images/star.png";
+            const obsImg = new Image(); obsImg.src = "2-images/obstacle.png";
+            const goalImg = new Image(); goalImg.src = "2-images/goal.png"; // Ảnh mục tiêu cuối
+
+            // state
+            let running = false, paused = true, time = 0;
+            let player = null;
+            let obstacles = [], stars = [], goal = null;
+            let cameraY = 0, spawnY = 0;
+            let score = 0, high = 0, hearts = 3;
+            let thrustPower = 0; // Lực đẩy tên lửa
+            let invulnerable = false; // Thời gian bất tử sau khi bị đụng
+            let invulnerableTime = 0;
+            let gameWon = false;
+
+            // UI
+            const scoreEl = document.getElementById("score");
+            const highEl = document.getElementById("high");
+            const heartsEl = document.getElementById("hearts");
+            const menuOverlay = document.getElementById("menuOverlay");
+            const menuBox = document.getElementById("menuBox");
+            const menuTitle = document.getElementById("menuTitle");
+            const startBtn = document.getElementById("startBtn");
+            const resumeBtn = document.getElementById("resumeBtn");
+            const restartBtn = document.getElementById("restartBtn");
+            const storyBtn = document.getElementById("storyBtn");
+            const storyBox = document.getElementById("storyBox");
+            const menuBtn = document.getElementById("menuBtn");
+
+            // Controls
+            const keys = {};
+
+            startBtn.onclick = () => {
+                resetGame();
+                paused = false;
+                running = true;
+                menuOverlay.style.display = "none";
+                resumeBtn.style.display = "inline-block";
+                menuBtn.style.display = "block";
+            };
+
+            resumeBtn.onclick = () => {
+                if (!gameWon) {
+                    paused = false;
+                    menuOverlay.style.display = "none";
+                    menuBtn.style.display = "block";
+                }
+            };
+
+            restartBtn.onclick = () => {
+                resetGame();
+                paused = false;
+                running = true;
+                menuOverlay.style.display = "none";
+                resumeBtn.style.display = "inline-block";
+                restartBtn.style.display = "none";
+                menuBtn.style.display = "block";
+                menuBox.classList.remove("victory");
+                menuTitle.textContent = "Fly Me";
+            };
+
+            menuBtn.onclick = () => {
+                if (!gameWon) {
+                    paused = true;
+                    menuOverlay.style.display = "flex";
+                    menuBtn.style.display = "none";
+                }
+            };
+
+            function hideStory() {
+                storyBox.style.display = "none";
+            }
+
+            storyBtn.addEventListener("click", () => {
+                if (storyBox.style.display === "none") {
+                    storyBox.style.display = "block";
+                } else {
+                    storyBox.style.display = "none";
+                }
+            });
+
+            startBtn.addEventListener("click", hideStory);
+            resumeBtn.addEventListener("click", hideStory);
+
+            function updateHearts() {
+                let heartStr = "";
+                for (let i = 0; i < hearts; i++) {
+                    heartStr += "❤️";
+                }
+                for (let i = hearts; i < 3; i++) {
+                    heartStr += "🖤";
+                }
+                heartsEl.textContent = heartStr;
+            }
+
+            function onGameOver() {
+                paused = true;
+                running = false;
+                menuOverlay.style.display = "flex";
+                menuBtn.style.display = "none";
+                resumeBtn.style.display = "none";
+                restartBtn.style.display = "inline-block";
+                menuTitle.textContent = "Game Over";
+            }
+
+            function onVictory() {
+                gameWon = true;
+                paused = true;
+                running = false;
+                menuOverlay.style.display = "flex";
+                menuBtn.style.display = "none";
+                resumeBtn.style.display = "none";
+                restartBtn.style.display = "inline-block";
+                menuBox.classList.add("victory");
+                menuTitle.textContent = "🎉 VICTORY! 🎉";
+            }
+
+            function resetGame() {
+                player = {
+                    x: W / 2 - 30,
+                    y: H - 200,
+                    w: 60,
+                    h: 60,
+                    vx: 0, // Vận tốc ngang
+                    vy: 0, // Vận tốc dọc
+                    direction: 0 // -1: trái, 0: giữa, 1: phải
+                };
+                cameraY = player.y - H / 2;
+                spawnY = player.y - 200;
+                time = 0;
+                obstacles = [];
+                stars = [];
+                goal = null;
+                score = 0;
+                hearts = 3;
+                thrustPower = 0;
+                invulnerable = false;
+                invulnerableTime = 0;
+                gameWon = false;
+                scoreEl.textContent = 0;
+                updateHearts();
+
+                // Tạo obstacles và stars
+                for (let i = 1; i <= 15; i++) {
+                    spawnRow(player.y - i * 300);
+                }
+            }
+
+            function spawnRow(y) {
+                // Spawn obstacle
+                let ox = Math.random() * (W - 100) + 40;
+                obstacles.push({
+                    x: ox,
+                    y: y,
+                    w: 70,
+                    h: 70,
+                    baseY: y,
+                    phase: Math.random() * 6.28
+                });
+
+                // Spawn star
+                if (Math.random() < 0.7) {
+                    stars.push({
+                        x: Math.random() * (W - 60) + 30,
+                        y: y - 100,
+                        w: 40,
+                        h: 40,
+                        phase: Math.random() * 6.28
+                    });
+                }
+
+                spawnY = y;
+
+                // Spawn goal khi đủ 30 stars
+                if (score >= 30 && !goal) {
+                    goal = {
+                        x: W / 2 - 50,
+                        y: y - 500,
+                        w: 100,
+                        h: 100
+                    };
+                }
+            }
+
+            function update(dt) {
+                if (!player) return;
+
+                time += dt;
+
+                // Cập nhật thời gian bất tử
+                if (invulnerable) {
+                    invulnerableTime -= dt;
+                    if (invulnerableTime <= 0) {
+                        invulnerable = false;
+                    }
+                }
+
+                // Rocket thrust physics
+                let spacePressed = keys['Space'];
+
+                if (spacePressed) {
+                    thrustPower = Math.min(thrustPower + dt * 3, 1); // Tăng dần lực đẩy
+                } else {
+                    thrustPower = Math.max(thrustPower - dt * 2, 0); // Giảm dần lực đẩy
+                }
+
+                // Áp dụng lực đẩy
+                let thrustForce = thrustPower * -800; // Lực đẩy lên
+                let gravity = 600; // Trọng lực
+
+                player.vy += (gravity + thrustForce) * dt;
+
+                // Horizontal movement với momentum
+                let leftPressed = keys['ArrowLeft'] || keys['KeyA'];
+                let rightPressed = keys['ArrowRight'] || keys['KeyD'];
+
+                if (leftPressed) {
+                    player.vx = Math.max(player.vx - 1000 * dt, -300);
+                    player.direction = -1;
+                } else if (rightPressed) {
+                    player.vx = Math.min(player.vx + 1000 * dt, 300);
+                    player.direction = 1;
+                } else {
+                    // Friction
+                    player.vx *= Math.pow(0.1, dt);
+                    if (Math.abs(player.vx) < 10) {
+                        player.vx = 0;
+                        player.direction = 0;
+                    }
+                }
+
+                // Apply velocities
+                player.x += player.vx * dt;
+                player.y += player.vy * dt;
+
+                // Giới hạn player trong canvas theo chiều ngang
+                if (player.x < 0) {
+                    player.x = 0;
+                    player.vx = 0;
+                }
+                if (player.x > W - player.w) {
+                    player.x = W - player.w;
+                    player.vx = 0;
+                }
+
+                // Game over nếu player rơi quá xa xuống dưới
+                if (player.y > cameraY + H + 300) {
+                    hearts = 0;
+                    updateHearts();
+                    onGameOver();
+                    return;
+                }
+
+                // Camera theo player
+                cameraY = player.y - H * 0.6;
+
+                // Spawn thêm obstacles khi player bay lên cao
+                while (spawnY > player.y - 3000) {
+                    spawnRow(spawnY - 300);
+                }
+
+                // Obstacles dao động
+                obstacles.forEach(o => {
+                    o.y = o.baseY + Math.sin(time * 2 + o.phase) * 40;
+                });
+
+                // Check va chạm với obstacles
+                if (!invulnerable) {
+                    for (let o of obstacles) {
+                        if (player.x < o.x + o.w - 10 &&
+                            player.x + player.w > o.x + 10 &&
+                            player.y < o.y + o.h - 10 &&
+                            player.y + player.h > o.y + 10) {
+                            hearts--;
+                            updateHearts();
+                            invulnerable = true;
+                            invulnerableTime = 2; // 2 giây bất tử
+
+                            if (hearts <= 0) {
+                                onGameOver();
+                                return;
+                            }
+                            break;
+                        }
+                    }
+                }
+
+                // Check va chạm với stars
+                for (let i = stars.length - 1; i >= 0; i--) {
+                    let s = stars[i];
+                    if (player.x < s.x + s.w &&
+                        player.x + player.w > s.x &&
+                        player.y < s.y + s.h &&
+                        player.y + player.h > s.y) {
+                        score++;
+                        scoreEl.textContent = score;
+                        if (score > high) {
+                            high = score;
+                            highEl.textContent = high;
+                        }
+                        stars.splice(i, 1);
+                    }
+                }
+
+                // Check va chạm với goal
+                if (goal && score >= 30) {
+                    if (player.x < goal.x + goal.w &&
+                        player.x + player.w > goal.x &&
+                        player.y < goal.y + goal.h &&
+                        player.y + player.h > goal.y) {
+                        onVictory();
+                        return;
+                    }
+                }
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, W, H);
+
+                // Background
+                let currentBg = (score >= 30) ? bgFinalImg : bgImg;
+                if (currentBg.complete) {
+                    let bgY = -cameraY % H;
+                    ctx.drawImage(currentBg, 0, bgY, W, H);
+                    ctx.drawImage(currentBg, 0, bgY - H, W, H);
+                }
+
+                // Goal (nếu có)
+                if (goal && score >= 30 && goalImg.complete) {
+                    let drawY = goal.y - cameraY;
+                    if (drawY > -120 && drawY < H + 120) {
+                        // Hiệu ứng lấp lánh cho goal
+                        let alpha = 0.8 + 0.2 * Math.sin(time * 4);
+                        ctx.save();
+                        ctx.globalAlpha = alpha;
+                        ctx.drawImage(goalImg, goal.x, drawY, goal.w, goal.h);
+                        ctx.restore();
+                    }
+                }
+
+                // Stars
+                stars.forEach(s => {
+                    let drawY = s.y - cameraY;
+                    if (starImg.complete && drawY > -50 && drawY < H + 50) {
+                        let alpha = 0.6 + 0.4 * Math.sin(time * 3 + s.phase);
+                        ctx.save();
+                        ctx.globalAlpha = alpha;
+                        ctx.drawImage(starImg, s.x, drawY, s.w, s.h);
+                        ctx.restore();
+                    }
+                });
+
+                // Obstacles
+                obstacles.forEach(o => {
+                    let drawY = o.y - cameraY;
+                    if (obsImg.complete && drawY > -80 && drawY < H + 80) {
+                        ctx.drawImage(obsImg, o.x, drawY, o.w, o.h);
+                    }
+                });
+
+                // Player với hiệu ứng bất tử
+                if (player) {
+                    let drawY = player.y - cameraY;
+                    let currentPlayerImg = playerImg;
+
+                    // Chọn hình ảnh player theo hướng
+                    if (player.direction === -1 && playerLeftImg.complete) {
+                        currentPlayerImg = playerLeftImg;
+                    } else if (player.direction === 1 && playerRightImg.complete) {
+                        currentPlayerImg = playerRightImg;
+                    }
+
+                    if (currentPlayerImg.complete) {
+                        ctx.save();
+
+                        // Hiệu ứng nhấp nháy khi bất tử
+                        if (invulnerable) {
+                            ctx.globalAlpha = 0.3 + 0.7 * Math.sin(time * 20);
+                        }
+
+                        ctx.drawImage(currentPlayerImg, player.x, drawY, player.w, player.h);
+                        ctx.restore();
+                    }
+
+                    // Hiệu ứng lửa tên lửa
+                    if (thrustPower > 0.1) {
+                        ctx.save();
+                        ctx.globalAlpha = thrustPower;
+                        ctx.fillStyle = `hsl(${Math.random() * 60}, 100%, 50%)`;
+                        let flameHeight = thrustPower * 30;
+                        ctx.fillRect(player.x + player.w / 2 - 5, drawY + player.h, 10, flameHeight);
+                        ctx.restore();
+                    }
+                }
+
+                // Progress bar cho 30 stars
+                if (score < 30) {
+                    ctx.save();
+                    ctx.fillStyle = 'rgba(0,0,0,0.5)';
+                    ctx.fillRect(10, 10, 200, 20);
+                    ctx.fillStyle = '#ffd700';
+                    ctx.fillRect(10, 10, (score / 30) * 200, 20);
+                    ctx.fillStyle = '#fff';
+                    ctx.font = '12px sans-serif';
+                    ctx.fillText(`${score}/30 stars to final area`, 15, 24);
+                    ctx.restore();
+                }
+            }
+
+            // Event listeners
+            document.addEventListener("keydown", e => {
+                keys[e.code] = true;
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                }
+            });
+
+            document.addEventListener("keyup", e => {
+                keys[e.code] = false;
+            });
+
+            canvas.addEventListener("touchstart", e => {
+                if (!player || paused || !running) return;
+                e.preventDefault();
+
+                const rect = canvas.getBoundingClientRect();
+                let x = e.touches[0].clientX - rect.left;
+                let canvasX = (x / rect.width) * W;
+
+                if (canvasX < W / 2) {
+                    keys['KeyA'] = true;
+                } else {
+                    keys['KeyD'] = true;
+                }
+            });
+
+            canvas.addEventListener("touchend", e => {
+                e.preventDefault();
+                keys['KeyA'] = false;
+                keys['KeyD'] = false;
+            });
+
+            let last = 0;
+            function loop(ts) {
+                if (!last) last = ts;
+                let dt = Math.min((ts - last) / 1000, 0.016);
+                last = ts;
+
+                if (running && !paused) {
+                    update(dt);
+                }
+                draw();
+                requestAnimationFrame(loop);
+            }
+
+            // Khởi tạo game khi tất cả hình ảnh đã load
+            let imagesLoaded = 0;
+            const totalImages = 7;
+
+            function imageLoaded() {
+                imagesLoaded++;
+                if (imagesLoaded === totalImages) {
+                    resetGame();
+                    requestAnimationFrame(loop);
+                }
+            }
+
+            bgImg.onload = imageLoaded;
+            bgFinalImg.onload = imageLoaded;
+            playerImg.onload = imageLoaded;
+            playerLeftImg.onload = imageLoaded;
+            playerRightImg.onload = imageLoaded;
+            starImg.onload = imageLoaded;
+            obsImg.onload = imageLoaded;
+            goalImg.onload = imageLoaded;
+
+            // Fallback
+            setTimeout(() => {
+                if (imagesLoaded < totalImages) {
+                    resetGame();
+                    requestAnimationFrame(loop);
+                }
+            }, 3000);
+
+            window.addEventListener("scroll", () => {
+                const header = document.querySelector("header");
+                if (window.scrollY > 10) {
+                    header.classList.add("scrolled");
+                } else {
+                    header.classList.remove("scrolled");
+                }
+            });
+        </script>
+    </body>
+
+</html>

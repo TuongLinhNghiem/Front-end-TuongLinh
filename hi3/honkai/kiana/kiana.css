@@ -1,0 +1,614 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Rajdhani', sans-serif;
+    background: #0a0a0a;
+    color: #ffffff;
+    overflow: hidden;
+    user-select: none;
+}
+
+/* Clean background - removed particle effects */
+body {
+    font-family: 'Rajdhani', sans-serif;
+    background: #0a0a0a;
+    color: #ffffff;
+    overflow: hidden;
+    user-select: none;
+}
+
+/* Removed #particles-bg and sparkle animations */
+
+/* Game Container */
+.game-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    transition: all 0.3s ease;
+}
+
+/* Enhanced UI */
+#ui {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.ui-section {
+    position: absolute;
+    pointer-events: none;
+}
+
+.ui-section.left {
+    top: 20px;
+    left: 20px;
+}
+
+.ui-section.right {
+    top: 20px;
+    right: 20px;
+}
+
+.ui-section.center {
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+.character-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+.character-portrait {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    border: 3px solid #00ffff;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+}
+
+.enemy-info .character-portrait {
+    border-color: #ff0040;
+    box-shadow: 0 0 20px rgba(255, 0, 64, 0.5);
+}
+
+.bars-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.bar-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.bar-wrapper label {
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 12px;
+    color: #00ffff;
+    min-width: 30px;
+}
+
+.enemy-info .bar-wrapper label {
+    color: #ff0040;
+}
+
+.health-bar, .ult-bar {
+    position: relative;
+    width: 200px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.bar-fill {
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+.health-bar .bar-fill {
+    background: linear-gradient(90deg, #00ff88, #00ffff);
+}
+
+.ult-bar .bar-fill {
+    background: linear-gradient(90deg, #ff8800, #ff0040);
+}
+
+.bar-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Orbitron', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: #ffffff;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+}
+
+.stage-info {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 15px 30px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+#stage-title {
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    font-size: 24px;
+    color: #00ffff;
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.stage-progress {
+    width: 200px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00ff88, #00ffff);
+    transition: width 0.3s ease;
+}
+
+.controls-hint {
+    margin-top: 10px;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Game Area */
+.game-area {
+    position: absolute;
+    bottom: 100px;
+    left: 0;
+    width: 100%;
+    height: 400px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 100px;
+    box-sizing: border-box;
+}
+
+.character {
+    position: relative;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: transform 0.3s ease;
+}
+
+#player {
+    width: 150px;
+    height: 200px;
+    margin-left: -100px; /* Move player more to the left */
+    position: absolute;
+    left: 200px;
+}
+
+#enemy {
+    width: 300px;
+    height: 400px;
+    margin-right: -100px;
+    position: absolute;
+    right: 200px;
+}
+
+.character-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(0, 255, 255, 0.3) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.enemy .character-glow {
+    background: radial-gradient(circle, rgba(255, 0, 64, 0.3) 0%, transparent 70%);
+}
+
+.damage-numbers {
+    position: absolute;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    font-size: 24px;
+    color: #ff0040;
+    text-shadow: 0 0 10px rgba(255, 0, 64, 0.8);
+}
+
+.damage-number {
+    position: absolute;
+    animation: float-up 1.5s ease-out forwards;
+}
+
+.damage-number.crit {
+    color: #ffff00;
+    font-size: 32px;
+    text-shadow: 0 0 15px rgba(255, 255, 0, 0.8);
+}
+
+.damage-number.ultimate {
+    color: #ff00ff;
+    font-size: 36px;
+    text-shadow: 0 0 20px rgba(255, 0, 255, 0.8);
+}
+
+@keyframes float-up {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+}
+
+/* Animations */
+.attack-move {
+    animation: attack 0.6s ease-in-out;
+}
+
+@keyframes attack {
+    0% { transform: translateX(0); }
+    50% { transform: translateX(50px); }
+    100% { transform: translateX(0); }
+}
+
+.hit {
+    animation: hit 0.3s ease-in-out;
+}
+
+@keyframes hit {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+    100% { transform: translateX(0); }
+}
+
+.ultimate {
+    animation: ultimate 1s ease-in-out;
+}
+
+@keyframes ultimate {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); box-shadow: 0 0 30px rgba(0, 255, 255, 0.8); }
+    100% { transform: scale(1); }
+}
+
+.screen-shake {
+    animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* Energy Ball */
+.energy-ball {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: radial-gradient(circle, #00ffff, #0088ff);
+    border-radius: 50%;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+    animation: shoot 1s linear forwards;
+}
+
+@keyframes shoot {
+    0% {
+        transform: translateX(0) scale(0.5);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(450px) scale(1);
+        opacity: 0.8;
+    }
+}
+
+/* Story Screen */
+#story-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    backdrop-filter: blur(5px);
+}
+
+.story-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, rgba(0, 0, 0, 0.9), rgba(0, 50, 100, 0.3));
+}
+
+.story-content {
+    position: relative;
+    max-width: 600px;
+    background: rgba(0, 0, 0, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    padding: 40px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+}
+
+.story-header {
+    margin-bottom: 30px;
+}
+
+#story-title {
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    font-size: 28px;
+    color: #00ffff;
+    margin-bottom: 10px;
+    text-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+}
+
+.title-decoration {
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #00ffff, transparent);
+    margin: 0 auto;
+}
+
+#story-text {
+    font-size: 16px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 30px;
+}
+
+.story-footer {
+    display: flex;
+    justify-content: center;
+}
+
+.story-btn {
+    position: relative;
+    padding: 15px 30px;
+    background: linear-gradient(45deg, #00ffff, #0088ff);
+    color: #ffffff;
+    border: none;
+    border-radius: 25px;
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.story-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(0, 255, 255, 0.5);
+}
+
+.btn-glow {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.5s;
+}
+
+.story-btn:hover .btn-glow {
+    left: 100%;
+}
+
+/* Game Controls */
+.game-controls {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.control-btn {
+    position: relative;
+    padding: 10px 20px;
+    background: rgba(0, 0, 0, 0.7);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    font-family: 'Orbitron', monospace;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+.control-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #00ffff;
+    color: #00ffff;
+}
+
+.btn-ripple {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(0, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.3s ease;
+}
+
+.control-btn:hover .btn-ripple {
+    width: 200%;
+    height: 200%;
+}
+
+/* Loading Screen */
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, #0a0a0a, #1a1a2e);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    transition: opacity 1s ease;
+}
+
+.loading-content {
+    text-align: center;
+}
+
+.loading-logo {
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    font-size: 72px;
+    color: #00ffff;
+    text-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
+    margin-bottom: 30px;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.loading-bar {
+    width: 300px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    overflow: hidden;
+    margin: 0 auto 20px;
+}
+
+.loading-progress {
+    height: 100%;
+    background: linear-gradient(90deg, #00ffff, #0088ff);
+    animation: loading 3s ease-in-out forwards;
+}
+
+@keyframes loading {
+    0% { width: 0%; }
+    100% { width: 100%; }
+}
+
+.loading-text {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Utility Classes */
+.hidden {
+    display: none !important;
+}
+
+.ult-ready {
+    animation: glow 1s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from { box-shadow: 0 0 5px rgba(0, 255, 255, 0.5); }
+    to { box-shadow: 0 0 20px rgba(0, 255, 255, 0.8); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .game-area {
+        width: 95%;
+        bottom: 150px;
+    }
+
+    .character {
+        width: 120px;
+        height: 160px;
+    }
+
+    .health-bar, .ult-bar {
+        width: 150px;
+    }
+
+    .ui-section.left, .ui-section.right {
+        position: relative;
+        margin: 10px;
+    }
+
+    #ui {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+/* Performance optimization for low-end devices */
+.low-performance {
+    animation-duration: 0.5s !important;
+    transition-duration: 0.3s !important;
+}
+
+.low-performance * {
+    animation-duration: 0.5s !important;
+    transition-duration: 0.3s !important;
+}

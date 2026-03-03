@@ -1,0 +1,911 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e, #16213e, #0f0f23);
+    color: #c7ecee;
+    overflow: hidden;
+    height: 100vh;
+    user-select: none;
+}
+
+/* Game Container */
+.game-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.game-canvas {
+    border: 3px solid rgba(74, 158, 255, 0.6);
+    border-radius: 15px;
+    background: #000;
+    box-shadow:
+        0 0 50px rgba(74, 158, 255, 0.3),
+        inset 0 0 50px rgba(0, 0, 0, 0.5);
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+}
+
+/* UI Overlay */
+.ui-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* Top HUD */
+.top-hud {
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+    pointer-events: auto;
+    z-index: 20;
+}
+
+.player-stats, .combo-display {
+    background: linear-gradient(135deg, rgba(26, 26, 46, 0.95), rgba(22, 33, 62, 0.95));
+    backdrop-filter: blur(20px);
+    border: 2px solid rgba(74, 158, 255, 0.4);
+    border-radius: 15px;
+    padding: 20px;
+    min-width: 200px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.stat-item:last-child {
+    margin-bottom: 0;
+}
+
+.stat-label {
+    font-weight: bold;
+    color: #4a9eff;
+    min-width: 60px;
+    text-shadow: 0 0 10px rgba(74, 158, 255, 0.5);
+}
+
+.stat-value {
+    font-weight: bold;
+    color: #c7ecee;
+    min-width: 60px;
+    text-align: right;
+}
+
+/* HP Bar */
+.hp-bar {
+    width: 120px;
+    height: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid rgba(74, 158, 255, 0.5);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.hp-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4ecdc4, #44a08d);
+    transition: width 0.5s ease;
+    position: relative;
+}
+
+.hp-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: hpShine 2s linear infinite;
+}
+
+/* Combo Display */
+.combo-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.combo-label {
+    font-weight: bold;
+    color: #ff6b9d;
+    text-shadow: 0 0 10px rgba(255, 107, 157, 0.5);
+}
+
+.combo-sequence {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    min-height: 30px;
+}
+
+.combo-orb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    animation: orbPulse 1s ease-in-out infinite alternate;
+}
+
+.combo-orb.blue {
+    background: radial-gradient(circle, #4a9eff, #2980b9);
+    color: white;
+    box-shadow: 0 0 15px rgba(74, 158, 255, 0.6);
+}
+
+.combo-orb.yellow {
+    background: radial-gradient(circle, #ffd700, #f39c12);
+    color: black;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+}
+
+.combo-orb.red {
+    background: radial-gradient(circle, #ff4444, #c0392b);
+    color: white;
+    box-shadow: 0 0 15px rgba(255, 68, 68, 0.6);
+}
+
+.combo-orb.laser {
+    background: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff);
+    color: white;
+    box-shadow: 0 0 20px rgba(255, 0, 255, 0.8);
+    animation: laserPulse 0.5s ease-in-out infinite alternate;
+}
+
+.combo-timer {
+    width: 100%;
+    height: 8px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 107, 157, 0.3);
+}
+
+.combo-timer-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #ff6b9d, #ff8fab);
+    transition: width 0.1s linear;
+    border-radius: 4px;
+}
+
+/* Side Controls */
+.side-controls {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 30;
+}
+
+.control-btn {
+    width: 70px;
+    height: 70px;
+    border: none;
+    border-radius: 15px;
+    background: linear-gradient(145deg, rgba(74, 158, 255, 0.9), rgba(74, 158, 255, 0.7));
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow:
+        0 8px 25px rgba(74, 158, 255, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(15px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.control-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s;
+}
+
+.control-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow:
+        0 12px 35px rgba(74, 158, 255, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.control-btn:hover::before {
+    left: 100%;
+}
+
+.control-btn:active {
+    transform: translateY(-1px) scale(1.02);
+    box-shadow:
+        0 6px 20px rgba(74, 158, 255, 0.5),
+        inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.control-btn.active {
+    background: linear-gradient(145deg, rgba(255, 107, 157, 0.9), rgba(255, 107, 157, 0.7));
+    box-shadow:
+        0 8px 25px rgba(255, 107, 157, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    animation: activeGlow 2s ease-in-out infinite alternate;
+}
+
+.control-btn.muted {
+    background: linear-gradient(145deg, rgba(128, 128, 128, 0.9), rgba(128, 128, 128, 0.7));
+    box-shadow:
+        0 8px 25px rgba(128, 128, 128, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.music-btn {
+    background: linear-gradient(145deg, rgba(255, 193, 7, 0.9), rgba(255, 193, 7, 0.7));
+    box-shadow:
+        0 8px 25px rgba(255, 193, 7, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.instruction-btn {
+    background: linear-gradient(145deg, rgba(40, 167, 69, 0.9), rgba(40, 167, 69, 0.7));
+    box-shadow:
+        0 8px 25px rgba(40, 167, 69, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.control-btn .icon {
+    display: block;
+    font-size: 24px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Instruction Panel */
+.instruction-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 400px;
+    height: 100vh;
+    background: linear-gradient(135deg, rgba(26, 26, 46, 0.98), rgba(22, 33, 62, 0.98));
+    backdrop-filter: blur(20px);
+    border-left: 3px solid rgba(74, 158, 255, 0.4);
+    transform: translateX(0);
+    transition: transform 0.3s ease;
+    z-index: 100;
+    overflow-y: auto;
+    pointer-events: auto;
+}
+
+.instruction-panel.hidden {
+    transform: translateX(100%);
+}
+
+.instruction-content {
+    padding: 30px;
+    height: 100%;
+}
+
+.instruction-content h2 {
+    color: #ff6b9d;
+    font-size: 28px;
+    margin-bottom: 30px;
+    text-align: center;
+    text-shadow: 0 0 20px rgba(255, 107, 157, 0.5);
+}
+
+.instruction-content h3 {
+    color: #4a9eff;
+    font-size: 18px;
+    margin: 20px 0 15px 0;
+    border-bottom: 2px solid rgba(74, 158, 255, 0.3);
+    padding-bottom: 5px;
+}
+
+.controls-section, .combo-section, .enemy-section, .objective-section {
+    margin-bottom: 30px;
+}
+
+.control-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 10px;
+    padding: 10px;
+    background: rgba(74, 158, 255, 0.1);
+    border-radius: 8px;
+}
+
+.key {
+    display: inline-block;
+    padding: 8px 12px;
+    background: rgba(74, 158, 255, 0.3);
+    border: 2px solid rgba(74, 158, 255, 0.5);
+    border-radius: 6px;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    color: #4a9eff;
+    font-size: 14px;
+    min-width: 50px;
+    text-align: center;
+}
+
+.desc {
+    color: #c7ecee;
+    font-size: 14px;
+}
+
+.combo-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    padding: 12px;
+    background: rgba(255, 107, 157, 0.1);
+    border-radius: 8px;
+}
+
+.combo-visual {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 150px;
+}
+
+.swing {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.swing.blue {
+    background: #4a9eff;
+    color: white;
+}
+
+.swing.yellow {
+    background: #ffd700;
+    color: black;
+}
+
+.swing.red {
+    background: #ff4444;
+    color: white;
+}
+
+.swing.laser {
+    background: linear-gradient(45deg, #ff00ff, #00ffff);
+    color: white;
+    animation: pulse 1s infinite;
+}
+
+.arrow {
+    color: #c7ecee;
+    font-weight: bold;
+}
+
+.combo-desc {
+    color: #c7ecee;
+    font-size: 14px;
+    flex: 1;
+}
+
+.enemy-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 10px;
+    padding: 10px;
+    background: rgba(255, 68, 68, 0.1);
+    border-radius: 8px;
+}
+
+.enemy-visual {
+    font-size: 24px;
+    min-width: 40px;
+    text-align: center;
+}
+
+.enemy-desc {
+    color: #c7ecee;
+    font-size: 14px;
+}
+
+.objective-section p {
+    color: #c7ecee;
+    font-size: 16px;
+    line-height: 1.5;
+    text-align: center;
+    padding: 15px;
+    background: rgba(74, 158, 255, 0.1);
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+/* Dodge Indicator */
+.dodge-indicator {
+    position: absolute;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 193, 7, 0.9);
+    color: #000;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-weight: bold;
+    font-size: 16px;
+    border: 2px solid #ffc107;
+    animation: dodgePrompt 1s ease-in-out infinite alternate;
+    pointer-events: none;
+    z-index: 40;
+}
+
+.dodge-cooldown {
+    position: absolute;
+    bottom: 150px;
+    right: 20px;
+    background: rgba(255, 68, 68, 0.9);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    z-index: 40;
+}
+
+/* Boss Warning */
+.boss-warning {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, rgba(255, 68, 68, 0.95), rgba(255, 107, 157, 0.95));
+    border: 3px solid #ff4444;
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    z-index: 200;
+    animation: pulseWarning 1s ease-in-out infinite alternate;
+}
+
+.boss-warning h2 {
+    color: #ffffff;
+    font-size: 32px;
+    margin-bottom: 15px;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+}
+
+.boss-warning p {
+    color: #ffffff;
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+/* Boss UI */
+.boss-ui {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    pointer-events: none;
+}
+
+.boss-title {
+    font-size: 48px;
+    font-weight: bold;
+    color: #ff4444;
+    text-shadow: 0 0 30px rgba(255, 68, 68, 0.8);
+    margin-bottom: 10px;
+    animation: bossTitle 2s ease-in-out infinite alternate;
+}
+
+.boss-subtitle {
+    font-size: 20px;
+    color: #ffffff;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+}
+
+/* Boss HP Bar */
+.boss-hp-bar {
+    background: rgba(255, 68, 68, 0.9);
+    backdrop-filter: blur(10px);
+    border: 3px solid rgba(255, 68, 68, 0.8);
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 15px;
+    min-width: 400px;
+}
+
+.boss-hp-label {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    animation: bossLabelPulse 1.5s ease-in-out infinite alternate;
+}
+
+.boss-hp-container {
+    height: 25px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    position: relative;
+}
+
+.boss-hp-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ff4444, #ff6666, #ff8888);
+    transition: width 0.5s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.boss-hp-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    animation: bossHPShine 2s linear infinite;
+}
+
+/* Victory Screen */
+.victory-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 300;
+    backdrop-filter: blur(10px);
+}
+
+.victory-content {
+    background: linear-gradient(135deg, rgba(74, 158, 255, 0.9), rgba(255, 107, 157, 0.9));
+    border: 3px solid #4a9eff;
+    border-radius: 20px;
+    padding: 50px;
+    text-align: center;
+    animation: victoryAppear 1s ease-out;
+}
+
+.victory-content h1 {
+    font-size: 48px;
+    color: #ffffff;
+    margin-bottom: 20px;
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
+    animation: victoryTitle 2s ease-in-out infinite alternate;
+}
+
+.victory-content p {
+    font-size: 24px;
+    color: #ffffff;
+    margin-bottom: 30px;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+}
+
+.victory-content button {
+    padding: 15px 30px;
+    font-size: 20px;
+    background: linear-gradient(145deg, rgba(74, 158, 255, 0.9), rgba(74, 158, 255, 0.7));
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 25px rgba(74, 158, 255, 0.4);
+}
+
+.victory-content button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(74, 158, 255, 0.6);
+}
+
+/* Pause Overlay */
+.pause-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 50;
+    backdrop-filter: blur(5px);
+    cursor: pointer;
+}
+
+.pause-overlay.hidden {
+    display: none;
+}
+
+.pause-content {
+    text-align: center;
+    background: linear-gradient(135deg, rgba(26, 26, 46, 0.9), rgba(22, 33, 62, 0.9));
+    border: 2px solid rgba(74, 158, 255, 0.4);
+    border-radius: 15px;
+    padding: 40px;
+    backdrop-filter: blur(20px);
+}
+
+.pause-content h2 {
+    color: #ff6b9d;
+    font-size: 36px;
+    margin-bottom: 20px;
+    text-shadow: 0 0 20px rgba(255, 107, 157, 0.5);
+}
+
+.pause-content p {
+    color: #c7ecee;
+    font-size: 18px;
+}
+
+/* Hidden class */
+.hidden {
+    display: none !important;
+}
+
+/* Animations */
+@keyframes hpShine {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+@keyframes orbPulse {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.1); }
+}
+
+@keyframes laserPulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 20px rgba(255, 0, 255, 0.8);
+    }
+    100% {
+        transform: scale(1.2);
+        box-shadow: 0 0 30px rgba(255, 0, 255, 1);
+    }
+}
+
+@keyframes activeGlow {
+    0% { box-shadow: 0 8px 25px rgba(255, 107, 157, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2); }
+    100% { box-shadow: 0 12px 35px rgba(255, 107, 157, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.3); }
+}
+
+@keyframes pulseWarning {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        box-shadow: 0 0 20px rgba(255, 68, 68, 0.5);
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1.05);
+        box-shadow: 0 0 40px rgba(255, 68, 68, 0.8);
+    }
+}
+
+@keyframes bossTitle {
+    0% {
+        transform: scale(1);
+        text-shadow: 0 0 30px rgba(255, 68, 68, 0.8);
+    }
+    100% {
+        transform: scale(1.1);
+        text-shadow: 0 0 50px rgba(255, 68, 68, 1);
+    }
+}
+
+@keyframes bossLabelPulse {
+    0% { opacity: 0.8; }
+    100% { opacity: 1; }
+}
+
+@keyframes bossHPShine {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+@keyframes victoryAppear {
+    0% {
+        opacity: 0;
+        transform: scale(0.5) rotate(180deg);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+@keyframes victoryTitle {
+    0% {
+        transform: scale(1);
+        text-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
+    }
+    100% {
+        transform: scale(1.1);
+        text-shadow: 0 0 50px rgba(255, 255, 255, 1);
+    }
+}
+
+@keyframes dodgePrompt {
+    0% {
+        opacity: 0.7;
+        transform: translateX(-50%) scale(1);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1.1);
+    }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .game-container {
+        padding: 10px;
+    }
+
+    .top-hud {
+        flex-direction: column;
+        gap: 15px;
+        top: 20px;
+    }
+
+    .player-stats, .combo-display {
+        min-width: 150px;
+        padding: 15px;
+    }
+
+    .control-btn {
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+    }
+
+    .side-controls {
+        top: 20px;
+        right: 20px;
+    }
+
+    .instruction-panel {
+        width: 100%;
+        transform: translateY(100%);
+    }
+
+    .instruction-panel.hidden {
+        transform: translateY(100%);
+    }
+
+    .boss-warning {
+        padding: 20px;
+        margin: 0 20px;
+    }
+
+    .boss-warning h2 {
+        font-size: 24px;
+    }
+
+    .boss-warning p {
+        font-size: 16px;
+    }
+
+    .boss-title {
+        font-size: 32px;
+    }
+
+    .boss-subtitle {
+        font-size: 16px;
+    }
+
+    .boss-hp-bar {
+        min-width: 300px;
+        padding: 10px;
+    }
+
+    .victory-content {
+        padding: 30px;
+        margin: 0 20px;
+    }
+
+    .victory-content h1 {
+        font-size: 32px;
+    }
+
+    .victory-content p {
+        font-size: 18px;
+    }
+
+    .dodge-indicator {
+        bottom: 80px;
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+
+    .dodge-cooldown {
+        bottom: 120px;
+        right: 10px;
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .instruction-content {
+        padding: 20px;
+    }
+
+    .instruction-content h2 {
+        font-size: 24px;
+    }
+
+    .control-item, .combo-item, .enemy-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+
+    .combo-visual {
+        justify-content: center;
+    }
+
+    .boss-hp-bar {
+        min-width: 250px;
+    }
+}
+

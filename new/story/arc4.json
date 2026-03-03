@@ -1,0 +1,28 @@
+
+{
+  "title": "Arc 4",
+  "description": "Fourth story arc",
+  "scenes": {
+    "scene_01": [
+      {
+        "type": "background",
+        "image": "assets/backgrounds/library.jpg"
+      },
+      {
+        "type": "dialogue",
+        "speaker": "Narrator",
+        "text": "This is sample dialogue. Arc 4 begins here. Add your story content."
+      },
+      {
+        "type": "dialogue",
+        "speaker": "{target_name}",
+        "text": "This is sample dialogue. I love studying here. It's so quiet."
+      },
+      {
+        "type": "jump",
+        "target": "arc5",
+        "scene": "scene_01"
+      }
+    ]
+  }
+}

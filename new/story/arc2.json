@@ -1,0 +1,28 @@
+
+{
+  "title": "Arc 2",
+  "description": "Second story arc",
+  "scenes": {
+    "scene_01": [
+      {
+        "type": "background",
+        "image": "assets/backgrounds/park.jpg"
+      },
+      {
+        "type": "dialogue",
+        "speaker": "Narrator",
+        "text": "This is sample dialogue. Arc 2 begins here. Add your story content."
+      },
+      {
+        "type": "dialogue",
+        "speaker": "{target_name}",
+        "text": "This is sample dialogue. The park is so peaceful today."
+      },
+      {
+        "type": "jump",
+        "target": "arc3",
+        "scene": "scene_01"
+      }
+    ]
+  }
+}

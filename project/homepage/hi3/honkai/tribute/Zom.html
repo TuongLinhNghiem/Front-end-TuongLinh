@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Zombiegal Kawaii — 5-Row Defense</title>
+  <style>
+    html,body{height:100%;margin:0;background:#222;color:#fff;font-family:Inter,system-ui,Segoe UI,Roboto,Arial}
+    #gameWrap{display:flex;flex-direction:column;align-items:center;padding:12px;gap:8px}
+    canvas{background:#001;display:block;border-radius:8px;box-shadow:0 8px 30px rgba(0,0,0,.6)}
+    .hud{width:800px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+    .bars{display:flex;flex-direction:column;gap:6px}
+    .bar{width:220px;height:18px;background:#444;border-radius:10px;overflow:hidden}
+    .bar > .fill{height:100%;width:100%;background:linear-gradient(90deg,#4caf50,#8bc34a);transform-origin:left}
+    .small{height:10px;width:140px}
+    .controls{display:flex;gap:8px}
+    button{padding:6px 10px;border-radius:8px;border:none;background:#333;color:#fff;cursor:pointer}
+    #pauseModal{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);background:#111;border:2px solid #444;padding:18px;border-radius:12px;display:none;z-index:40}
+    #killCounter{font-weight:700}
+    .note{font-size:12px;color:#bbb}
+    .row-indicator{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.7);padding:8px;border-radius:4px;font-size:14px;font-weight:bold}
+  </style>
+</head>
+<body>
+  <div id="gameWrap">
+    <div class="hud">
+      <div class="bars">
+        <div>Player HP</div>
+        <div class="bar" id="hpBar"><div class="fill" style="width:100%"></div></div>
+        <div>Ult</div>
+        <div class="bar small" id="ultBar"><div class="fill" style="width:0%"></div></div>
+      </div>
+
+      <div style="text-align:center">
+        <div id="killCounter">Kills: 0 / 30</div>
+        <div class="note">
+          <strong>W/S or ↑/↓:</strong> Switch Rows | <strong>Space:</strong> Attack | <strong>E:</strong> Ultimate
+        </div>
+      </div>
+
+      <div class="controls">
+        <button id="pauseBtn">Pause</button>
+        <button id="restartBtn">Restart</button>
+        <button id="musicBtn">Music: On</button>
+      </div>
+    </div>
+
+    <div style="position:relative">
+      <canvas id="gameCanvas" width="800" height="450"></canvas>
+      <div class="row-indicator" id="rowIndicator">Row: 3/5</div>
+    </div>
+  </div>
+
+  <div id="pauseModal">
+    <h3>Paused</h3>
+    <button id="resumeBtn">Resume</button>
+  </div>
+
+  <script>
+  /*
+    Zombiegal Kawaii - 5-Row Defense System
+    Player can move between 5 horizontal rows, enemies spawn randomly in each row
+  */
+  const CONFIG = {
+    canvasWidth: 800,
+    canvasHeight: 450,
+    bgImage: 'Z-images/bg.jpg',
+    playerImage: 'Z-images/player.png',
+    enemyImage: 'Z-images/enemy.png',
+    bgMusic: 'Z-images/bgm.mp3',
+    swingSfx: 'Z-images/swing.mp3',
+    hitSfx: 'Z-images/hit.mp3',
+    ultSfx: 'Z-images/laser.mp3',
+    enemySpawnInterval: 1800,
+    enemyBaseSpeed: 0.6,
+    killsToWin: 30,
+    numRows: 5
+  };
+
+  // ---- Core variables ----
+  const canvas = document.getElementById('gameCanvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = CONFIG.canvasWidth;
+  canvas.height = CONFIG.canvasHeight;
+
+  let images = {};
+  let audio = {};
+  let running = true;
+  let paused = false;
+  let spawnTimer = 0;
+  let kills = 0;
+
+  // Row system setup
+  const ROW_HEIGHT = CONFIG.canvasHeight / CONFIG.numRows;
+  const ROW_CENTERS = [];
+  for(let i = 0; i < CONFIG.numRows; i++) {
+    ROW_CENTERS.push(ROW_HEIGHT * i + ROW_HEIGHT / 2);
+  }
+
+  // Player with row-based movement
+  const player = {
+    x: 80,
+    currentRow: 2, // Start in middle row (0-indexed)
+    w: 80,
+    h: 70,
+    facing: 1,
+    hp: 100,
+    maxHp: 100,
+    ult: 0,
+    maxUlt: 100,
+    swingCooldown: 0,
+    swingDuration: 250,
+    rowSwitchCooldown: 0,
+    get y() { return ROW_CENTERS[this.currentRow] - this.h / 2; }
+  };
+
+  let attacks = [];
+  let enemies = [];
+  let rowSwitchAnimation = 0;
+
+  // Load functions
+  function loadImage(name, src){
+    return new Promise((res)=>{
+      const img = new Image();
+      img.src = src;
+      img.onload = ()=>{images[name]=img;res();};
+      img.onerror = ()=>{console.warn('Image failed to load:',src);images[name]=null;res();}
+    });
+  }
+
+  function loadAudio(name, src){
+    return new Promise((res)=>{
+      try{
+        const a = new Audio();
+        a.src = src;
+        a.loop = false;
+        audio[name]=a;
+        a.oncanplaythrough = ()=>res();
+        a.onerror = ()=>{console.warn('Audio failed to load:',src);audio[name]=null;res();}
+      }catch(e){audio[name]=null;res();}
+    });
+  }
+
+  async function preload(){
+    await Promise.all([
+      loadImage('bg', CONFIG.bgImage),
+      loadImage('player', CONFIG.playerImage),
+      loadImage('enemy', CONFIG.enemyImage),
+      loadAudio('bgm', CONFIG.bgMusic),
+      loadAudio('swing', CONFIG.swingSfx),
+      loadAudio('hit', CONFIG.hitSfx),
+      loadAudio('ult', CONFIG.ultSfx)
+    ]);
+    if(audio.bgm){
+      audio.bgm.loop = true;
+      audio.bgm.volume = 0.45;
+      audio.bgm.play().catch(()=>{});
+    }
+  }
+
+  // Enhanced enemy spawning - random row selection
+  function spawnEnemy(){
+    const eW = 60, eH = 60;
+    const randomRow = Math.floor(Math.random() * CONFIG.numRows);
+    const y = ROW_CENTERS[randomRow] - eH / 2;
+    const speed = CONFIG.enemyBaseSpeed + Math.random() * 0.3;
+
+    // Vary enemy types slightly
+    const enemyType = Math.random() < 0.7 ? 'normal' : 'fast';
+    const hp = enemyType === 'fast' ? 2 : 3;
+    const finalSpeed = enemyType === 'fast' ? speed * 1.5 : speed;
+
+    enemies.push({
+      x: CONFIG.canvasWidth + 50,
+      y,
+      w: eW,
+      h: eH,
+      row: randomRow,
+      hp,
+      maxHp: hp,
+      speed: finalSpeed,
+      type: enemyType,
+      showHpTimer: 0,
+      touchCooldown: 0
+    });
+  }
+
+  // Row switching
+  function switchRow(direction) {
+    if(player.rowSwitchCooldown > Date.now()) return;
+
+    const newRow = player.currentRow + direction;
+    if(newRow >= 0 && newRow < CONFIG.numRows) {
+      player.currentRow = newRow;
+      player.rowSwitchCooldown = Date.now() + 200; // Prevent rapid switching
+      rowSwitchAnimation = Date.now() + 300; // Visual feedback
+
+      // Update row indicator
+      document.getElementById('rowIndicator').textContent = `Row: ${player.currentRow + 1}/${CONFIG.numRows}`;
+    }
+  }
+
+  // Enhanced attack system - only hits enemies in same row
+  function doSwing(){
+    if(player.swingCooldown > Date.now()) return;
+
+    if(audio.swing){
+      audio.swing.currentTime = 0;
+      try{audio.swing.play();}catch{}
+    }
+
+    player.swingCooldown = Date.now() + player.swingDuration + 150;
+    attacks.push({
+      t: Date.now(),
+      duration: player.swingDuration,
+      row: player.currentRow,
+      x: player.x,
+      y: player.y
+    });
+
+    // Check collisions with enemies in the same row
+    const attackRange = {
+      x: player.x + player.w * 0.3,
+      y: player.y,
+      w: 180,
+      h: player.h
+    };
+
+    enemies.forEach((en)=>{
+      // Only hit enemies in the same row
+      if(en.row !== player.currentRow) return;
+
+      if(en.x < attackRange.x + attackRange.w &&
+         en.x + en.w > attackRange.x &&
+         en.y < attackRange.y + attackRange.h &&
+         en.y + en.h > attackRange.y){
+
+        en.hp = Math.max(0, en.hp - 1);
+        en.showHpTimer = Date.now() + 800;
+        player.ult = Math.min(player.maxUlt, player.ult + 15);
+
+        if(audio.hit){
+          audio.hit.currentTime = 0;
+          try{audio.hit.play();}catch{}
+        }
+
+        if(en.hp <= 0){
+          kills++;
+          en.dead = true;
+        }
+      }
+    });
+  }
+
+  // Ultimate - affects all rows
+  function doUlt(){
+    if(player.ult < player.maxUlt) return;
+
+    player.ult = 0;
+
+    // Play ultimate sound
+    if(audio.ult){
+        audio.ult.currentTime = 0;
+        try { audio.ult.play(); } catch(e) { console.warn("Ult sound blocked:", e); }
+    }
+
+    // Create ultimate effect for all rows
+    for(let i = 0; i < CONFIG.numRows; i++) {
+      attacks.push({
+        t: Date.now(),
+        duration: 600,
+        type: 'ultimate',
+        row: i,
+        x: player.x,
+        y: ROW_CENTERS[i] - 35
+      });
+    }
+
+    // Damage all enemies in front of player
+    enemies.forEach((en)=>{
+      if(en.x > player.x && !en.dead){
+        en.dead = true;
+        kills++;
+      }
+    });
+  }
+
+  // Enhanced update function
+  function update(dt){
+    if(paused) return;
+
+    // Spawn logic with increasing difficulty
+    spawnTimer += dt;
+    const spawnRate = Math.max(800, CONFIG.enemySpawnInterval - (kills * 30));
+    if(spawnTimer > spawnRate){
+      spawnEnemy();
+      spawnTimer = 0;
+    }
+
+    // Update enemies
+    enemies.forEach((en)=>{
+      if(en.dead) return;
+
+      en.x -= en.speed * dt * 0.06;
+
+      // Collision with player (only same row)
+      if(en.row === player.currentRow) {
+        const pRect = {x: player.x, y: player.y, w: player.w, h: player.h};
+        const eRect = {x: en.x, y: en.y, w: en.w, h: en.h};
+
+        if(rectsOverlap(eRect, pRect)){
+          if(!en.touchCooldown || Date.now() > en.touchCooldown){
+            player.hp = Math.max(0, player.hp - (en.type === 'fast' ? 6 : 10));
+            en.touchCooldown = Date.now() + 800;
+          }
+        }
+      }
+    });
+
+    // Clean up
+    enemies = enemies.filter(e=>{
+      if(e.dead){
+        e._deadTimer = (e._deadTimer||0)+dt;
+        return e._deadTimer < 400;
+      }
+      return e.x + e.w > -50 && e.hp > 0;
+    });
+
+    attacks = attacks.filter(a => Date.now() - a.t < a.duration);
+
+    // Win/lose conditions
+    if(kills >= CONFIG.killsToWin){ running = false; showWin(); }
+    if(player.hp <= 0){ running = false; showGameOver(); }
+
+    // Update UI
+    updateUI();
+  }
+
+  function updateUI() {
+    const hpFill = Math.max(0, player.hp / player.maxHp * 100);
+    document.querySelector('#hpBar .fill').style.width = hpFill + '%';
+    const ultFill = Math.max(0, player.ult / player.maxUlt * 100);
+    document.querySelector('#ultBar .fill').style.width = ultFill + '%';
+    document.getElementById('killCounter').textContent = `Kills: ${kills} / ${CONFIG.killsToWin}`;
+  }
+
+  function rectsOverlap(a,b){
+    return !(a.x + a.w < b.x || a.x > b.x + b.w || a.y + a.h < b.y || a.y > b.y + b.h);
+  }
+
+  // Enhanced drawing with row visualization
+  function draw(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Background
+    if(images.bg) {
+      ctx.drawImage(images.bg, 0, 0, canvas.width, canvas.height);
+    } else {
+      ctx.fillStyle = '#2c5530';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    // Draw row dividers (subtle)
+    ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+    ctx.lineWidth = 1;
+    for(let i = 1; i < CONFIG.numRows; i++) {
+      const y = ROW_HEIGHT * i;
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(canvas.width, y);
+      ctx.stroke();
+    }
+
+    // Highlight current row
+    ctx.fillStyle = 'rgba(255,255,255,0.05)';
+    const currentRowY = ROW_HEIGHT * player.currentRow;
+    ctx.fillRect(0, currentRowY, canvas.width, ROW_HEIGHT);
+
+    // Row switch animation
+    if(rowSwitchAnimation > Date.now()) {
+      ctx.fillStyle = 'rgba(100,255,100,0.2)';
+      ctx.fillRect(0, currentRowY, canvas.width, ROW_HEIGHT);
+    }
+
+    // Draw enemies
+    enemies.forEach((en)=>{
+      ctx.save();
+
+      // Different colors for different types
+      if(!images.enemy) {
+        ctx.fillStyle = en.type === 'fast' ? '#ff6b6b' : '#e74c3c';
+        ctx.fillRect(en.x, en.y, en.w, en.h);
+      } else {
+        ctx.drawImage(images.enemy, en.x, en.y, en.w, en.h);
+        if(en.type === 'fast') {
+          ctx.fillStyle = 'rgba(255,0,0,0.3)';
+          ctx.fillRect(en.x, en.y, en.w, en.h);
+        }
+      }
+
+      // HP bar
+      if(en.showHpTimer && Date.now() < en.showHpTimer){
+        const barW = en.w;
+        const barH = 4;
+        const barX = en.x;
+        const barY = en.y - 8;
+
+        ctx.fillStyle = 'rgba(0,0,0,0.7)';
+        ctx.fillRect(barX-1, barY-1, barW+2, barH+2);
+        ctx.fillStyle = '#e74c3c';
+        ctx.fillRect(barX, barY, barW, barH);
+        ctx.fillStyle = '#2ecc71';
+        ctx.fillRect(barX, barY, barW * (en.hp/en.maxHp), barH);
+      }
+
+      ctx.restore();
+    });
+
+    // Draw player with row-based positioning
+    ctx.save();
+    if(images.player) {
+      ctx.drawImage(images.player, player.x, player.y, player.w, player.h);
+    } else {
+      ctx.fillStyle = '#3498db';
+      ctx.fillRect(player.x, player.y, player.w, player.h);
+    }
+
+    // Player glow in current row
+    ctx.strokeStyle = 'rgba(52,152,219,0.5)';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(player.x-2, player.y-2, player.w+4, player.h+4);
+    ctx.restore();
+
+    // Draw attacks
+    attacks.forEach(a=>{
+      const progress = (Date.now() - a.t) / a.duration;
+      const alpha = 1 - progress;
+
+      ctx.save();
+      ctx.globalAlpha = alpha * 0.8;
+
+      if(a.type === 'ultimate') {
+        // Ultimate wave effect
+        ctx.fillStyle = '#f39c12';
+        const waveWidth = 300 * progress;
+        ctx.fillRect(a.x, a.y, waveWidth, 70);
+
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 3;
+        ctx.strokeRect(a.x, a.y, waveWidth, 70);
+      } else {
+        // Regular attack arc
+        ctx.strokeStyle = 'rgba(255,255,255,0.9)';
+        ctx.lineWidth = 20 * (1 - progress * 0.5);
+        ctx.beginPath();
+        const cx = a.x + 60;
+        const cy = a.y + 35;
+        ctx.arc(cx, cy, 120 * (1 - progress * 0.3), -0.5, 0.5);
+        ctx.stroke();
+      }
+
+      ctx.restore();
+    });
+
+    // Game over overlay
+    if(!running) {
+      ctx.fillStyle = 'rgba(0,0,0,0.7)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+  }
+
+  // Game loop
+  let last = performance.now();
+  function loop(t){
+    const dt = t - last;
+    last = t;
+    if(running && !paused) update(dt);
+    draw();
+    requestAnimationFrame(loop);
+  }
+
+  // Controls
+  window.addEventListener('keydown', (e)=>{
+    if(e.code === 'Space'){ e.preventDefault(); doSwing(); }
+    if(e.key.toLowerCase() === 'e'){ doUlt(); }
+    if(e.code === 'KeyW' || e.code === 'ArrowUp'){ switchRow(-1); }
+    if(e.code === 'KeyS' || e.code === 'ArrowDown'){ switchRow(1); }
+    if(e.code === 'Escape'){
+      paused = !paused;
+      document.getElementById('pauseModal').style.display = paused ? 'block' : 'none';
+    }
+  });
+
+  // UI event listeners
+  document.getElementById('pauseBtn').addEventListener('click', ()=>{
+    paused = true;
+    document.getElementById('pauseModal').style.display='block';
+  });
+
+  document.getElementById('resumeBtn').addEventListener('click', ()=>{
+    paused=false;
+    document.getElementById('pauseModal').style.display='none';
+  });
+
+  document.getElementById('restartBtn').addEventListener('click', ()=>{ restartGame(); });
+
+  const musicBtn = document.getElementById('musicBtn');
+  let musicOn = true;
+  musicBtn.addEventListener('click', ()=>{
+    musicOn = !musicOn;
+    musicBtn.textContent = `Music: ${musicOn? 'On':'Off'}`;
+    if(audio.bgm){
+      if(musicOn) audio.bgm.play().catch(()=>{});
+      else audio.bgm.pause();
+    }
+  });
+
+  // Mouse attack
+  canvas.addEventListener('mousedown', (e)=>{ doSwing(); });
+
+  function showWin(){
+    setTimeout(()=>{
+      alert(`Victory! You defended all rows and eliminated ${kills} zombies!`);
+    }, 100);
+  }
+
+  function showGameOver(){
+    setTimeout(()=>{
+      alert(`Game Over! You survived ${kills} zombie encounters across the rows.`);
+    }, 100);
+  }
+
+  function restartGame(){
+    running = true;
+    paused = false;
+    enemies = [];
+    attacks = [];
+    player.currentRow = 2;
+    player.hp = player.maxHp;
+    player.ult = 0;
+    kills = 0;
+    spawnTimer = 0;
+    rowSwitchAnimation = 0;
+    document.getElementById('rowIndicator').textContent = `Row: 3/${CONFIG.numRows}`;
+    if(audio.bgm && musicOn){
+      audio.bgm.currentTime = 0;
+      audio.bgm.play().catch(()=>{});
+    }
+  }
+
+  // Initialize
+  (async ()=>{
+    await preload();
+    last = performance.now();
+    requestAnimationFrame(loop);
+  })();
+
+  // Debug access
+  window.ZG = {CONFIG, player, enemies, ROW_CENTERS};
+  </script>
+</body>
+</html>

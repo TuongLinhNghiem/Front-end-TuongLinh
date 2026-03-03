@@ -1,0 +1,28 @@
+
+{
+  "title": "Arc 3",
+  "description": "Third story arc",
+  "scenes": {
+    "scene_01": [
+      {
+        "type": "background",
+        "image": "assets/backgrounds/cafe.jpg"
+      },
+      {
+        "type": "dialogue",
+        "speaker": "Narrator",
+        "text": "This is sample dialogue. Arc 3 begins here. Add your story content."
+      },
+      {
+        "type": "dialogue",
+        "speaker": "{player_name}",
+        "text": "This is sample dialogue. This cafe has the best coffee!"
+      },
+      {
+        "type": "jump",
+        "target": "arc4",
+        "scene": "scene_01"
+      }
+    ]
+  }
+}

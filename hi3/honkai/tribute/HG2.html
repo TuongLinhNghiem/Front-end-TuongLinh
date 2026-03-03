@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Hero's Journey 2 - Enhanced Combat</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+        <div class="game-container">
+            <!-- Main Game Canvas -->
+            <canvas id="gameCanvas" class="game-canvas"></canvas>
+
+            <!-- UI Overlay -->
+            <div class="ui-overlay">
+                <!-- Top HUD -->
+                <div class="top-hud">
+                    <div class="player-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">HP:</span>
+                            <div class="hp-bar">
+                                <div id="hpFill" class="hp-fill"></div>
+                            </div>
+                            <span id="hpText" class="stat-value">100/100</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Section:</span>
+                            <span id="sectionText" class="stat-value">1/5</span>
+                        </div>
+                    </div>
+
+                    <div class="combo-display">
+                        <div class="combo-info">
+                            <span class="combo-label">Combo:</span>
+                            <div id="comboSequence" class="combo-sequence"></div>
+                        </div>
+                        <div class="combo-timer">
+                            <div id="comboTimerBar" class="combo-timer-bar"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Side Controls -->
+            <div class="side-controls">
+                <button id="musicBtn" class="control-btn music-btn">
+                    <span class="icon">🎵</span>
+                </button>
+                <button id="instructionBtn" class="control-btn instruction-btn">
+                    <span class="icon">❓</span>
+                </button>
+            </div>
+
+            <!-- Dodge Indicator -->
+            <div id="dodgeIndicator" class="dodge-indicator hidden">
+                Press K to Dodge!
+            </div>
+
+            <!-- Dodge Cooldown -->
+            <div id="dodgeCooldown" class="dodge-cooldown hidden">
+                Dodge: <span id="dodgeTimer">0</span>s
+            </div>
+        </div>
+
+        <!-- Instruction Panel -->
+        <div id="instructionPanel" class="instruction-panel hidden">
+            <div class="instruction-content">
+                <h2>🗡️ How to Play</h2>
+
+                <div class="controls-section">
+                    <h3>Controls:</h3>
+                    <div class="control-item">
+                        <span class="key">A</span>
+                        <span class="desc">Move Left (Limited in boss section)</span>
+                    </div>
+                    <div class="control-item">
+                        <span class="key">D</span>
+                        <span class="desc">Move Right (Advance)</span>
+                    </div>
+                    <div class="control-item">
+                        <span class="key">SPACE</span>
+                        <span class="desc">Sword Swing</span>
+                    </div>
+                    <div class="control-item">
+                        <span class="key">K</span>
+                        <span class="desc">Dodge (Boss fights only)</span>
+                    </div>
+                </div>
+
+                <div class="combo-section">
+                    <h3>Combo System:</h3>
+                    <div class="combo-item">
+                        <div class="combo-visual">
+                            <div class="swing blue">1</div>
+                            <span class="arrow">→</span>
+                            <div class="swing yellow">2</div>
+                            <span class="arrow">→</span>
+                            <div class="swing red">3</div>
+                            <span class="arrow">→</span>
+                            <div class="swing laser">⚡</div>
+                        </div>
+                        <span class="combo-desc">Chain attacks for massive damage!</span>
+                    </div>
+                </div>
+
+                <div class="enemy-section">
+                    <h3>Enemies:</h3>
+                    <div class="enemy-item">
+                        <div class="enemy-visual enemy1">👹</div>
+                        <span class="enemy-desc">Weak Enemy - 1 damage, common</span>
+                    </div>
+                    <div class="enemy-item">
+                        <div class="enemy-visual enemy2">👺</div>
+                        <span class="enemy-desc">Strong Enemy - 2 damage, uncommon</span>
+                    </div>
+                    <div class="enemy-item">
+                        <div class="enemy-visual enemy3">🐉</div>
+                        <span class="enemy-desc">BOSS - 3 damage, defeat to win!</span>
+                    </div>
+                </div>
+
+                <div class="objective-section">
+                    <h3>Objective:</h3>
+                    <p>Defeat the boss in the final section to win!</p>
+                    <p><strong>Warning:</strong> You cannot move backward once the boss appears!</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="winScreen" style="display:none; position:absolute; top:50%; left:50%;
+    transform:translate(-50%, -50%); background:rgba(0,0,0,0.8); padding:20px;
+    color:white; text-align:center; border-radius:10px;">
+            <h2>You Win!</h2>
+            <button id="restartBtn">Restart</button>
+        </div>
+
+
+        <!-- Pause Overlay -->
+        <div id="pauseOverlay" class="pause-overlay hidden">
+            <div class="pause-content">
+                <h2>⏸️ PAUSED</h2>
+                <p>Click anywhere to resume</p>
+            </div>
+        </div>
+
+        <script src="HG2.js"></script>
+    </body>
+
+</html>

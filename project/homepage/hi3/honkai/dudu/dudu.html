@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Durandal - Strongest Valkyrie</title>
+    <link rel="stylesheet" href="dudu.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <div class="durandal-emblem">⚔️</div>
+                <h1>DURANDAL</h1>
+                <p class="subtitle">Strongest Valkyrie</p>
+            </div>
+            <div class="loading-bar">
+                <div class="loading-fill"></div>
+            </div>
+            <p class="loading-text">Preparing Abyss Flower...</p>
+        </div>
+        <div class="loading-particles"></div>
+    </div>
+
+    <!-- Game Container -->
+    <div id="gameContainer" class="game-container">
+        <!-- Top HUD -->
+        <div class="top-hud">
+            <div class="stage-info">
+                <div class="stage-display">
+                    <span id="stageNumber" class="stage-number">Stage 1</span>
+                    <span id="stageName" class="stage-name">Child of Schicksal</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-dots">
+                        <div class="dot active"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Score</span>
+                    <span id="scoreValue" class="stat-value">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Spears</span>
+                    <span id="throwsValue" class="stat-value">10</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Canvas -->
+        <canvas id="gameCanvas" class="game-canvas"></canvas>
+
+        <!-- Bottom Controls -->
+        <div class="bottom-controls">
+            <div class="control-hint">
+                <div class="key-hint">
+                    <span class="key">SPACE</span>
+                    <span class="action">Throw Abyss Flower</span>
+                </div>
+                <div class="key-hint">
+                    <span class="key">ESC</span>
+                    <span class="action">Pause</span>
+                </div>
+            </div>
+
+            <div class="game-controls">
+                <button id="muteBtn" class="control-btn">
+                    <span class="btn-icon">🔊</span>
+                </button>
+                <button id="pauseBtn" class="control-btn">
+                    <span class="btn-icon">⏸️</span>
+                    <span class="btn-text">Pause</span>
+                </button>
+                <button id="skipBtn" class="control-btn">
+                    <span class="btn-icon">⏭️</span>
+                    <span class="btn-text">Skip</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Story Modal -->
+    <div id="storyModal" class="modal hidden">
+        <div class="modal-content story-modal">
+            <div class="story-header">
+                <h2 id="storyTitle" class="story-title">Stage Complete!</h2>
+                <div class="title-decoration"></div>
+            </div>
+
+            <div class="story-content">
+                <div class="story-portrait">
+                    <div class="portrait-frame">
+                        <div id="storyPortrait" class="portrait-image"></div>
+                    </div>
+                </div>
+
+                <div class="story-text-container">
+                    <p id="storyText" class="story-text"></p>
+                </div>
+            </div>
+
+            <div class="story-actions">
+                <button id="nextStageBtn" class="btn btn-primary story-btn">
+                    <span>Continue Journey</span>
+                    <div class="btn-glow"></div>
+                </button>
+            </div>
+        </div>
+        <div class="modal-bg-particles"></div>
+    </div>
+
+    <!-- Pause Menu -->
+    <div id="pauseMenu" class="modal hidden">
+        <div class="modal-content pause-modal">
+            <h2>Game Paused</h2>
+            <div class="pause-buttons">
+                <button id="resumeBtn" class="btn btn-primary">
+                    <span>Resume</span>
+                </button>
+                <button id="restartBtn" class="btn btn-secondary">
+                    <span>Restart Stage</span>
+                </button>
+                <button id="mainMenuBtn" class="btn btn-secondary">
+                    <span>Main Menu</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Victory Effects -->
+    <div id="victoryEffects" class="victory-effects hidden">
+        <div class="victory-burst"></div>
+        <div class="victory-text">STAGE CLEAR!</div>
+    </div>
+
+    <script src="dudu.js"></script>
+</body>
+</html>

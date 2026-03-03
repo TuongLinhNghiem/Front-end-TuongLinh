@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Otto Apocalypse - The Overseer's Path</title>
+    <link rel="stylesheet" href="otto.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="otto-emblem">
+                <div class="emblem-outer">
+                    <div class="emblem-inner">
+                        <div class="emblem-cross">✠</div>
+                    </div>
+                </div>
+            </div>
+            <h1 class="loading-title">OTTO APOCALYPSE</h1>
+            <p class="loading-subtitle">The Overseer's Path</p>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+                <div class="loading-glow"></div>
+            </div>
+            <p class="loading-text">Initializing Void Archives...</p>
+        </div>
+        <div class="loading-particles"></div>
+    </div>
+
+    <!-- Game Container -->
+    <div id="gameContainer" class="game-container">
+        <!-- Top HUD -->
+        <div class="top-hud">
+            <div class="stage-info">
+                <div class="stage-header">
+                    <h2 id="stageName" class="stage-name">Prologue</h2>
+                </div>
+                <div class="chapter-progress">
+                    <div class="progress-track">
+                        <div class="progress-nodes">
+                            <div class="node active" data-stage="0">
+                                <span class="node-number">I</span>
+                                <span class="node-label">Prologue</span>
+                            </div>
+                            <div class="node" data-stage="1">
+                                <span class="node-number">II</span>
+                                <span class="node-label">Crossroads</span>
+                            </div>
+                            <div class="node" data-stage="2">
+                                <span class="node-number">III</span>
+                                <span class="node-label">Dark Palace</span>
+                            </div>
+                            <div class="node" data-stage="3">
+                                <span class="node-number">IV</span>
+                                <span class="node-label">Inner Halls</span>
+                            </div>
+                            <div class="node" data-stage="4">
+                                <span class="node-number">V</span>
+                                <span class="node-label">Final Trial</span>
+                            </div>
+                        </div>
+                        <div class="progress-line">
+                            <div class="progress-fill"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-status">
+                <div class="status-panel">
+                    <div class="status-item">
+                        <span class="status-icon">♥</span>
+                        <span id="lives" class="status-value">Lives: 3</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-icon">⚡</span>
+                        <span id="pelletCount" class="status-value">Fragments: 0</span>
+                    </div>
+                </div>
+
+                <div class="overseer-seal">
+                    <div class="seal-ring">
+                        <div class="seal-center">
+                            <span class="seal-symbol">✠</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Canvas -->
+        <canvas id="game" class="game-canvas"></canvas>
+
+        <!-- Bottom Controls -->
+        <div class="bottom-hud">
+            <div class="control-guide">
+                <div class="control-group">
+                    <div class="key-display">
+                        <div class="key-row">
+                            <span class="key">W</span>
+                        </div>
+                        <div class="key-row">
+                            <span class="key">A</span>
+                            <span class="key">S</span>
+                            <span class="key">D</span>
+                        </div>
+                    </div>
+                    <span class="control-label">Movement</span>
+                </div>
+
+                <div class="control-group">
+                    <div class="key-display">
+                        <span class="key arrow">↑</span>
+                        <span class="key arrow">←</span>
+                        <span class="key arrow">↓</span>
+                        <span class="key arrow">→</span>
+                    </div>
+                    <span class="control-label">Alternative</span>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button id="skipBtn" class="action-btn primary">
+                    <span class="btn-icon">📖</span>
+                    <span class="btn-text">View Chronicle</span>
+                    <div class="btn-glow"></div>
+                </button>
+
+                <button id="pauseBtn" class="action-btn secondary">
+                    <span class="btn-icon">⏸</span>
+                    <span class="btn-text">Pause</span>
+                </button>
+
+                <button id="muteBtn" class="control-btn">
+                    <span>🔊</span>
+                    <span>Audio</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Story Modal -->
+    <div id="modal" class="modal hidden">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content story-modal">
+            <div class="modal-header">
+                <div class="chapter-indicator">
+                    <span id="chapterTitle" class="chapter-title">Chapter I</span>
+                    <div class="title-decoration">
+                        <span class="decoration-line"></span>
+                        <span class="decoration-symbol">◆</span>
+                        <span class="decoration-line"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <div class="story-portrait">
+                    <div class="portrait-frame">
+                        <div class="portrait-image">
+                            <div class="otto-avatar">
+                                <div class="avatar-glow"></div>
+                                <span class="avatar-symbol">⚜</span>
+                            </div>
+                        </div>
+                        <div class="portrait-border"></div>
+                    </div>
+                </div>
+
+                <div class="story-content">
+                    <div id="modalContent" class="story-text">
+                        <p>Otto was born into the Apocalypse family with extraordinary genius...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button id="closeModal" class="modal-btn secondary">
+                    <span>Return to Path</span>
+                </button>
+                <button id="modalNext" class="modal-btn primary">
+                    <span>Continue Chronicle</span>
+                    <div class="btn-shine"></div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pause Menu -->
+    <div id="pauseMenu" class="modal hidden">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content pause-modal">
+            <div class="modal-header">
+                <h2 class="pause-title">Game Paused</h2>
+                <div class="pause-ornament">◇ ◆ ◇</div>
+            </div>
+
+            <div class="pause-buttons">
+                <button id="resumeBtn" class="modal-btn primary">
+                    <span>Resume Journey</span>
+                </button>
+                <button id="restartBtn" class="modal-btn secondary">
+                    <span>Restart Chapter</span>
+                </button>
+                <button id="menuBtn" class="modal-btn secondary">
+                    <span>Return to Beginning</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Victory Effects -->
+    <div id="victoryEffect" class="victory-effect hidden">
+        <div class="victory-burst"></div>
+        <div class="victory-text">CHAPTER COMPLETE</div>
+        <div class="victory-ornament">◆ ◇ ◆</div>
+    </div>
+
+    <!-- Game Over Effect -->
+    <div id="gameOverEffect" class="game-over-effect hidden">
+        <div class="game-over-vignette"></div>
+        <div class="game-over-text">THE PATH ENDS HERE</div>
+        <div class="game-over-subtitle">But the Overseer's will endures...</div>
+    </div>
+
+    <script src="otto.js"></script>
+</body>
+</html>

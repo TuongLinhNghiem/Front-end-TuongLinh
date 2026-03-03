@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mei's Thunder Journey</title>
+    <link rel="stylesheet" href="mei.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <div class="thunder-effect">⚡</div>
+                <h1>MEI'S THUNDER JOURNEY</h1>
+            </div>
+            <div class="loading-bar">
+                <div class="loading-fill"></div>
+            </div>
+            <p class="loading-text">Loading Herrscher Powers...</p>
+        </div>
+    </div>
+
+    <!-- Game Container -->
+    <div class="game-container">
+        <!-- Stage Title -->
+        <div class="stage-header">
+            <h1 id="stage-title" class="stage-title">Stage 1: Childhood</h1>
+        </div>
+
+        <!-- Game Canvas -->
+        <div class="canvas-container">
+            <canvas id="gameCanvas" width="900" height="600"></canvas>
+
+            <!-- UI Overlay -->
+            <div class="ui-overlay">
+                <!-- Top UI Bar -->
+                <div class="top-ui">
+                    <!-- Enemy Health -->
+                    <div class="bar-container enemy-health">
+                        <div class="bar-label">ENEMY</div>
+                        <div class="bar">
+                            <div class="bar-fill" id="enemyHP"></div>
+                            <div class="bar-text">15/15</div>
+                        </div>
+                    </div>
+
+                    <!-- Player Ultimate -->
+                    <div class="bar-container player-ult">
+                        <div class="bar-label">ULTIMATE</div>
+                        <div class="bar">
+                            <div class="bar-fill" id="ultGauge"></div>
+                            <div class="bar-text">0/100</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Character Portraits -->
+                <div class="portraits">
+                    <div class="portrait-container player-portrait-container">
+                        <div class="portrait player-portrait">
+                            <div class="portrait-glow"></div>
+                        </div>
+                        <div class="portrait-name">MEI</div>
+                    </div>
+
+                    <div class="portrait-container enemy-portrait-container">
+                        <div class="portrait enemy-portrait">
+                            <div class="portrait-glow"></div>
+                        </div>
+                        <div class="portrait-name">ENEMY</div>
+                    </div>
+                </div>
+
+                <!-- Controls Info -->
+                <div class="controls-info">
+                    <div class="control-item">
+                        <span class="key">SPACE</span>
+                        <span class="action">Attack</span>
+                    </div>
+                    <div class="control-item">
+                        <span class="key">K</span>
+                        <span class="action">Ultimate</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Control Buttons -->
+        <div class="control-buttons">
+            <button id="skipBtn" class="control-btn skip-btn">
+                <span>Skip Battle</span>
+                <div class="btn-glow"></div>
+            </button>
+            <button id="pauseBtn" class="control-btn pause-btn">
+                <span>Pause</span>
+                <div class="btn-glow"></div>
+            </button>
+            <button id="muteBtn" class="control-btn mute-btn">
+                <span>🔊</span>
+                <div class="btn-glow"></div>
+            </button>
+        </div>
+    </div>
+
+    <!-- Story Overlay -->
+    <div id="storyOverlay" class="story-overlay hidden">
+        <div class="story-box">
+            <div class="story-header">
+                <div class="story-icon">⚡</div>
+                <h2 id="story-title">Stage Complete</h2>
+            </div>
+            <div class="story-content" id="storyContent">
+                <!-- Story content will be inserted here -->
+            </div>
+            <button id="continueBtn" class="story-btn">
+                <span>Continue Journey</span>
+                <div class="btn-glow"></div>
+            </button>
+        </div>
+    </div>
+
+    <script src="mei.js"></script>
+</body>
+</html>

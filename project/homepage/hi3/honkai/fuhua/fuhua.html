@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Fu Hua - Phoenix Warrior</title>
+    <link rel="stylesheet" href="fuhua.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="phoenix-logo">🔥</div>
+        <div class="loading-title">FU HUA</div>
+        <div class="loading-subtitle">Phoenix Warrior</div>
+        <div class="loading-bar">
+            <div class="loading-fill"></div>
+        </div>
+        <div class="loading-text">Awakening Phoenix Power...</div>
+    </div>
+
+    <!-- Game Container -->
+    <div id="gameContainer" class="game-container">
+        <canvas id="gameCanvas" width="1000" height="700"></canvas>
+
+        <!-- Game UI Overlay -->
+        <div class="game-ui">
+            <!-- Character Portraits -->
+            <div class="character-portraits">
+                <div class="player-portrait">
+                    <div class="portrait-frame">
+                        <div class="portrait-image fu-hua"></div>
+                        <div class="portrait-glow"></div>
+                    </div>
+                    <div class="character-info">
+                        <div class="character-name">Fu Hua</div>
+                        <div class="character-title">Phoenix Immortal</div>
+                    </div>
+                </div>
+
+                <div class="enemy-portrait">
+                    <div class="portrait-frame">
+                        <div class="portrait-image enemy" id="enemyPortrait"></div>
+                        <div class="portrait-glow enemy-glow"></div>
+                    </div>
+                    <div class="character-info">
+                        <div class="character-name" id="enemyName">Shadow Beast</div>
+                        <div class="character-title" id="enemyTitle">Ancient Evil</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Health & Energy Bars -->
+            <div class="status-bars">
+                <!-- Enemy Health -->
+                <div class="health-bar enemy-health">
+                    <div class="bar-label">Enemy Vitality</div>
+                    <div class="bar-container">
+                        <div class="bar-bg"></div>
+                        <div class="bar-fill" id="enemyHP"></div>
+                        <div class="bar-text" id="enemyHPText">80/80</div>
+                        <div class="bar-shine"></div>
+                    </div>
+                </div>
+
+                <!-- Player Health -->
+                <div class="health-bar player-health">
+                    <div class="bar-label">Fu Hua Vitality</div>
+                    <div class="bar-container">
+                        <div class="bar-bg"></div>
+                        <div class="bar-fill" id="playerHP"></div>
+                        <div class="bar-text" id="playerHPText">80/80</div>
+                        <div class="bar-shine"></div>
+                    </div>
+                </div>
+
+                <!-- Phoenix Energy -->
+                <div class="energy-bar">
+                    <div class="bar-label">Phoenix Energy</div>
+                    <div class="bar-container phoenix-energy">
+                        <div class="bar-bg"></div>
+                        <div class="bar-fill" id="phoenixEnergy"></div>
+                        <div class="bar-text" id="phoenixEnergyText">0/100</div>
+                        <div class="energy-particles"></div>
+                        <div class="bar-shine"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls Info -->
+            <div class="controls-panel">
+                <div class="control-section">
+                    <div class="section-title">Combat Controls</div>
+                    <div class="control-item">
+                        <span class="key-icon">A/D</span>
+                        <span class="control-desc">Move</span>
+                    </div>
+                    <div class="control-item">
+                        <span class="key-icon">SPACE</span>
+                        <span class="control-desc">Counter Strike</span>
+                    </div>
+                    <div class="control-item">
+                        <span class="key-icon">U</span>
+                        <span class="control-desc">Phoenix Burst</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stage Display -->
+            <div class="stage-display">
+                <div class="stage-number" id="stageNumber">Stage 1</div>
+                <div class="stage-name" id="stageName">Shadow Realm</div>
+                <div class="stage-progress">
+                    <div class="progress-dots">
+                        <div class="dot active"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Controls -->
+            <div class="game-controls">
+                <button id="pauseBtn" class="control-btn">
+                    <span class="btn-icon">⏸️</span>
+                    <span class="btn-text">Pause</span>
+                </button>
+                <button id="skipBtn" class="control-btn">
+                    <span class="btn-icon">⏭️</span>
+                    <span class="btn-text">Skip</span>
+                </button>
+                <button id="muteBtn" class="control-btn">
+                    <span>🔊</span>
+                    <span>Audio</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Story Modal -->
+    <div id="storyModal" class="modal hidden">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <div class="story-header">
+                <div class="story-icon">🔥</div>
+                <h2 id="storyTitle">Chapter Complete</h2>
+            </div>
+            <div class="story-body">
+                <p id="storyText"></p>
+            </div>
+            <div class="story-footer">
+                <button id="btnNext" class="story-btn">
+                    <span>Continue Journey</span>
+                    <div class="btn-glow"></div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pause Menu -->
+    <div id="pauseMenu" class="modal hidden">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content pause-content">
+            <h2>Game Paused</h2>
+            <div class="pause-buttons">
+                <button id="resumeBtn" class="menu-btn">Resume</button>
+                <button id="restartBtn" class="menu-btn">Restart</button>
+                <button id="mainMenuBtn" class="menu-btn">Main Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="fuhua.js"></script>
+</body>
+</html>

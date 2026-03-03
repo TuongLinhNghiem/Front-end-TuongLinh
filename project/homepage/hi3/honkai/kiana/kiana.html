@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiana Kaslana (K423) - Enhanced Edition</title>
+    <link rel="stylesheet" href="kiana.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body>
+    <!-- Main Game Container -->
+    <div class="game-container">
+        <!-- Enhanced UI -->
+        <div id="ui">
+            <div class="ui-section left">
+                <div class="character-info player-info">
+                    <div class="character-portrait player-portrait"></div>
+                    <div class="bars-container">
+                        <div class="bar-wrapper">
+                            <label>HP</label>
+                            <div class="health-bar player-health">
+                                <div class="bar-fill"></div>
+                                <span class="bar-text">25/25</span>
+                            </div>
+                        </div>
+                        <div class="bar-wrapper">
+                            <label>ULT</label>
+                            <div class="ult-bar player-ult">
+                                <div class="bar-fill"></div>
+                                <span class="bar-text">0/5</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui-section center">
+                <div class="stage-info">
+                    <h2 id="stage-title">Stage 1</h2>
+                    <div class="stage-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="controls-hint">
+                    <p>SPACE: Attack | U: Ultimate</p>
+                </div>
+            </div>
+
+            <div class="ui-section right">
+                <div class="character-info enemy-info">
+                    <div class="bars-container">
+                        <div class="bar-wrapper">
+                            <label>HP</label>
+                            <div class="health-bar enemy-health">
+                                <div class="bar-fill"></div>
+                                <span class="bar-text">25/25</span>
+                            </div>
+                        </div>
+                        <div class="bar-wrapper">
+                            <label>ULT</label>
+                            <div class="ult-bar enemy-ult">
+                                <div class="bar-fill"></div>
+                                <span class="bar-text">0/5</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="character-portrait enemy-portrait"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enhanced Game Area -->
+        <div class="game-area">
+            <div class="battlefield-effects"></div>
+            <div id="player" class="character">
+                <div class="character-glow"></div>
+                <div class="damage-numbers"></div>
+            </div>
+            <div id="enemy" class="character">
+                <div class="character-glow"></div>
+                <div class="damage-numbers"></div>
+            </div>
+            <div class="combat-effects"></div>
+        </div>
+
+        <!-- Enhanced Story Screen -->
+        <div id="story-screen" class="hidden">
+            <div class="story-backdrop"></div>
+            <div class="story-content">
+                <div class="story-header">
+                    <h2 id="story-title">Stage Complete!</h2>
+                    <div class="title-decoration"></div>
+                </div>
+                <div class="story-body">
+                    <p id="story-text"></p>
+                </div>
+                <div class="story-footer">
+                    <button id="next-btn" class="story-btn primary">
+                        <span>Next Stage</span>
+                        <div class="btn-glow"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enhanced Controls -->
+        <div class="game-controls">
+            <button id="skipBtn" class="control-btn skip-btn">
+                <span>Skip Battle</span>
+                <div class="btn-ripple"></div>
+            </button>
+            <button id="pauseBtn" class="control-btn pause-btn">
+                <span>Pause</span>
+                <div class="btn-ripple"></div>
+            </button>
+            <button id="muteBtn" class="control-btn mute-btn">
+                <span>🔊</span>
+                <div class="btn-ripple"></div>
+            </button>
+        </div>
+    </div>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo">K423</div>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+            <p class="loading-text">Loading Honkai Impact...</p>
+        </div>
+    </div>
+
+    <script src="kiana.js"></script>
+</body>
+</html>
