@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix Code Breaker</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #000;
+            font-family: 'Courier New', monospace;
+            color: #00ff00;
+            overflow: hidden;
+        }
+
+        .game-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .game-board {
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid #00ff00;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.3);
+            max-width: 500px;
+        }
+
+        .score-board {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            font-size: 1.2em;
+        }
+
+        .code-display {
+            font-size: 3em;
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #00ff00;
+            border-radius: 10px;
+            background: rgba(0, 255, 0, 0.1);
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(0, 255, 0, 0.3); }
+            50% { box-shadow: 0 0 20px rgba(0, 255, 0, 0.6); }
+        }
+
+        .buttons-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .code-btn {
+            background: transparent;
+            border: 2px solid #00ff00;
+            color: #00ff00;
+            padding: 20px;
+            font-size: 1.5em;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            min-height: 60px;
+        }
+
+        .code-btn:hover {
+            background: rgba(0, 255, 0, 0.2);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+        }
+
+        .code-btn.correct {
+            background: #00ff00;
+            color: #000;
+            animation: flash 0.5s;
+        }
+
+        .code-btn.wrong {
+            background: #ff0000;
+            border-color: #ff0000;
+            animation: shake 0.5s;
+        }
+
+        @keyframes flash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            border: 1px solid #00ff00;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff00, #00aa00);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .game-over, .level-complete {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.95);
+            border: 2px solid #00ff00;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            display: none;
+            z-index: 100;
+        }
+
+        .game-over {
+            border-color: #ff0000;
+        }
+
+        .game-over h2 {
+            color: #ff0000;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .level-complete h2 {
+            color: #00ff00;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background: transparent;
+            border: 2px solid #00ff00;
+            color: #00ff00;
+            padding: 15px 25px;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+            margin: 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 1.1em;
+        }
+
+        .btn:hover {
+            background: #00ff00;
+            color: #000;
+        }
+
+        .instructions {
+            font-size: 0.9em;
+            opacity: 0.8;
+            margin-top: 20px;
+        }
+
+        .timer {
+            font-size: 1.5em;
+            color: #ffff00;
+            margin: 10px 0;
+        }
+
+        .combo {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.2em;
+            color: #ffff00;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-board">
+            <div class="score-board">
+                <div>Score: <span id="score">0</span></div>
+                <div>Level: <span id="level">1</span></div>
+                <div>Lives: <span id="lives">3</span></div>
+            </div>
+
+            <div class="timer">Time: <span id="timer">10</span>s</div>
+
+            <div class="code-display" id="codeDisplay">
+                Ready?
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress"></div>
+            </div>
+
+            <div class="buttons-grid" id="buttonsGrid">
+                <!-- Buttons will be generated by JavaScript -->
+            </div>
+
+            <div class="instructions">
+                Click the button with the SAME character shown above!
+            </div>
+        </div>
+
+        <div class="combo" id="combo" style="display: none;">
+            Combo: <span id="comboCount">0</span>
+        </div>
+    </div>
+
+    <!-- Game Over Screen -->
+    <div class="game-over" id="gameOver">
+        <h2>SYSTEM FAILED</h2>
+        <p>The Matrix detected your intrusion!</p>
+        <p>Final Score: <span id="finalScore">0</span></p>
+        <p>Highest Level: <span id="finalLevel">1</span></p>
+        <button class="btn" onclick="restartGame()">TRY AGAIN</button>
+        <a href="Matrix Hacker.html" class="btn">MAIN MENU</a>
+    </div>
+
+    <!-- Level Complete Screen -->
+    <div class="level-complete" id="levelComplete">
+        <h2>LEVEL BREACHED</h2>
+        <p>Security layer compromised!</p>
+        <p>Accessing deeper systems...</p>
+        <button class="btn" onclick="nextLevel()">CONTINUE</button>
+    </div>
+
+    <script>
+        class MatrixCodeBreaker {
+            constructor() {
+                this.score = 0;
+                this.level = 1;
+                this.lives = 3;
+                this.currentCode = '';
+                this.timeLeft = 10;
+                this.codesNeeded = 5;
+                this.codesCompleted = 0;
+                this.combo = 0;
+                this.gameRunning = false;
+                this.timer = null;
+
+                this.characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                this.buttons = [];
+
+                this.init();
+            }
+
+            init() {
+                this.createButtons();
+                this.updateDisplay();
+                this.startRound();
+            }
+
+            createButtons() {
+                const grid = document.getElementById('buttonsGrid');
+                grid.innerHTML = '';
+
+                // Create 8 buttons (2x4 grid)
+                for (let i = 0; i < 8; i++) {
+                    const btn = document.createElement('button');
+                    btn.className = 'code-btn';
+                    btn.onclick = () => this.checkAnswer(btn.textContent);
+                    grid.appendChild(btn);
+                    this.buttons.push(btn);
+                }
+            }
+
+            startRound() {
+                this.gameRunning = true;
+                this.timeLeft = Math.max(5, 12 - this.level); // Giảm thời gian theo level
+                this.generateCode();
+                this.startTimer();
+            }
+
+            generateCode() {
+                // Chọn ký tự ngẫu nhiên
+                this.currentCode = this.characters[Math.floor(Math.random() * this.characters.length)];
+                document.getElementById('codeDisplay').textContent = this.currentCode;
+
+                // Reset button states
+                this.buttons.forEach(btn => {
+                    btn.className = 'code-btn';
+                    btn.disabled = false;
+                });
+
+                // Đặt ký tự cho các nút
+                const correctPosition = Math.floor(Math.random() * 8);
+
+                for (let i = 0; i < 8; i++) {
+                    if (i === correctPosition) {
+                        this.buttons[i].textContent = this.currentCode;
+                    } else {
+                        // Tạo ký tự khác
+                        let wrongChar;
+                        do {
+                            wrongChar = this.characters[Math.floor(Math.random() * this.characters.length)];
+                        } while (wrongChar === this.currentCode);
+                        this.buttons[i].textContent = wrongChar;
+                    }
+                }
+            }
+
+            startTimer() {
+                this.timer = setInterval(() => {
+                    this.timeLeft--;
+                    document.getElementById('timer').textContent = this.timeLeft;
+
+                    if (this.timeLeft <= 0) {
+                        this.wrongAnswer();
+                    }
+                }, 1000);
+            }
+
+            checkAnswer(selectedChar) {
+                if (!this.gameRunning) return;
+
+                clearInterval(this.timer);
+
+                if (selectedChar === this.currentCode) {
+                    this.correctAnswer();
+                } else {
+                    this.wrongAnswer();
+                }
+            }
+
+            correctAnswer() {
+                // Highlight correct button
+                this.buttons.forEach(btn => {
+                    if (btn.textContent === this.currentCode) {
+                        btn.className = 'code-btn correct';
+                    }
+                    btn.disabled = true;
+                });
+
+                // Update score and combo
+                this.combo++;
+                const points = 100 * this.level * (1 + this.combo * 0.1);
+                this.score += Math.floor(points);
+                this.codesCompleted++;
+
+                // Show combo if > 1
+                if (this.combo > 1) {
+                    document.getElementById('combo').style.display = 'block';
+                    document.getElementById('comboCount').textContent = this.combo;
+                }
+
+                this.updateDisplay();
+
+                // Check level complete
+                if (this.codesCompleted >= this.codesNeeded) {
+                    setTimeout(() => this.levelComplete(), 1000);
+                } else {
+                    setTimeout(() => this.startRound(), 1500);
+                }
+            }
+
+            wrongAnswer() {
+                // Highlight wrong buttons
+                this.buttons.forEach(btn => {
+                    if (btn.textContent !== this.currentCode) {
+                        btn.className = 'code-btn wrong';
+                    } else {
+                        btn.className = 'code-btn correct';
+                    }
+                    btn.disabled = true;
+                });
+
+                this.combo = 0;
+                document.getElementById('combo').style.display = 'none';
+                this.lives--;
+
+                this.updateDisplay();
+
+                if (this.lives <= 0) {
+                    setTimeout(() => this.gameOver(), 1500);
+                } else {
+                    setTimeout(() => this.startRound(), 2000);
+                }
+            }
+
+            levelComplete() {
+                this.gameRunning = false;
+                document.getElementById('levelComplete').style.display = 'block';
+            }
+
+            nextLevel() {
+                this.level++;
+                this.codesCompleted = 0;
+                this.codesNeeded += 2; // Tăng số codes cần thiết
+                this.lives = Math.min(3, this.lives + 1); // Bonus life
+
+                document.getElementById('levelComplete').style.display = 'none';
+                this.updateDisplay();
+                this.startRound();
+            }
+
+            gameOver() {
+                this.gameRunning = false;
+                document.getElementById('finalScore').textContent = this.score;
+                document.getElementById('finalLevel').textContent = this.level;
+                document.getElementById('gameOver').style.display = 'block';
+            }
+
+            updateDisplay() {
+                document.getElementById('score').textContent = this.score;
+                document.getElementById('level').textContent = this.level;
+                document.getElementById('lives').textContent = this.lives;
+
+                const progress = (this.codesCompleted / this.codesNeeded) * 100;
+                document.getElementById('progress').style.width = progress + '%';
+            }
+        }
+
+        let game;
+
+        function startGame() {
+            game = new MatrixCodeBreaker();
+        }
+
+        function restartGame() {
+            document.getElementById('gameOver').style.display = 'none';
+            startGame();
+        }
+
+        function nextLevel() {
+            game.nextLevel();
+        }
+
+        // Start game when page loads
+        window.addEventListener('load', startGame);
+
+        // Add keyboard support
+        document.addEventListener('keydown', (e) => {
+            if (game && game.gameRunning) {
+                const key = e.key.toUpperCase();
+                if (game.characters.includes(key)) {
+                    game.checkAnswer(key);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

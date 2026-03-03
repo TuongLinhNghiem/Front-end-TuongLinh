@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Shape Speed</title>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+                font-family: Arial, sans-serif;
+                color: white;
+                min-height: 100vh;
+            }
+
+            .game-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 20px;
+            }
+
+            .hud {
+                display: flex;
+                gap: 30px;
+                margin-bottom: 20px;
+                font-size: 1.2em;
+                background: rgba(255, 255, 255, 0.1);
+                padding: 15px 30px;
+                border-radius: 20px;
+                backdrop-filter: blur(10px);
+            }
+
+            .target-area {
+                background: rgba(255, 255, 255, 0.1);
+                padding: 20px;
+                border-radius: 15px;
+                margin-bottom: 20px;
+                text-align: center;
+                backdrop-filter: blur(10px);
+            }
+
+            .target-shape {
+                width: 80px;
+                height: 80px;
+                margin: 0 auto 10px;
+                border-radius: 10px;
+            }
+
+            .game-board {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 15px;
+                margin: 20px 0;
+                max-width: 500px;
+            }
+
+            .shape-option {
+                width: 100px;
+                height: 100px;
+                background: rgba(255, 255, 255, 0.2);
+                backdrop-filter: blur(10px);
+                border: 3px solid rgba(255, 255, 255, 0.3);
+                cursor: pointer;
+                transition: all 0.2s ease;
+                border-radius: 10px;
+                position: relative;
+            }
+
+            .shape-option:hover {
+                transform: scale(1.05);
+                background: rgba(255, 255, 255, 0.3);
+            }
+
+            .shape-option.correct {
+                background: rgba(0, 255, 0, 0.6);
+                border-color: #00ff00;
+                animation: correctFlash 0.3s;
+            }
+
+            .shape-option.wrong {
+                background: rgba(255, 0, 0, 0.6);
+                border-color: #ff0000;
+                animation: wrongShake 0.3s;
+            }
+
+            /* Shape styles - same as memory game */
+            .circle {
+                border-radius: 50%;
+                background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            }
+
+            .square {
+                background: linear-gradient(45deg, #4834d4, #686de0);
+            }
+
+            .triangle {
+                background: linear-gradient(45deg, #00d2d3, #54a0ff);
+                clip-path: polygon(50% 10%, 10% 90%, 90% 90%);
+            }
+
+            .diamond {
+                background: linear-gradient(45deg, #ff9ff3, #f368e0);
+                clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            }
+
+            .star {
+                background: linear-gradient(45deg, #feca57, #ff9f43);
+                clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            }
+
+            .hexagon {
+                background: linear-gradient(45deg, #5f27cd, #341f97);
+                clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+            }
+
+            @keyframes correctFlash {
+
+                0%,
+                100% {
+                    opacity: 1;
+                }
+
+                50% {
+                    opacity: 0.7;
+                }
+            }
+
+            @keyframes wrongShake {
+
+                0%,
+                100% {
+                    transform: translateX(0);
+                }
+
+                25% {
+                    transform: translateX(-5px);
+                }
+
+                75% {
+                    transform: translateX(5px);
+                }
+            }
+
+            .timer-bar {
+                width: 300px;
+                height: 20px;
+                background: rgba(255, 255, 255, 0.2);
+                border-radius: 10px;
+                overflow: hidden;
+                margin: 20px 0;
+            }
+
+            .timer-fill {
+                height: 100%;
+                background: linear-gradient(90deg, #00ff00, #ffff00, #ff0000);
+                width: 100%;
+                transition: width 0.1s linear;
+            }
+
+            .status {
+                font-size: 1.3em;
+                margin: 15px 0;
+                text-align: center;
+                min-height: 30px;
+            }
+
+            .btn {
+                background: rgba(255, 255, 255, 0.2);
+                border: 2px solid rgba(255, 255, 255, 0.5);
+                color: white;
+                padding: 12px 25px;
+                font-size: 1em;
+                cursor: pointer;
+                border-radius: 25px;
+                transition: all 0.3s ease;
+                text-decoration: none;
+                display: inline-block;
+                margin: 5px;
+            }
+
+            .btn:hover {
+                background: rgba(255, 255, 255, 0.3);
+                transform: translateY(-2px);
+            }
+
+            .game-over {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(0, 0, 0, 0.9);
+                padding: 40px;
+                border-radius: 20px;
+                text-align: center;
+                display: none;
+                z-index: 1000;
+                border: 2px solid rgba(255, 255, 255, 0.3);
+            }
+
+            .combo-display {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                background: rgba(255, 215, 0, 0.2);
+                padding: 10px 20px;
+                border-radius: 15px;
+                font-size: 1.1em;
+                border: 2px solid #ffd700;
+                display: none;
+            }
+
+            .speed-boost {
+                animation: speedPulse 0.5s infinite;
+            }
+
+            @keyframes speedPulse {
+
+                0%,
+                100% {
+                    transform: scale(1);
+                }
+
+                50% {
+                    transform: scale(1.1);
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="game-container">
+            <h1>⚡ Shape Speed Challenge</h1>
+
+            <div class="hud">
+                <div>Score: <span id="score">0</span></div>
+                <div>Level: <span id="level">1</span></div>
+                <div>Streak: <span id="streak">0</span></div>
+            </div>
+
+            <div class="combo-display" id="comboDisplay">
+                COMBO x<span id="comboMultiplier">1</span>
+            </div>
+
+            <div class="target-area">
+                <div>Find this shape:</div>
+                <div class="target-shape" id="targetShape"></div>
+                <div id="targetName">Circle</div>
+            </div>
+
+            <div class="timer-bar">
+                <div class="timer-fill" id="timerFill"></div>
+            </div>
+
+            <div class="status" id="status">Click START to begin!</div>
+
+            <div class="game-board" id="gameBoard">
+                <!-- Shapes will be generated by JavaScript -->
+            </div>
+
+            <div class="controls">
+                <button class="btn" id="startBtn" onclick="startGame()">▶️ Start Game</button>
+                <button class="btn" onclick="pauseGame()" id="pauseBtn" disabled>⏸️ Pause</button>
+                <a href="Shape Matcher.html" class="btn">🏠 Menu</a>
+            </div>
+
+            <div class="game-over" id="gameOver">
+                <h2>⚡ Speed Challenge Complete!</h2>
+                <p>Final Score: <span id="finalScore">0</span></p>
+                <p>Best Streak: <span id="bestStreak">0</span></p>
+                <p>Level Reached: <span id="finalLevel">1</span></p>
+                <button class="btn" onclick="restartGame()">Play Again</button>
+                <a href="Shape Matcher.html" class="btn">Main Menu</a>
+            </div>
+        </div>
+
+        <script>
+            class ShapeSpeedGame {
+                constructor() {
+                    this.score = 0;
+                    this.level = 1;
+                    this.streak = 0;
+                    this.bestStreak = 0;
+                    this.timeLeft = 100;
+                    this.gameActive = false;
+                    this.paused = false;
+                    this.roundTime = 5000; // 5 seconds per round
+                    this.combo = 1;
+
+                    this.shapes = [
+                        { name: 'circle', class: 'circle', display: 'Circle' },
+                        { name: 'square', class: 'square', display: 'Square' },
+                        { name: 'triangle', class: 'triangle', display: 'Triangle' },
+                        { name: 'diamond', class: 'diamond', display: 'Diamond' },
+                        { name: 'star', class: 'star', display: 'Star' },
+                        { name: 'hexagon', class: 'hexagon', display: 'Hexagon' }
+                    ];
+
+                    this.currentTarget = null;
+                    this.timer = null;
+                    this.roundTimer = null;
+                }
+
+                startGame() {
+                    this.gameActive = true;
+                    this.paused = false;
+                    this.score = 0;
+                    this.level = 1;
+                    this.streak = 0;
+                    this.combo = 1;
+                    this.timeLeft = 100;
+
+                    document.getElementById('startBtn').disabled = true;
+                    document.getElementById('pauseBtn').disabled = false;
+
+                    this.updateHUD();
+                    this.nextRound();
+                }
+
+                nextRound() {
+                    if (!this.gameActive) return;
+
+                    this.generateTarget();
+                    this.generateOptions();
+                    this.startTimer();
+
+                    document.getElementById('status').textContent = 'Find the matching shape!';
+                }
+
+                generateTarget() {
+                    this.currentTarget = this.shapes[Math.floor(Math.random() * this.shapes.length)];
+
+                    const targetElement = document.getElementById('targetShape');
+                    targetElement.className = `target-shape ${this.currentTarget.class}`;
+                    document.getElementById('targetName').textContent = this.currentTarget.display;
+                }
+
+                generateOptions() {
+                    const board = document.getElementById('gameBoard');
+                    board.innerHTML = '';
+
+                    // Determine number of options based on level
+                    const optionCount = Math.min(12, 4 + Math.floor(this.level / 2));
+
+                    // Ensure target is included
+                    const options = [this.currentTarget];
+
+                    // Add random shapes
+                    while (options.length < optionCount) {
+                        const randomShape = this.shapes[Math.floor(Math.random() * this.shapes.length)];
+                        options.push(randomShape);
+                    }
+
+                    // Shuffle options
+                    for (let i = options.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [options[i], options[j]] = [options[j], options[i]];
+                    }
+
+                    // Create option elements
+                    options.forEach(shape => {
+                        const option = document.createElement('div');
+                        option.className = `shape-option ${shape.class}`;
+                        option.dataset.shape = shape.name;
+                        option.addEventListener('click', () => this.handleShapeClick(shape.name));
+                        board.appendChild(option);
+                    });
+                }
+
+                handleShapeClick(shapeName) {
+                    if (!this.gameActive || this.paused) return;
+
+                    const clickedElement = document.querySelector(`[data-shape="${shapeName}"]`);
+
+                    if (shapeName === this.currentTarget.name) {
+                        // Correct answer
+                        clickedElement.classList.add('correct');
+                        this.correctAnswer();
+                    } else {
+                        // Wrong answer
+                        clickedElement.classList.add('wrong');
+                        this.wrongAnswer();
+                    }
+                }
+
+                correctAnswer() {
+                    this.streak++;
+                    this.bestStreak = Math.max(this.bestStreak, this.streak);
+
+                    // Calculate score with combo multiplier
+                    const baseScore = 100 * this.level;
+                    const timeBonus = Math.floor(this.timeLeft);
+                    this.combo = Math.min(5, 1 + Math.floor(this.streak / 3));
+
+                    const totalScore = (baseScore + timeBonus) * this.combo;
+                    this.score += totalScore;
+
+                    // Show combo if > 1
+                    if (this.combo > 1) {
+                        document.getElementById('comboDisplay').style.display = 'block';
+                        document.getElementById('comboMultiplier').textContent = this.combo;
+                    } else {
+                        document.getElementById('comboDisplay').style.display = 'none';
+                    }
+
+                    this.updateHUD();
+
+                    // Check level up
+                    if (this.streak > 0 && this.streak % 10 === 0) {
+                        this.levelUp();
+                    }
+
+                    clearInterval(this.roundTimer);
+
+                    setTimeout(() => {
+                        this.nextRound();
+                    }, 500);
+                }
+
+                wrongAnswer() {
+                    this.streak = 0;
+                    this.combo = 1;
+                    document.getElementById('comboDisplay').style.display = 'none';
+
+                    // Lose some time
+                    this.timeLeft = Math.max(0, this.timeLeft - 20);
+
+                    if (this.timeLeft <= 0) {
+                        this.gameOver();
+                        return;
+                    }
+
+                    this.updateHUD();
+
+                    clearInterval(this.roundTimer);
+
+                    setTimeout(() => {
+                        this.nextRound();
+                    }, 800);
+                }
+
+                levelUp() {
+                    this.level++;
+                    this.timeLeft = Math.min(100, this.timeLeft + 30); // Bonus time
+                    this.roundTime = Math.max(2000, this.roundTime - 200); // Faster rounds
+
+                    document.getElementById('status').textContent = `LEVEL UP! Level ${this.level}`;
+
+                    // Add speed boost effect
+                    document.querySelector('.game-container').classList.add('speed-boost');
+                    setTimeout(() => {
+                        document.querySelector('.game-container').classList.remove('speed-boost');
+                    }, 1000);
+                }
+
+                startTimer() {
+                    clearInterval(this.roundTimer);
+
+                    const startTime = Date.now();
+                    const duration = this.roundTime;
+
+                    this.roundTimer = setInterval(() => {
+                        if (this.paused) return;
+
+                        const elapsed = Date.now() - startTime;
+                        const remaining = Math.max(0, duration - elapsed);
+                        const percentage = (remaining / duration) * 100;
+
+                        document.getElementById('timerFill').style.width = percentage + '%';
+
+                        if (remaining <= 0) {
+                            this.timeOut();
+                        }
+                    }, 50);
+                }
+
+                timeOut() {
+                    this.timeLeft -= 10;
+                    this.streak = 0;
+                    this.combo = 1;
+                    document.getElementById('comboDisplay').style.display = 'none';
+
+                    if (this.timeLeft <= 0) {
+                        this.gameOver();
+                        return;
+                    }
+
+                    document.getElementById('status').textContent = 'Too slow! Try faster!';
+                    this.updateHUD();
+
+                    clearInterval(this.roundTimer);
+
+                    setTimeout(() => {
+                        this.nextRound();
+                    }, 1000);
+                }
+
+                pauseGame() {
+                    this.paused = !this.paused;
+                    const btn = document.getElementById('pauseBtn');
+
+                    if (this.paused) {
+                        btn.textContent = '▶️ Resume';
+                        document.getElementById('status').textContent = 'Game Paused';
+                    } else {
+                        btn.textContent = '⏸️ Pause';
+                        document.getElementById('status').textContent = 'Find the matching shape!';
+                    }
+                }
+
+                updateHUD() {
+                    document.getElementById('score').textContent = this.score;
+                    document.getElementById('level').textContent = this.level;
+                    document.getElementById('streak').textContent = this.streak;
+                }
+
+                gameOver() {
+                    this.gameActive = false;
+                    clearInterval(this.roundTimer);
+
+                    document.getElementById('finalScore').textContent = this.score;
+                    document.getElementById('bestStreak').textContent = this.bestStreak;
+                    document.getElementById('finalLevel').textContent = this.level;
+                    document.getElementById('gameOver').style.display = 'block';
+                }
+
+                restart() {
+                    this.gameActive = false;
+                    this.paused = false;
+                    clearInterval(this.roundTimer);
+
+                    document.getElementById('startBtn').disabled = false;
+                    document.getElementById('pauseBtn').disabled = true;
+                    document.getElementById('pauseBtn').textContent = '⏸️ Pause';
+                    document.getElementById('gameOver').style.display = 'none';
+                    document.getElementById('comboDisplay').style.display = 'none';
+                    document.getElementById('status').textContent = 'Click START to begin!';
+                    document.getElementById('gameBoard').innerHTML = '';
+                    document.getElementById('timerFill').style.width = '100%';
+                }
+            }
+
+            let game = new ShapeSpeedGame();
+
+            function startGame() {
+                game.startGame();
+            }
+
+            function pauseGame() {
+                game.pauseGame();
+            }
+
+            function restartGame() {
+                game.restart();
+            }
+        </script>
+    </body>
+
+</html>
