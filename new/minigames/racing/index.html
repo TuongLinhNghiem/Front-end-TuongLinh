@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Racing</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+        .game-container { text-align: center; }
+        h1 { font-size: 3rem; margin-bottom: 20px; }
+        button {
+            background: white;
+            color: #ff6b6b;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>\ud83c\udfce\ufe0f Racing</h1>
+        <p>Placeholder for Racing mini-game</p>
+        <button onclick="completeGame()">Complete Game</button>
+    </div>
+    <script>
+        function completeGame() {
+            window.parent.postMessage({
+                type: 'game_complete',
+                data: { score: 180, won: true, time: 45 }
+            }, '*');
+        }
+        window.addEventListener('message', (e) => {
+            if (e.data.type === 'set_data') console.log('Data:', e.data);
+        });
+        window.parent.postMessage({ type: 'game_ready' }, '*');
+    </script>
+</body>
+</html>

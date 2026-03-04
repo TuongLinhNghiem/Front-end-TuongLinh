@@ -15,6 +15,10 @@ class MinigameLoader {
         this.overlay = document.getElementById('minigame-overlay');
         this.iframe = document.getElementById('minigame-frame');
         this.closeButton = document.getElementById('minigame-close');
+
+        if (!this.overlay || !this.iframe || !this.closeButton) {
+            console.error('MinigameLoader: overlay, iframe or close button not found!');
+        }
         
         this.currentGame = null;
         this.onCompleteCallback = null;
@@ -70,6 +74,12 @@ class MinigameLoader {
      * Close the mini-game and return to story
      */
     closeMinigame() {
+
+        if (!this.currentGame) {
+            console.warn("No minigame running — ignore close");
+            return;
+        }
+
         console.log('Closing mini-game:', this.currentGame);
         
         // Clear iframe

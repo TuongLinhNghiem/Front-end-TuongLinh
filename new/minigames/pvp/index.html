@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PvP</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+        .game-container { text-align: center; }
+        h1 { font-size: 3rem; margin-bottom: 20px; }
+        button {
+            background: white;
+            color: #4facfe;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>\u2694\ufe0f PvP</h1>
+        <p>Placeholder for PvP mini-game</p>
+        <button onclick="completeGame()">Complete Game</button>
+    </div>
+    <script>
+        function completeGame() {
+            window.parent.postMessage({
+                type: 'game_complete',
+                data: { score: 150, won: true }
+            }, '*');
+        }
+        window.addEventListener('message', (e) => {
+            if (e.data.type === 'set_data') console.log('Data:', e.data);
+        });
+        window.parent.postMessage({ type: 'game_ready' }, '*');
+    </script>
+</body>
+</html>

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shape Memory</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            font-family: Arial, sans-serif;
+            color: white;
+            min-height: 100vh;
+        }
+
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .hud {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+            font-size: 1.2em;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .shape-btn {
+            width: 120px;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            border-radius: 10px;
+        }
+
+        .shape-btn:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .shape-btn.active {
+            background: rgba(255, 255, 0, 0.6);
+            border-color: #ffff00;
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.5);
+        }
+
+        .shape-btn.correct {
+            background: rgba(0, 255, 0, 0.6);
+            border-color: #00ff00;
+            animation: correctPulse 0.5s;
+        }
+
+        .shape-btn.wrong {
+            background: rgba(255, 0, 0, 0.6);
+            border-color: #ff0000;
+            animation: wrongShake 0.5s;
+        }
+
+        .shape-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Shape styles */
+        .circle {
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+        }
+
+        .square {
+            background: linear-gradient(45deg, #4834d4, #686de0);
+        }
+
+        .triangle {
+            background: linear-gradient(45deg, #00d2d3, #54a0ff);
+            clip-path: polygon(50% 10%, 10% 90%, 90% 90%);
+        }
+
+        .diamond {
+            background: linear-gradient(45deg, #ff9ff3, #f368e0);
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+        }
+
+        .star {
+            background: linear-gradient(45deg, #feca57, #ff9f43);
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+        }
+
+        .hexagon {
+            background: linear-gradient(45deg, #5f27cd, #341f97);
+            clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+        }
+
+        @keyframes correctPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        @keyframes wrongShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .status {
+            font-size: 1.5em;
+            margin: 20px 0;
+            text-align: center;
+            min-height: 40px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            color: white;
+            padding: 12px 25px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .game-over {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            display: none;
+            z-index: 1000;
+        }
+
+        .sequence-display {
+            margin: 20px 0;
+            font-size: 1.1em;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>🧠 Shape Memory Challenge</h1>
+
+        <div class="hud">
+            <div>Level: <span id="level">1</span></div>
+            <div>Score: <span id="score">0</span></div>
+            <div>Lives: <span id="lives">3</span></div>
+        </div>
+
+        <div class="status" id="status">Watch the sequence carefully!</div>
+
+        <div class="sequence-display" id="sequenceDisplay">
+            Sequence length: <span id="sequenceLength">3</span>
+        </div>
+
+        <div class="game-board" id="gameBoard">
+            <div class="shape-btn circle" data-shape="circle"></div>
+            <div class="shape-btn square" data-shape="square"></div>
+            <div class="shape-btn triangle" data-shape="triangle"></div>
+            <div class="shape-btn diamond" data-shape="diamond"></div>
+            <div class="shape-btn star" data-shape="star"></div>
+            <div class="shape-btn hexagon" data-shape="hexagon"></div>
+        </div>
+
+        <div class="controls">
+            <button class="btn" id="startBtn" onclick="startGame()">▶️ Start Game</button>
+            <button class="btn" id="replayBtn" onclick="replaySequence()" disabled>🔄 Replay</button>
+            <a href="Shape Matcher.html" class="btn">🏠 Menu</a>
+        </div>
+
+        <div class="game-over" id="gameOver">
+            <h2>Game Over!</h2>
+            <p>Final Score: <span id="finalScore">0</span></p>
+            <p>Level Reached: <span id="finalLevel">1</span></p>
+            <button class="btn" onclick="restartGame()">Play Again</button>
+            <a href="Shape Matcher.html" class="btn">Main Menu</a>
+        </div>
+    </div>
+
+    <script>
+        class ShapeMemoryGame {
+            constructor() {
+                this.level = 1;
+                this.score = 0;
+                this.lives = 3;
+                this.sequence = [];
+                this.playerSequence = [];
+                this.gameActive = false;
+                this.showingSequence = false;
+                this.sequenceLength = 3;
+
+                this.shapes = ['circle', 'square', 'triangle', 'diamond', 'star', 'hexagon'];
+                this.shapeBtns = document.querySelectorAll('.shape-btn');
+
+                this.setupEventListeners();
+            }
+
+            setupEventListeners() {
+                this.shapeBtns.forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        if (this.gameActive && !this.showingSequence) {
+                            this.handleShapeClick(e.target.dataset.shape);
+                        }
+                    });
+                });
+            }
+
+            startGame() {
+                this.gameActive = true;
+                this.generateSequence();
+                this.showSequence();
+
+                document.getElementById('startBtn').disabled = true;
+                document.getElementById('replayBtn').disabled = false;
+                document.getElementById('status').textContent = 'Watch carefully...';
+            }
+
+            generateSequence() {
+                this.sequence = [];
+                for (let i = 0; i < this.sequenceLength; i++) {
+                    const randomShape = this.shapes[Math.floor(Math.random() * this.shapes.length)];
+                    this.sequence.push(randomShape);
+                }
+                console.log('Generated sequence:', this.sequence);
+            }
+
+            async showSequence() {
+                this.showingSequence = true;
+                this.disableAllShapes();
+
+                await this.delay(1000);
+
+                for (let i = 0; i < this.sequence.length; i++) {
+                    const shape = this.sequence[i];
+                    this.highlightShape(shape);
+                    await this.delay(800);
+                    this.unhighlightShape(shape);
+                    await this.delay(300);
+                }
+
+                this.showingSequence = false;
+                this.enableAllShapes();
+                this.playerSequence = [];
+                document.getElementById('status').textContent = 'Now repeat the sequence!';
+            }
+
+            highlightShape(shape) {
+                const btn = document.querySelector(`[data-shape="${shape}"]`);
+                btn.classList.add('active');
+            }
+
+            unhighlightShape(shape) {
+                const btn = document.querySelector(`[data-shape="${shape}"]`);
+                btn.classList.remove('active');
+            }
+
+            handleShapeClick(shape) {
+                this.playerSequence.push(shape);
+
+                const currentIndex = this.playerSequence.length - 1;
+                const btn = document.querySelector(`[data-shape="${shape}"]`);
+
+                if (this.playerSequence[currentIndex] === this.sequence[currentIndex]) {
+                    // Correct
+                    btn.classList.add('correct');
+                    setTimeout(() => btn.classList.remove('correct'), 300);
+
+                    if (this.playerSequence.length === this.sequence.length) {
+                        // Sequence complete
+                        this.sequenceComplete();
+                    }
+                } else {
+                    // Wrong
+                    btn.classList.add('wrong');
+                    setTimeout(() => btn.classList.remove('wrong'), 500);
+                    this.wrongAnswer();
+                }
+            }
+
+            sequenceComplete() {
+                this.score += this.level * 100;
+                this.level++;
+                this.sequenceLength = Math.min(8, 2 + this.level);
+
+                document.getElementById('status').textContent = 'Perfect! Get ready for next level...';
+                this.updateHUD();
+
+                setTimeout(() => {
+                    this.generateSequence();
+                    this.showSequence();
+                }, 2000);
+            }
+
+            wrongAnswer() {
+                this.lives--;
+                this.updateHUD();
+
+                if (this.lives <= 0) {
+                    this.gameOver();
+                } else {
+                    document.getElementById('status').textContent = `Wrong! ${this.lives} lives left. Try again...`;
+                    setTimeout(() => {
+                        this.showSequence();
+                    }, 2000);
+                }
+            }
+
+            replaySequence() {
+                if (this.gameActive && !this.showingSequence) {
+                    this.showSequence();
+                }
+            }
+
+            disableAllShapes() {
+                this.shapeBtns.forEach(btn => {
+                    btn.classList.add('disabled');
+                });
+            }
+
+            enableAllShapes() {
+                this.shapeBtns.forEach(btn => {
+                    btn.classList.remove('disabled');
+                });
+            }
+
+            updateHUD() {
+                document.getElementById('level').textContent = this.level;
+                document.getElementById('score').textContent = this.score;
+                document.getElementById('lives').textContent = this.lives;
+                document.getElementById('sequenceLength').textContent = this.sequenceLength;
+            }
+
+            gameOver() {
+                this.gameActive = false;
+                document.getElementById('finalScore').textContent = this.score;
+                document.getElementById('finalLevel').textContent = this.level;
+                document.getElementById('gameOver').style.display = 'block';
+            }
+
+            delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+
+            restart() {
+                this.level = 1;
+                this.score = 0;
+                this.lives = 3;
+                this.sequence = [];
+                this.playerSequence = [];
+                this.gameActive = false;
+                this.showingSequence = false;
+                this.sequenceLength = 3;
+
+                this.updateHUD();
+                document.getElementById('startBtn').disabled = false;
+                document.getElementById('replayBtn').disabled = true;
+                document.getElementById('status').textContent = 'Watch the sequence carefully!';
+                document.getElementById('gameOver').style.display = 'none';
+
+                this.shapeBtns.forEach(btn => {
+                    btn.classList.remove('active', 'correct', 'wrong', 'disabled');
+                });
+            }
+        }
+
+        let game = new ShapeMemoryGame();
+
+        function startGame() {
+            game.startGame();
+        }
+
+        function replaySequence() {
+            game.replaySequence();
+        }
+
+        function restartGame() {
+            game.restart();
+        }
+    </script>
+</body>
+</html>
