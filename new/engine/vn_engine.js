@@ -9,7 +9,7 @@
  * loads story data, and executes commands
  */
 
-export class VNEngine {
+class VNEngine {
     constructor() {
         // Game state
         this.state = {
@@ -707,9 +707,13 @@ export class VNEngine {
 }
 
 // Create global engine instance
-window.vnEngine = new VNEngine();
+const vnEngine = new VNEngine();
 
-window.addEventListener('DOMContentLoaded', () => {
+// Start engine when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('Hoai Niem VN Engine ready');
+    });
+} else {
     console.log('Hoai Niem VN Engine ready');
-    window.vnEngine = new VNEngine();
-});
+}
