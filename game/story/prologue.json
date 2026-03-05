@@ -1,0 +1,269 @@
+
+{
+  "arc_name": "prologue",
+  "arc_title": "Prologue: A New Beginning",
+  "scenes": [
+    {
+      "scene_id": "intro",
+      "commands": [
+        {
+          "type": "background",
+          "image": "school_morning",
+          "transition": "fade"
+        },
+        {
+          "type": "dialogue",
+          "speaker": "Narrator",
+          "text": "The morning sun casts long shadows across the school courtyard as a new day begins."
+        },
+        {
+          "type": "dialogue",
+          "speaker": "Narrator",
+          "text": "This is {player_name}'s first day at the prestigious Sakura Academy."
+        },
+        {
+          "type": "show",
+          "character": "hoai",
+          "expression": "happy",
+          "position": "left"
+        },
+        {
+          "type": "dialogue",
+          "speaker": "{player_name}",
+          "text": "I've been waiting for this moment for so long. Today, everything changes."
+        },
+        {
+          "type": "dialogue",
+          "speaker": "{player_name}",
+          "text": "I hope {target_name} is also attending this academy. It's been too long since we last met."
+        }
+      ]
+    },
+    {
+      "scene_id": "meeting",
+      "commands": [
+        {
+          "type": "background",
+          "image": "school_hallway",
+          "transition": "fade"
+        },
+        {
+          "type": "show",
+          "character": "hoai",
+          "expression": "neutral",
+          "position": "left"
+        },
+        {
+          "type": "dialogue",
+          "speaker": "{player_name}",
+          "text": "The hallway is so crowded... Where could {target_name} be?"
+        },
+        {
+          "type": "show",
+          "character": "niem",
+          "expression": "surprised",
+          "position": "right"
+        },
+        {
+          "type": "dialogue",
+          "speaker": "Niem",
+          "text": "{player_name}?! Is that really you?"
+        },
+        {
+          "type": "dialogue",
+          "speaker": "{player_name}",
+          "text": "{target_name}! I can't believe it's really you!"
+        },
+        {
+          "type": "dialogue",
+          "speaker": "Niem",
+          "text": "It's been what... three years? You've changed so much!"
+        },
+        {
+          "type": "show",
+          "character": "hoai",
+          "expression": "happy",
+          "position": "left"
+        },
+        {
+          "type": "dialogue",
+          "speaker": "{player_name}",
+          "text": "You too! I'm so glad we both made it into Sakura Academy."
+        }
+      ]
+    },
+    {
+      "scene_id": "choice",
+      "commands": [
+        {
+          "type": "dialogue",
+          "speaker": "Niem",
+          "text": "I have some free time before classes start. Want to do something together?"
+        },
+        {
+          "type": "choice",
+          "options": [
+            {
+              "label": "option1",
+              "text": "Play a game together!",
+              "jump": "play_egg_catcher"
+            },
+            {
+              "label": "option2",
+              "text": "Take a walk around the school",
+              "jump": "take_walk"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene_id": "play_egg_catcher",
+      "commands": [
+        {
+          "type": "dialogue",
+          "speaker": "{player_name}",
+          "text": "I remember how much you loved the Egg Catcher game! Want to play?"
+        },
+        {
+          "type": "dialogue",
+          "speaker": "Niem",
+          "text": "Oh yes! I haven't played that in ages. Let's see who can get the higher score!"
+        },
+        {
+          "type": "minigame",
+          "game": "egg_catcher",
+          "onComplete": "after_egg_catcher"
+        }
+      ]
+    },
+    {
+      "scene_id": "take_walk",
+      "commands": [
+        {
+          "type": "background",
+          "image": "school_garden",
+          "transition": "fade"
+        },
+        {
+          "type": "show",
+          "character": "hoai",
+          "expression": "happy",
+          "position": "left"
+        },
+        {
+          "type": "show",
+          "character": "niem",
+          "expression": "happy",
+          "position": "right"
+        },
+        {
+          "type": "dialogue",
+          "speaker": "Niem",
+          "text": "The school garden is beautiful this time of year."
+        },
+        {
+          "type": "dialogue",
+          "speaker": "{player_name}",
+          "text": "It really is. It feels peaceful here."
+        },
+        {
+          "type": "dialogue",
+          "speaker": "Niem",
+          "text": "I'm so happy we could reconnect. I was worried we might never see each other again."
+        },
+        {
+          "type": "dialogue",
+          "speaker": "{player_name}",
+          "text": "Me too, {target_name}. But fate brought us together again."
+        }
+      ]
+    },
+    {
+      "scene_id": "after_egg_catcher",
+      "commands": [
+        {
+          "type": "background",
+          "image": "school_garden",
+          "transition": "fade"
+        },
+        {
+          "type": "show",
+          "character": "hoai",
+          "expression": "excited",
+          "position": "left"
+        },
+        {
+          "type": "show",
+          "character": "niem",
+          "expression": "excited",
+          "position": "right"
+        },
+        {
+          "type": "dialogue",
+          "speaker": "Niem",
+          "text": "Wow, that was so much fun! You've gotten really good at it!"
+        },
+        {
+          "type": "dialogue",
+          "speaker": "{player_name}",
+          "text": "I had a great teacher back then, remember? But you gave me quite a challenge!"
+        },
+        {
+          "type": "setvar",
+          "name": "bond_level",
+          "value": 10
+        },
+        {
+          "type": "dialogue",
+          "speaker": "Niem",
+          "text": "This day turned out better than I could have imagined."
+        },
+        {
+          "type": "jump",
+          "arc": "chapter1"
+        }
+      ]
+    },
+    {
+      "scene_id": "farewell",
+      "commands": [
+        {
+          "type": "show",
+          "character": "hoai",
+          "expression": "neutral",
+          "position": "left"
+        },
+        {
+          "type": "dialogue",
+          "speaker": "{player_name}",
+          "text": "We should head to class before we're late."
+        },
+        {
+          "type": "dialogue",
+          "speaker": "Niem",
+          "text": "You're right. Let's meet again during lunch break!"
+        },
+        {
+          "type": "hide",
+          "character": "niem",
+          "transition": "fade"
+        },
+        {
+          "type": "dialogue",
+          "speaker": "Narrator",
+          "text": "As {player_name} watched {target_name} walk away, a sense of anticipation filled the air."
+        },
+        {
+          "type": "dialogue",
+          "speaker": "Narrator",
+          "text": "This was only the beginning of their story at Sakura Academy..."
+        },
+        {
+          "type": "jump",
+          "arc": "chapter1"
+        }
+      ]
+    }
+  ]
+}

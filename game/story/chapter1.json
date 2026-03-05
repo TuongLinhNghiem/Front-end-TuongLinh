@@ -1,0 +1,180 @@
+
+{
+  "arc_name": "chapter1",
+  "arc_title": "Chapter 1: School Days",
+  "scenes": [
+    {
+      "scene_id": "morning_class",
+      "commands": [
+        {
+          "type": "background",
+          "image": "classroom_morning",
+          "transition": "fade"
+        },
+        {
+          "type": "dialogue",
+          "speaker": "Narrator",
+          "text": "The first class of the day begins. The classroom is filled with the murmur of students chatting."
+        },
+        {
+          "type": "dialogue",
+          "speaker": "{player_name}",
+          "text": "This place feels different from my old school. Everyone seems so focused."
+        },
+        {
+          "type": "show",
+          "character": "niem",
+          "expression": "happy",
+          "position": "right"
+        },
+        {
+          "type": "dialogue",
+          "speaker": "Niem",
+          "text": "Hey {player_name}! Want to sit together?"
+        },
+        {
+          "type": "dialogue",
+          "speaker": "{player_name}",
+          "text": "Absolutely! Let's sit in the back row."
+        }
+      ]
+    },
+    {
+      "scene_id": "lunch_break",
+      "commands": [
+        {
+          "type": "background",
+          "image": "school_cafeteria",
+          "transition": "fade"
+        },
+        {
+          "type": "show",
+          "character": "hoai",
+          "expression": "happy",
+          "position": "left"
+        },
+        {
+          "type": "show",
+          "character": "niem",
+          "expression": "happy",
+          "position": "right"
+        },
+        {
+          "type": "dialogue",
+          "speaker": "Niem",
+          "text": "The cafeteria food here is actually pretty good!"
+        },
+        {
+          "type": "dialogue",
+          "speaker": "{player_name}",
+          "text": "I'll take your word for it. What's on the menu today?"
+        },
+        {
+          "type": "dialogue",
+          "speaker": "Niem",
+          "text": "They have that special curry everyone talks about. Want to try it?"
+        },
+        {
+          "type": "choice",
+          "options": [
+            {
+              "label": "eat_curry",
+              "text": "Sure, let's try the curry!",
+              "jump": "eat_cafe"
+            },
+            {
+              "label": "skip_food",
+              "text": "Maybe I'll pass for now...",
+              "jump": "skip_cafe"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene_id": "eat_cafe",
+      "commands": [
+        {
+          "type": "dialogue",
+          "speaker": "{player_name}",
+          "text": "Alright, I'm feeling adventurous today. Let's do it!"
+        },
+        {
+          "type": "dialogue",
+          "speaker": "Niem",
+          "text": "That's the spirit! I'll get us both a bowl."
+        },
+        {
+          "type": "dialogue",
+          "speaker": "{player_name}",
+          "text": "This actually tastes amazing!"
+        },
+        {
+          "type": "setvar",
+          "name": "has_tried_curry",
+          "value": true
+        }
+      ]
+    },
+    {
+      "scene_id": "skip_cafe",
+      "commands": [
+        {
+          "type": "dialogue",
+          "speaker": "{player_name}",
+          "text": "I think I'll wait for dinner. Not very hungry right now."
+        },
+        {
+          "type": "dialogue",
+          "speaker": "Niem",
+          "text": "No problem! More for me then!"
+        }
+      ]
+    },
+    {
+      "scene_id": "afternoon",
+      "commands": [
+        {
+          "type": "background",
+          "image": "school_rooftop",
+          "transition": "fade"
+        },
+        {
+          "type": "dialogue",
+          "speaker": "Narrator",
+          "text": "After classes, {player_name} heads to the rooftop to get some fresh air."
+        },
+        {
+          "type": "show",
+          "character": "hoai",
+          "expression": "thoughtful",
+          "position": "left"
+        },
+        {
+          "type": "dialogue",
+          "speaker": "{player_name}",
+          "text": "First day at Sakura Academy... It's been quite eventful."
+        },
+        {
+          "type": "dialogue",
+          "speaker": "{player_name}",
+          "text": "I wonder what tomorrow will bring."
+        },
+        {
+          "type": "dialogue",
+          "speaker": "Narrator",
+          "text": "The sun begins to set, casting a warm orange glow over the horizon."
+        },
+        {
+          "type": "dialogue",
+          "speaker": "Narrator",
+          "text": "A new chapter in {player_name}'s life has only just begun..."
+        },
+        {
+          "type": "jump",
+          "arc": "chapter2"
+        }
+      ]
+    }
+  ]
+}
