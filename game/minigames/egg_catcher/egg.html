@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Egg Catcher - Game</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(180deg, #87CEEB 0%, #98FB98 100%);
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        .game-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .hud {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .hud div {
+            margin: 5px 0;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .game-area {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .basket {
+            position: absolute;
+            bottom: 50px;
+            width: 80px;
+            height: 40px;
+            background: #8B4513;
+            border-radius: 0 0 40px 40px;
+            border: 3px solid #654321;
+            transition: left 0.1s ease;
+            z-index: 50;
+        }
+
+        .basket::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            height: 10px;
+            background: #8B4513;
+            border-radius: 10px;
+        }
+
+        .egg {
+            position: absolute;
+            width: 30px;
+            height: 40px;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            animation: fall linear;
+            font-size: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .egg.normal {
+            background: white;
+            border: 2px solid #ddd;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .egg.golden {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            border: 2px solid #FF8C00;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+            animation: fall linear, sparkle 0.5s infinite;
+        }
+
+        .egg.broken {
+            background: #8B4513;
+            border: 2px solid #654321;
+        }
+
+        @keyframes fall {
+            from { top: -50px; }
+            to { top: 100vh; }
+        }
+
+        @keyframes sparkle {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .score-popup {
+            position: absolute;
+            font-size: 1.5em;
+            font-weight: bold;
+            pointer-events: none;
+            animation: scoreFloat 1s ease-out forwards;
+            z-index: 200;
+        }
+
+        .score-popup.positive {
+            color: #00ff00;
+        }
+
+        .score-popup.negative {
+            color: #ff0000;
+        }
+
+        @keyframes scoreFloat {
+            0% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-50px); }
+        }
+
+        .game-over, .pause-screen {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            z-index: 300;
+            display: none;
+        }
+
+        .game-over h2, .pause-screen h2 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #1e3c72, #2a5298);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            border-radius: 25px;
+            margin: 10px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 0.9em;
+            color: #333;
+        }
+
+        .level-indicator {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .clouds {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .cloud {
+            position: absolute;
+            background: white;
+            border-radius: 50px;
+            opacity: 0.8;
+            animation: drift 20s linear infinite;
+        }
+
+        @keyframes drift {
+            from { transform: translateX(-100px); }
+            to { transform: translateX(calc(100vw + 100px)); }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <!-- Background clouds -->
+        <div class="clouds" id="clouds"></div>
+
+        <!-- HUD -->
+        <div class="hud">
+            <div>🏆 Score: <span id="score">0</span></div>
+            <div>❤️ Lives: <span id="lives">3</span></div>
+            <div>🥚 Caught: <span id="caught">0</span></div>
+        </div>
+
+        <!-- Level indicator -->
+        <div class="level-indicator">
+            <div>Level <span id="level">1</span></div>
+            <div style="font-size: 0.8em;">Speed: <span id="speed">1x</span></div>
+        </div>
+
+        <!-- Game area -->
+        <div class="game-area" id="gameArea">
+            <div class="basket" id="basket"></div>
+        </div>
+
+        <!-- Controls info -->
+        <div class="controls">
+            <div>🎮 Controls:</div>
+            <div>← → or A D to move</div>
+            <div>SPACE to pause</div>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div class="game-over" id="gameOver">
+            <h2>🎯 Game Over!</h2>
+            <p>Final Score: <span id="finalScore">0</span></p>
+            <p>Eggs Caught: <span id="finalCaught">0</span></p>
+            <p>Level Reached: <span id="finalLevel">1</span></p>
+            <button class="btn" onclick="restartGame()">🔄 Play Again</button>
+            <a href="Egg Catcher.html" class="btn">🏠 Main Menu</a>
+        </div>
+
+        <!-- Pause Screen -->
+        <div class="pause-screen" id="pauseScreen">
+            <h2>⏸️ Game Paused</h2>
+            <p>Press SPACE to continue</p>
+            <button class="btn" onclick="resumeGame()">▶️ Resume</button>
+            <a href="Egg Catcher.html" class="btn">🏠 Main Menu</a>
+        </div>
+    </div>
+
+    <script>
+        class EggCatcherGame {
+            constructor() {
+                this.score = 0;
+                this.lives = 3;
+                this.level = 1;
+                this.caught = 0;
+                this.basketX = window.innerWidth / 2 - 40;
+                this.eggs = [];
+                this.gameRunning = true;
+                this.paused = false;
+                this.spawnRate = 1500;
+                this.eggSpeed = 3;
+
+                this.basket = document.getElementById('basket');
+                this.gameArea = document.getElementById('gameArea');
+
+                this.keys = {};
+
+                this.init();
+            }
+
+            init() {
+                this.createClouds();
+                this.updateBasketPosition();
+                this.updateHUD();
+                this.setupControls();
+                this.startSpawning();
+                this.gameLoop();
+            }
+
+            createClouds() {
+                const cloudsContainer = document.getElementById('clouds');
+                for (let i = 0; i < 5; i++) {
+                    setTimeout(() => {
+                        const cloud = document.createElement('div');
+                        cloud.className = 'cloud';
+                        cloud.style.width = Math.random() * 80 + 60 + 'px';
+                        cloud.style.height = Math.random() * 40 + 30 + 'px';
+                        cloud.style.top = Math.random() * 200 + 50 + 'px';
+                        cloud.style.animationDelay = Math.random() * 20 + 's';
+                        cloudsContainer.appendChild(cloud);
+                    }, i * 4000);
+                }
+            }
+
+            setupControls() {
+                document.addEventListener('keydown', (e) => {
+                    this.keys[e.key.toLowerCase()] = true;
+
+                    if (e.key === ' ') {
+                        e.preventDefault();
+                        this.togglePause();
+                    }
+                });
+
+                document.addEventListener('keyup', (e) => {
+                    this.keys[e.key.toLowerCase()] = false;
+                });
+            }
+
+            updateBasketPosition() {
+                this.basket.style.left = this.basketX + 'px';
+            }
+
+            handleInput() {
+                if (this.paused || !this.gameRunning) return;
+
+                const speed = 8;
+                if (this.keys['arrowleft'] || this.keys['a']) {
+                    this.basketX = Math.max(0, this.basketX - speed);
+                }
+                if (this.keys['arrowright'] || this.keys['d']) {
+                    this.basketX = Math.min(window.innerWidth - 80, this.basketX + speed);
+                }
+                this.updateBasketPosition();
+            }
+
+            startSpawning() {
+                this.spawnInterval = setInterval(() => {
+                    if (!this.paused && this.gameRunning) {
+                        this.spawnEgg();
+                    }
+                }, this.spawnRate);
+            }
+
+            spawnEgg() {
+                const egg = document.createElement('div');
+                egg.className = 'egg';
+
+                // Determine egg type
+                const rand = Math.random();
+                if (rand < 0.1) {
+                    egg.classList.add('golden');
+                    egg.textContent = '🥇';
+                } else if (rand < 0.2) {
+                    egg.classList.add('broken');
+                    egg.textContent = '💥';
+                } else {
+                    egg.classList.add('normal');
+                    egg.textContent = '🥚';
+                }
+
+                egg.style.left = Math.random() * (window.innerWidth - 30) + 'px';
+                egg.style.animationDuration = (8 - this.eggSpeed) + 's';
+
+                this.gameArea.appendChild(egg);
+                this.eggs.push({
+                    element: egg,
+                    type: egg.classList.contains('golden') ? 'golden' :
+                          egg.classList.contains('broken') ? 'broken' : 'normal'
+                });
+
+                // Remove egg after animation
+                setTimeout(() => {
+                    if (egg.parentNode) {
+                        const eggRect = egg.getBoundingClientRect();
+                        if (eggRect.top > window.innerHeight - 100) {
+                            // Egg hit ground
+                            if (egg.classList.contains('normal') || egg.classList.contains('golden')) {
+                                this.loseLife();
+                            }
+                        }
+                        egg.parentNode.removeChild(egg);
+                        this.eggs = this.eggs.filter(e => e.element !== egg);
+                    }
+                }, (8 - this.eggSpeed) * 1000);
+            }
+
+            checkCollisions() {
+                const basketRect = this.basket.getBoundingClientRect();
+
+                this.eggs.forEach((eggObj, index) => {
+                    const eggRect = eggObj.element.getBoundingClientRect();
+
+                    if (eggRect.bottom >= basketRect.top &&
+                        eggRect.bottom <= basketRect.bottom + 20 &&
+                        eggRect.left < basketRect.right &&
+                        eggRect.right > basketRect.left) {
+
+                        // Collision detected
+                        this.catchEgg(eggObj, index);
+                    }
+                });
+            }
+
+            catchEgg(eggObj, index) {
+                const egg = eggObj.element;
+                const type = eggObj.type;
+
+                let points = 0;
+                let popupClass = 'positive';
+
+                switch (type) {
+                    case 'normal':
+                        points = 10;
+                        this.caught++;
+                        break;
+                    case 'golden':
+                        points = 50;
+                        this.caught++;
+                        break;
+                    case 'broken':
+                        points = -20;
+                        popupClass = 'negative';
+                        this.loseLife();
+                        break;
+                }
+
+                this.score = Math.max(0, this.score + points);
+                this.showScorePopup(points, egg.getBoundingClientRect(), popupClass);
+
+                // Remove egg
+                if (egg.parentNode) {
+                    egg.parentNode.removeChild(egg);
+                }
+                this.eggs.splice(index, 1);
+
+                this.updateHUD();
+                this.checkLevelUp();
+            }
+
+            showScorePopup(points, rect, className) {
+                const popup = document.createElement('div');
+                popup.className = `score-popup ${className}`;
+                popup.textContent = points > 0 ? `+${points}` : points;
+                popup.style.left = rect.left + rect.width / 2 + 'px';
+                popup.style.top = rect.top + 'px';
+
+                document.body.appendChild(popup);
+
+                setTimeout(() => {
+                    if (popup.parentNode) {
+                        popup.parentNode.removeChild(popup);
+                    }
+                }, 1000);
+            }
+
+            loseLife() {
+                this.lives--;
+                if (this.lives <= 0) {
+                    this.gameOver();
+                }
+            }
+
+            checkLevelUp() {
+                const eggsForNextLevel = this.level * 15;
+                if (this.caught >= eggsForNextLevel) {
+                    this.level++;
+                    this.eggSpeed = Math.min(6, this.eggSpeed + 0.5);
+                    this.spawnRate = Math.max(800, this.spawnRate - 100);
+
+                    // Restart spawning with new rate
+                    clearInterval(this.spawnInterval);
+                    this.startSpawning();
+                }
+            }
+
+            togglePause() {
+                this.paused = !this.paused;
+                document.getElementById('pauseScreen').style.display =
+                    this.paused ? 'block' : 'none';
+            }
+
+            resumeGame() {
+                this.paused = false;
+                document.getElementById('pauseScreen').style.display = 'none';
+            }
+
+            gameOver() {
+                this.gameRunning = false;
+                clearInterval(this.spawnInterval);
+
+                document.getElementById('finalScore').textContent = this.score;
+                document.getElementById('finalCaught').textContent = this.caught;
+                document.getElementById('finalLevel').textContent = this.level;
+                document.getElementById('gameOver').style.display = 'block';
+            }
+
+            updateHUD() {
+                document.getElementById('score').textContent = this.score;
+                document.getElementById('lives').textContent = this.lives;
+                document.getElementById('caught').textContent = this.caught;
+                document.getElementById('level').textContent = this.level;
+                document.getElementById('speed').textContent = this.eggSpeed.toFixed(1) + 'x';
+            }
+
+            gameLoop() {
+                if (this.gameRunning) {
+                    this.handleInput();
+                    this.checkCollisions();
+                    requestAnimationFrame(() => this.gameLoop());
+                }
+            }
+        }
+
+        let game;
+
+        function startGame() {
+            game = new EggCatcherGame();
+        }
+
+        function restartGame() {
+            document.getElementById('gameOver').style.display = 'none';
+            document.getElementById('gameArea').innerHTML = '<div class="basket" id="basket"></div>';
+            startGame();
+        }
+
+        function resumeGame() {
+            game.resumeGame();
+        }
+
+        // Start game when page loads
+        window.addEventListener('load', startGame);
+    </script>
+</body>
+</html>
