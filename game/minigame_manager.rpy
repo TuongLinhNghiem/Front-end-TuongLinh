@@ -65,7 +65,6 @@ def play_minigame(game_name):
 
         # Set the current mini-game name for display
         store.minigame_name = game_info["name"]
-        store.current_minigame = game_name
 
         # Try to use the enhanced HTML screen if available
         # Fall back to basic overlay if not
