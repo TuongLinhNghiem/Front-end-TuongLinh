@@ -48,7 +48,7 @@ init -1:
 ###############################################################################
 
 
-    screen game_menu():
+    screen game_menu(title="Menu"):
         tag menu
 
         frame:
@@ -58,15 +58,16 @@ init -1:
         vbox:
             spacing 20
 
-            text "Game Menu"
+            text title
 
             textbutton "Return":
                 action Return()
 
+
     screen character_selection():
         tag menu
-        use game_menu(_("Hoai Niem"), scroll="viewport")
 
+        use game_menu("Hoai Niem")
 
         vbox:
             xalign 0.5
@@ -80,31 +81,40 @@ init -1:
                 color "#FF6B9D"
 
             textbutton "Hoai":
-                action SetVariable("player_name", "Hoai"), SetVariable("player_gender", "male"), SetVariable("target_name", "Niem"), SetVariable("target_gender", "female"), Start("prologue")
+                action [
+                    SetVariable("player_name", "Hoai"),
+                    SetVariable("player_gender", "male"),
+                    SetVariable("target_name", "Niem"),
+                    SetVariable("target_gender", "female"),
+                    Jump("prologue")
+                ]
                 text_size 40
                 xalign 0.5
-                xysize(400, 80)
+                xysize (400, 80)
                 text_color "#888888"
                 text_hover_color "#FF6B9D"
 
             textbutton "Niem":
-                action SetVariable("player_name", "Niem"), SetVariable("player_gender", "female"), SetVariable("target_name", "Hoai"), SetVariable("target_gender", "male"), Start("prologue")
+                action [
+                    SetVariable("player_name", "Niem"),
+                    SetVariable("player_gender", "female"),
+                    SetVariable("target_name", "Hoai"),
+                    SetVariable("target_gender", "male"),
+                    Jump("prologue")
+                ]
                 text_size 40
                 xalign 0.5
-                xysize(400, 80)
+                xysize (400, 80)
                 text_color "#888888"
                 text_hover_color "#6BB3FF"
 
         frame:
             xalign 0.5
             yalign 0.7
-            xysize(600, 150)
+            xysize (600, 150)
             background "#00000080"
 
-            text "Each character has a unique story and\
-
-perspective. Your choice will shape the\
-narrative ahead.":
+            text "Each character has a unique story and perspective. Your choice will shape the narrative ahead.":
                 xalign 0.5
                 yalign 0.5
                 size 24
@@ -130,7 +140,7 @@ screen dialogue_custom(dialogue):
             ypos 480
             xysize (400, 60)
 
-            if dialogue.who == "{player_name}" or dialogue.who == "Hoai":
+            if dialogue.who == player_name or dialogue.who == "Hoai":
                 background "#FF6B9D"
             else:
                 background "#6BB3FF"
