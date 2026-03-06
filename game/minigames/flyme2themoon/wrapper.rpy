@@ -1,41 +1,35 @@
-#FlyMe2TheMoon - Mini-Game Wrapper
-
-#This file integrates the HTML/JS FlyMe2TheMoon game into Ren'Py
-
 init python:
-    # FlyMe2TheMoon game configuration
+
     flyme2themoon_config = {
-        "name": "Fly Me to the Moon",
-        "description": "Fly your rocket as high as possible into space!",
-        "controls": "Click or press Space to boost your rocket",
-        "win_condition": "Reach the highest altitude possible",
-        "obstacles": ["Asteroids", "Satellites", "Space debris"],
-        "scoring": "Altitude = points"
+        "name": "Fly Me To The Moon",
+        "description": "Control your ship and fly as far as possible.",
+        "controls": "Arrow keys to move",
+        "win_condition": "Survive as long as possible",
+        "time_limit": 60,
+        "scoring": "Distance travelled"
     }
 
-
     def play_flyme2themoon():
-    """
-    Launch the FlyMe2TheMoon mini-game.
-    Returns the final score.
-    """
-    return play_minigame("flyme2themoon")
+        """
+        Launch Fly Me To The Moon mini-game
+        """
+        return play_minigame("flyme2themoon")
+
 
     def get_flyme2themoon_high_score():
-    """Get the high score for FlyMe2TheMoon."""
-    return get_minigame_score("flyme2themoon")
+        return get_minigame_score("flyme2themoon")
+
 
     def set_flyme2themoon_score(score):
-    """Set the FlyMe2TheMoon score."""
-    set_minigame_score("flyme2themoon", score)
+        set_minigame_score("flyme2themoon", score)
 
-#Story integration label
 
 label play_flyme2themoon_game:
+
     python:
         result = play_flyme2themoon()
+
         if result == "complete":
-            renpy.log("FlyMe2TheMoon completed with score: " + str(last_minigame_score))
+            renpy.log("FlyMe2TheMoon score: " + str(last_minigame_score))
 
-
-return
+    return

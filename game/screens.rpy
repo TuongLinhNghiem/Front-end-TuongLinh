@@ -108,18 +108,17 @@ narrative ahead.":
 screen dialogue_custom(dialogue):
     zorder 50
 
-
-# Name box
     if dialogue.who:
+
         frame:
             xalign 0.5
             ypos 480
-            xysize(400, 60)
-            background "#FF6B9D"
+            xysize (400, 60)
+
             if dialogue.who == "{player_name}" or dialogue.who == "Hoai":
-            background "#FF6B9D"
+                background "#FF6B9D"
             else:
-            background "#6BB3FF"
+                background "#6BB3FF"
 
             text dialogue.who:
                 xalign 0.5

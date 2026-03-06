@@ -1,41 +1,32 @@
-#PvP - Mini-Game Wrapper
-
-#This file integrates the HTML/JS PvP game into Ren'Py
-
 init python:
-    # PvP game configuration
+
     pvp_config = {
         "name": "PvP Battle",
-        "description": "Compete against another player in an exciting battle!",
-        "controls": "Keyboard controls for player actions",
+        "description": "Two player competitive mini-game.",
+        "controls": "Keyboard",
         "win_condition": "Defeat your opponent",
-        "modes": ["1v1 Battle", "Tournament Mode"],
-        "scoring": "Wins and losses are tracked"
+        "time_limit": 60,
+        "scoring": "Victory"
     }
 
-
     def play_pvp():
-    """
-    Launch the PvP mini-game.
-    Returns the result.
-    """
-    return play_minigame("pvp")
+        return play_minigame("pvp")
 
-    def get_pvp_stats():
-    """Get PvP statistics."""
-    return get_minigame_score("pvp")
 
-    def set_pvp_result(result):
-    """Set the PvP result."""
-    set_minigame_score("pvp", result)
+    def get_pvp_high_score():
+        return get_minigame_score("pvp")
 
-#Story integration label
+
+    def set_pvp_score(score):
+        set_minigame_score("pvp", score)
+
 
 label play_pvp_game:
+
     python:
         result = play_pvp()
+
         if result == "complete":
-            renpy.log("PvP battle completed")
+            renpy.log("PvP game finished")
 
-
-return
+    return
