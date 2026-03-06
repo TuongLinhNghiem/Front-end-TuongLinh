@@ -48,6 +48,21 @@ init -1:
 ###############################################################################
 
 
+    screen game_menu():
+        tag menu
+
+        frame:
+            xalign 0.5
+            yalign 0.5
+
+        vbox:
+            spacing 20
+
+            text "Game Menu"
+
+            textbutton "Return":
+                action Return()
+
     screen character_selection():
         tag menu
         use game_menu(_("Hoai Niem"), scroll="viewport")

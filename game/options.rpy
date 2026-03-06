@@ -18,7 +18,7 @@ define config.screen_height = 720
 #Save game settings
 
 define config.save_directory = "HoaiNiem-12345"
-define config.save_compression = 2
+#define config.save_compression = 2
 define config.save_on_quit = True
 
 
