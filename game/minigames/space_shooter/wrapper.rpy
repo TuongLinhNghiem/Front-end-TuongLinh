@@ -1,6 +1,6 @@
-Space Shooter - Mini-Game Wrapper
+#Space Shooter - Mini-Game Wrapper
 
-This file integrates the HTML/JS Space Shooter game into Ren'Py
+#This file integrates the HTML/JS Space Shooter game into Ren'Py
 
 init python:
     # Space Shooter game configuration
@@ -14,22 +14,22 @@ init python:
     }
 
 
-def play_space_shooter():
+    def play_space_shooter():
     """
     Launch the Space Shooter mini-game.
     Returns the final score.
     """
     return play_minigame("space_shooter")
 
-def get_space_shooter_high_score():
+    def get_space_shooter_high_score():
     """Get the high score for Space Shooter."""
     return get_minigame_score("space_shooter")
 
-def set_space_shooter_score(score):
+    def set_space_shooter_score(score):
     """Set the Space Shooter score."""
     set_minigame_score("space_shooter", score)
 
-Story integration label
+#Story integration label
 
 label play_space_shooter_game:
     python:

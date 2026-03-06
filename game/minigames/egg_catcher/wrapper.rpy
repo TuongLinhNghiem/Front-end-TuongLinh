@@ -1,6 +1,6 @@
-Egg Catcher - Mini-Game Wrapper
+#Egg Catcher - Mini-Game Wrapper
 
-This file integrates the HTML/JS Egg Catcher game into Ren'Py
+#This file integrates the HTML/JS Egg Catcher game into Ren'Py
 
 init python:
     # Egg Catcher game configuration
@@ -14,22 +14,22 @@ init python:
     }
 
 
-def play_egg_catcher():
+    def play_egg_catcher():
     """
     Launch the Egg Catcher mini-game.
     Returns the final score.
     """
     return play_minigame("egg_catcher")
 
-def get_egg_catcher_high_score():
+    def get_egg_catcher_high_score():
     """Get the high score for Egg Catcher."""
     return get_minigame_score("egg_catcher")
 
-def set_egg_catcher_score(score):
+    def set_egg_catcher_score(score):
     """Set the Egg Catcher score."""
     set_minigame_score("egg_catcher", score)
 
-Story integration label
+#Story integration label
 
 label play_egg_catcher_game:
     python:

@@ -1,6 +1,6 @@
-PvP - Mini-Game Wrapper
+#PvP - Mini-Game Wrapper
 
-This file integrates the HTML/JS PvP game into Ren'Py
+#This file integrates the HTML/JS PvP game into Ren'Py
 
 init python:
     # PvP game configuration
@@ -14,22 +14,22 @@ init python:
     }
 
 
-def play_pvp():
+    def play_pvp():
     """
     Launch the PvP mini-game.
     Returns the result.
     """
     return play_minigame("pvp")
 
-def get_pvp_stats():
+    def get_pvp_stats():
     """Get PvP statistics."""
     return get_minigame_score("pvp")
 
-def set_pvp_result(result):
+    def set_pvp_result(result):
     """Set the PvP result."""
     set_minigame_score("pvp", result)
 
-Story integration label
+#Story integration label
 
 label play_pvp_game:
     python:

@@ -1,6 +1,6 @@
-Racing - Mini-Game Wrapper
+#Racing - Mini-Game Wrapper
 
-This file integrates the HTML/JS Racing game into Ren'Py
+#This file integrates the HTML/JS Racing game into Ren'Py
 
 init python:
     # Racing game configuration
@@ -14,22 +14,22 @@ init python:
     }
 
 
-def play_racing():
+    def play_racing():
     """
     Launch the Racing mini-game.
     Returns the final time/score.
     """
     return play_minigame("racing")
 
-def get_racing_best_time():
+    def get_racing_best_time():
     """Get the best racing time."""
     return get_minigame_score("racing")
 
-def set_racing_result(result):
+    def set_racing_result(result):
     """Set the Racing result."""
     set_minigame_score("racing", result)
 
-Story integration label
+#Story integration label
 
 label play_racing_game:
     python:

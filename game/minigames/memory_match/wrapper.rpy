@@ -1,6 +1,6 @@
-Memory Match - Mini-Game Wrapper
+#Memory Match - Mini-Game Wrapper
 
-This file integrates the HTML/JS Memory Match game into Ren'Py
+#This file integrates the HTML/JS Memory Match game into Ren'Py
 
 init python:
     # Memory Match game configuration
@@ -14,22 +14,22 @@ init python:
     }
 
 
-def play_memory_match():
+    def play_memory_match():
     """
     Launch the Memory Match mini-game.
     Returns the final score.
     """
     return play_minigame("memory_match")
 
-def get_memory_match_high_score():
+    def get_memory_match_high_score():
     """Get the high score for Memory Match."""
     return get_minigame_score("memory_match")
 
-def set_memory_match_score(score):
+    def set_memory_match_score(score):
     """Set the Memory Match score."""
     set_minigame_score("memory_match", score)
 
-Story integration label
+#Story integration label
 
 label play_memory_match_game:
     python:

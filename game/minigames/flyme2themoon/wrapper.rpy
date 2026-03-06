@@ -1,6 +1,6 @@
-FlyMe2TheMoon - Mini-Game Wrapper
+#FlyMe2TheMoon - Mini-Game Wrapper
 
-This file integrates the HTML/JS FlyMe2TheMoon game into Ren'Py
+#This file integrates the HTML/JS FlyMe2TheMoon game into Ren'Py
 
 init python:
     # FlyMe2TheMoon game configuration
@@ -14,22 +14,22 @@ init python:
     }
 
 
-def play_flyme2themoon():
+    def play_flyme2themoon():
     """
     Launch the FlyMe2TheMoon mini-game.
     Returns the final score.
     """
     return play_minigame("flyme2themoon")
 
-def get_flyme2themoon_high_score():
+    def get_flyme2themoon_high_score():
     """Get the high score for FlyMe2TheMoon."""
     return get_minigame_score("flyme2themoon")
 
-def set_flyme2themoon_score(score):
+    def set_flyme2themoon_score(score):
     """Set the FlyMe2TheMoon score."""
     set_minigame_score("flyme2themoon", score)
 
-Story integration label
+#Story integration label
 
 label play_flyme2themoon_game:
     python:
