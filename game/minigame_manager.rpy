@@ -1,6 +1,6 @@
-Hoai Niem - Mini-Game Manager
+#Hoai Niem - Mini-Game Manager
 
-Handles loading and playing embedded mini-games
+#Handles loading and playing embedded mini-games
 
 init python:
     import json
@@ -180,6 +180,6 @@ def get_minigame_file_path(game_name):
     else:
         return None
 
-Variable to store current mini-game name for display
+#Variable to store current mini-game name for display
 
 default minigame_name = ""

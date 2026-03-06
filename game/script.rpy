@@ -1,6 +1,6 @@
-Hoai Niem - Main Script
+#Hoai Niem - Main Script
 
-Story labels, arc loader, and command execution system
+#Story labels, arc loader, and command execution system
 
 init python:
     import json
@@ -216,7 +216,7 @@ def run_story_arc(arc_name, start_scene=0):
 
 ###############################################################################
 
-GAME START - Character Selection
+#GAME START - Character Selection
 
 ###############################################################################
 
@@ -231,7 +231,7 @@ return
 
 ###############################################################################
 
-PROLOGUE
+#PROLOGUE
 
 ###############################################################################
 
@@ -246,7 +246,7 @@ return
 
 ###############################################################################
 
-ADDITIONAL STORY ARCS (Templates)
+#ADDITIONAL STORY ARCS (Templates)
 
 ###############################################################################
 
@@ -274,7 +274,7 @@ return
 
 ###############################################################################
 
-CUSTOM JUMP POINTS (Used by story choices)
+#CUSTOM JUMP POINTS (Used by story choices)
 
 ###############################################################################
 

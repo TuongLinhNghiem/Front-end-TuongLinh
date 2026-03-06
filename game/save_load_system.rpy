@@ -1,6 +1,6 @@
-Hoai Niem - Save/Load System
+#Hoai Niem - Save/Load System
 
-Comprehensive save game management with JSON story support
+#Comprehensive save game management with JSON story support
 
 init python:
     import json
