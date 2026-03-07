@@ -47,7 +47,6 @@ init python:
         # Background change
         if cmd_type == "background":
             image = command.get("image", "black")
-            transition = command.get("transition", "fade")
 
             renpy.scene()
             renpy.show(image)
@@ -134,13 +133,7 @@ init python:
 
         # Scene clear
         elif cmd_type == "scene":
-            transition = command.get("transition", "fade")
-
-            if transition == "fade":
-                renpy.scene()
-                renpy.with_statement(Fade(0.5, 0.0, 0.5))
-            else:
-                renpy.scene()
+            renpy.scene()
 
         return None
 
