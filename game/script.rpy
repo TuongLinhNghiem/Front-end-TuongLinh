@@ -49,14 +49,8 @@ init python:
             image = command.get("image", "black")
             transition = command.get("transition", "fade")
 
-            if transition in ["fade", "dissolve"]:
-                renpy.scene()
-                renpy.show(image)
-                renpy.transition(dissolve)
-                renpy.pause(0.0)
-            else:
-                renpy.scene()
-                renpy.show(image)
+            renpy.scene()
+            renpy.show(image)
 
         # Show character
         elif cmd_type == "show":
@@ -67,13 +61,13 @@ init python:
             image_name = "characters/" + character + "/" + character + "_" + expression
 
             if position == "left":
-                renpy.show(image_name, at_list=[pos_left, dissolve])
+                renpy.show(image_name, at_list=[pos_left])
             elif position == "center":
-                renpy.show(image_name, at_list=[pos_center, dissolve])
+                renpy.show(image_name, at_list=[pos_center])
             elif position == "right":
-                renpy.show(image_name, at_list=[pos_right, dissolve])
+                renpy.show(image_name, at_list=[pos_right])
             else:
-                renpy.show(image_name, at_list=[dissolve])
+                renpy.show(image_name)
 
         # Hide character
         elif cmd_type == "hide":
@@ -96,7 +90,7 @@ init python:
             text = text.replace("{player_gender}", store.player_gender)
             text = text.replace("{target_gender}", store.target_gender)
 
-            renpy.say(speaker, text)
+            renpy.say(None if speaker == "" else speaker, text)
 
         # Choice
         elif cmd_type == "choice":
@@ -201,8 +195,7 @@ label start:
 ###############################################################################
 
 label prologue:
-    python:
-        run_story_arc("prologue")
+    $ run_story_arc("prologue")
     return
 
 
@@ -211,8 +204,7 @@ label prologue:
 ###############################################################################
 
 label chapter1:
-    python:
-        run_story_arc("chapter1")
+    $ run_story_arc("chapter1")
     return
 
 
