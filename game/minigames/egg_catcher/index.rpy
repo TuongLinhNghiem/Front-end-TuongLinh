@@ -152,8 +152,8 @@ screen egg_catcher_menu():
 
         hbox:
             spacing 30
-            textbutton "🎮 START GAME" text_size 40 action [Hide("egg_catcher_menu"), Call("play_egg_catcher_game")]
-            textbutton "🏠 GO HOME" text_size 40 action Return()
+            textbutton "🎮 START GAME" text_size 40 action Return("start")
+            textbutton "🏠 GO HOME" text_size 40 action Return("quit")
 
 # -----------------------------
 # Game Screen
@@ -256,5 +256,10 @@ label play_egg_catcher_game:
 # Label to open menu
 # -----------------------------
 label egg_catcher_start:
-    call screen egg_catcher_menu
+
+    $ result = renpy.call_screen("egg_catcher_menu")
+
+    if result == "start":
+        call play_egg_catcher_game
+
     return
