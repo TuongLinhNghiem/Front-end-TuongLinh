@@ -49,7 +49,7 @@ init python:
             image = command.get("image", "black")
 
             renpy.scene()
-            renpy.show(image)
+            renpy.show(image, at_list=[fade_in_anim])
 
         # Show character
         elif cmd_type == "show":
@@ -60,13 +60,13 @@ init python:
             image_name = "characters/" + character + "/" + character + "_" + expression
 
             if position == "left":
-                renpy.show(image_name, at_list=[pos_left])
+                renpy.show(image_name, at_list=[pos_left, fade_in_anim])
             elif position == "center":
-                renpy.show(image_name, at_list=[pos_center])
+                renpy.show(image_name, at_list=[pos_center, fade_in_anim])
             elif position == "right":
-                renpy.show(image_name, at_list=[pos_right])
+                renpy.show(image_name, at_list=[pos_right, fade_in_anim])
             else:
-                renpy.show(image_name)
+                renpy.show(image_name, at_list=[fade_in_anim])
 
         # Hide character
         elif cmd_type == "hide":
@@ -134,6 +134,7 @@ init python:
         # Scene clear
         elif cmd_type == "scene":
             renpy.scene()
+            renpy.with_statement(fade_in_anim)
 
         return None
 

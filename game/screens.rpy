@@ -4,11 +4,10 @@
 
 init -1:
     # Screen scaling
-    transform dissolve:
+    transform fade_in_anim:
         alpha 0.0
         ease 0.5 alpha 1.0
-
-
+        
     transform slide_left:
         xalign 1.5
         ease 0.5 xalign 0.0
