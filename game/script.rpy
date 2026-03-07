@@ -115,10 +115,15 @@ init python:
             game_name = command.get("game", "")
             on_complete = command.get("onComplete", None)
 
-            result = play_minigame(game_name)
+            result = renpy.call_screen("minigame_screen", game_name)
 
-            if result == "complete" and on_complete:
-                return on_complete
+            if result == "play":
+                play_result = play_minigame(game_name)
+
+                if play_result == "complete" and on_complete:
+                    return on_complete
+
+            return None
 
         # Set variable
         elif cmd_type == "setvar":
@@ -217,8 +222,8 @@ label epilogue:
 ###############################################################################
 
 label after_egg_catcher:
-    $ run_story_arc("prologue", start_scene=2)
-    return
+    "You finished the mini-game and return to the story!"
+    jump story_scene_2
 
 
 label bad_ending:

@@ -1,9 +1,8 @@
-# Hoai Niem - Mini-Game Manager
-# Handles loading and playing embedded mini-games
+# minigame_manager.rpy
+# Hoai Niem - Mini-Game Manager (Ren'Py version)
+# Handles loading and playing embedded Ren'Py mini-games
 
 init python:
-    import json
-    import os
 
     # -----------------------------
     # Mini-game definitions
@@ -11,39 +10,39 @@ init python:
     MINIGAMES = {
         "egg_catcher": {
             "name": "Egg Catcher",
-            "description": "Catch falling eggs in your basket!",
-            "folder": "egg_catcher",
-            "html_file": "index.html"
+            "description": "Catch falling eggs in your basket before they hit the ground!",
+            "controls": "Use LEFT/RIGHT or A/D to move. SPACE to pause.",
+            "renpy_label": "egg_catcher_start",
         },
         "memory_match": {
             "name": "Memory Match",
             "description": "Match pairs of cards to win!",
-            "folder": "memory_match",
-            "html_file": "index.html"
+            "controls": "Click on cards to reveal them.",
+            "renpy_label": "memory_match_start",
         },
         "pvp": {
             "name": "PvP Battle",
             "description": "Compete against another player!",
-            "folder": "pvp",
-            "html_file": "index.html"
+            "controls": "Use arrow keys or WASD to move.",
+            "renpy_label": "pvp_start",
         },
         "space_shooter": {
             "name": "Space Shooter",
             "description": "Blast through waves of enemies!",
-            "folder": "space_shooter",
-            "html_file": "index.html"
+            "controls": "Use arrow keys to move and SPACE to shoot.",
+            "renpy_label": "space_shooter_start",
         },
         "racing": {
             "name": "Racing",
             "description": "Race to the finish line!",
-            "folder": "racing",
-            "html_file": "index.html"
+            "controls": "Use arrow keys to steer and accelerate.",
+            "renpy_label": "racing_start",
         },
         "flyme2themoon": {
             "name": "Fly Me to the Moon",
             "description": "Fly as high as you can!",
-            "folder": "flyme2themoon",
-            "html_file": "index.html"
+            "controls": "Use arrow keys or WASD to control the rocket.",
+            "renpy_label": "flyme2themoon_start",
         }
     }
 
@@ -52,137 +51,60 @@ init python:
     # -----------------------------
     def play_minigame(game_name):
         """
-        Launch a mini-game and pause the VN story flow.
-
-        Args:
-            game_name (str): The name of the mini-game to play
-
-        Returns:
-            str: Result status ('complete', 'quit', or 'error')
+        Launch a mini-game by Ren'Py label name.
         """
-        if game_name not in MINIGAMES:
-            renpy.log("Unknown mini-game: " + game_name)
-            return "error"
-
-        game_info = MINIGAMES[game_name]
-
-        # Set the current mini-game name for display
-        store.minigame_name = game_info["name"]
-
-        # Try to use the enhanced HTML screen if available
-        # Fall back to basic overlay if not
-        try:
-            result = renpy.call_screen("minigame_html_screen", game_name=game_name)
-        except:
-            result = renpy.call_screen("minigame_overlay")
-
-        # Handle the result
-        if result == "complete":
-            # Store the result
-            store.minigame_results[game_name] = getattr(store, "last_minigame_score", 0)
-            renpy.log("Mini-game completed with score: " + str(store.minigame_results[game_name]))
-            return "complete"
-        else:
-            # Player quit the mini-game
+        game_info = MINIGAMES.get(game_name)
+        if not game_info:
+            renpy.log("Mini-game not found: " + game_name)
             return "quit"
 
+        label_to_call = game_info.get("renpy_label")
+        if label_to_call:
+            renpy.call(label_to_call)
+            return "complete"
+        return "quit"
+
     # -----------------------------
-    # Mini-game helper functions
+    # Mini-game score management
     # -----------------------------
+    if not hasattr(store, "minigame_results"):
+        store.minigame_results = {}
+
+    if not hasattr(store, "last_minigame_score"):
+        store.last_minigame_score = 0
+
     def get_minigame_score(game_name):
         """
-        Get the score for a specific mini-game.
-
-        Args:
-            game_name (str): The name of the mini-game
-
-        Returns:
-            int: The score achieved, or 0 if not found
+        Get the last score for a specific mini-game.
         """
         return store.minigame_results.get(game_name, 0)
-
-    def has_minigame_been_played(game_name):
-        """
-        Check if a mini-game has been played.
-
-        Args:
-            game_name (str): The name of the mini-game
-
-        Returns:
-            bool: True if the game has been played, False otherwise
-        """
-        return game_name in store.minigame_results
 
     def set_minigame_score(game_name, score):
         """
         Set the score for a specific mini-game.
-
-        Args:
-            game_name (str): The name of the mini-game
-            score (int): The score to set
         """
         store.minigame_results[game_name] = score
         store.last_minigame_score = score
 
+    def has_minigame_been_played(game_name):
+        """
+        Check if the mini-game has been played.
+        """
+        return game_name in store.minigame_results
+
     def get_minigame_info(game_name):
         """
-        Get information about a mini-game.
-
-        Args:
-            game_name (str): The name of the mini-game
-
-        Returns:
-            dict: Game information, or None if not found
+        Get mini-game information dictionary.
         """
-        return MINIGAMES.get(game_name, None)
+        return MINIGAMES.get(game_name)
 
     def get_all_minigames():
         """
-        Get a list of all available mini-games.
-
-        Returns:
-            dict: Dictionary of all mini-games
+        Return a copy of all mini-games info.
         """
         return MINIGAMES.copy()
 
-    def minigame_file_exists(game_name):
-        """
-        Check if the mini-game HTML file exists.
-
-        Args:
-            game_name (str): The name of the mini-game
-
-        Returns:
-            bool: True if the file exists, False otherwise
-        """
-        if game_name not in MINIGAMES:
-            return False
-
-        game_info = MINIGAMES[game_name]
-        file_path = os.path.join(config.basedir, "game", "minigames", game_info["folder"], game_info["html_file"])
-        return os.path.exists(file_path)
-
-    def get_minigame_file_path(game_name):
-        """
-        Get the file path for a mini-game.
-
-        Args:
-            game_name (str): The name of the mini-game
-
-        Returns:
-            str: The file path, or None if not found
-        """
-        if game_name not in MINIGAMES:
-            return None
-
-        game_info = MINIGAMES[game_name]
-        file_path = os.path.join(config.basedir, "game", "minigames", game_info["folder"], game_info["html_file"])
-        if os.path.exists(file_path):
-            return file_path
-        else:
-            return None
-
 # -----------------------------
-# Variable to store current mini-game name
+# Current mini-game variable
 # -----------------------------
 default minigame_name = ""
