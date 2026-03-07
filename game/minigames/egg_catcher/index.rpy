@@ -145,7 +145,7 @@ screen egg_catcher_menu():
 
         text "🥚" size 60 xalign 0.5 at BounceAnim
         text "EGG CATCHER" size 80 color "#FFA500" xalign 0.5 at GlowAnim
-        text "Catch the falling eggs and save the day!" size 30 color "#FFA500" xalign 0.5 alpha 0.9
+        text "Catch the falling eggs and save the day!" size 30 color "#FFA500" xalign 0.5: alpha 0.9
 
         hbox:
             spacing 30
