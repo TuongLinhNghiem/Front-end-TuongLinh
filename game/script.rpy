@@ -52,7 +52,8 @@ init python:
             if transition in ["fade", "dissolve"]:
                 renpy.scene()
                 renpy.show(image)
-                renpy.with_statement(dissolve)
+                renpy.transition(dissolve)
+                renpy.pause(0.0)
             else:
                 renpy.scene()
                 renpy.show(image)
