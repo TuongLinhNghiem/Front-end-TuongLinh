@@ -209,14 +209,12 @@ label chapter1:
 
 
 label chapter2:
-    python:
-        run_story_arc("chapter2")
+    $ run_story_arc("chapter2")
     return
 
 
 label epilogue:
-    python:
-        run_story_arc("epilogue")
+    $ run_story_arc("epilogue")
     return
 
 
@@ -225,8 +223,7 @@ label epilogue:
 ###############################################################################
 
 label after_egg_catcher:
-    python:
-        run_story_arc("prologue", start_scene=2)
+    $ run_story_arc("prologue", start_scene=2)
     return
 
 
