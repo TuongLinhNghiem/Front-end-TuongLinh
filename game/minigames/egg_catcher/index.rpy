@@ -3,7 +3,6 @@
 init python:
     import random
     import time
-    import renpy.exports as renpy
 
 # -----------------------------
 # Game Variables
@@ -21,16 +20,7 @@ default spawn_rate = 1.5
 default paused = False
 default last_spawn = 0.0
 default score_popups = []
-
-# Leaderboard tracking
-default egg_catcher_leaderboard = []
-
-# -----------------------------
-# Temporary Leaderboard
-# -----------------------------
-init python:
-    if not hasattr(store, "egg_catcher_leaderboard"):
-        store.egg_catcher_leaderboard = []  # Each entry: {"score": int, "datetime": str}
+default egg_catcher_leaderboard = []  # Default leaderboard
 
 # -----------------------------
 # Functions
@@ -68,7 +58,6 @@ init python:
             eggs.append({"x": random.randint(0, 770), "y": -40, "type": e_type})
 
         new_eggs = []
-
         for e in eggs:
             e["y"] += egg_speed
 
@@ -78,25 +67,23 @@ init python:
                     if e["type"] == "normal":
                         score += 10
                         caught += 1
-                        add_score_popup("+10", e["x"], e["y"], "positive")
+                        add_score_popup("+10", e["x"], e["y"])
                     elif e["type"] == "golden":
                         score += 50
                         caught += 1
-                        add_score_popup("+50", e["x"], e["y"], "positive")
+                        add_score_popup("+50", e["x"], e["y"])
                     elif e["type"] == "broken":
                         score = max(0, score - 20)
                         lives -= 1
                         add_score_popup("-20", e["x"], e["y"], "negative")
                     continue
 
-            # Egg falls past bottom
             if e["y"] >= 600:
                 if e["type"] in ["normal", "golden"]:
                     lives -= 1
                 continue
 
             new_eggs.append(e)
-
         eggs = new_eggs
 
         # Level up
@@ -108,64 +95,25 @@ init python:
         # Remove old popups
         score_popups[:] = [p for p in score_popups if current_time - p["start_time"] < 1.0]
 
-    def record_leaderboard():
-        import datetime
-        entry = {
-            "score": score,
-            "datetime": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        }
-        store.egg_catcher_leaderboard.append(entry)
-        # Keep top 20
-        store.egg_catcher_leaderboard.sort(key=lambda x: x["score"], reverse=True)
-        store.egg_catcher_leaderboard = store.egg_catcher_leaderboard[:20]
-
 # -----------------------------
-# Animations
-# -----------------------------
-transform BounceAnim:
-    ypos 0
-    linear 0.4 ypos -10
-    linear 0.2 ypos -5
-    linear 0.4 ypos 0
-    repeat True
-
-transform GlowAnim:
-    alpha 1.0
-    linear 1.0 alpha 0.6
-    linear 1.0 alpha 1.0
-    repeat True
-
-transform semi_transparent:
-    alpha 0.9
-
-# -----------------------------
-# Menu Screen
+# Egg Catcher Menu
 # -----------------------------
 screen egg_catcher_menu():
-    default particles = [(renpy.random.randint(0,800), renpy.random.randint(0,600), renpy.random.uniform(2,5)) for i in range(50)]
-    add Solid("#fff0")
-
-    for px, py, zoom in particles:
-        add Solid("#ffffff") at Transform(xpos=px, ypos=py, zoom=zoom/5)
-
     frame:
-        style "menu_frame"
         xalign 0.5
         yalign 0.2
         has vbox
         spacing 15
-
-        text "🥚" size 60 xalign 0.5 at BounceAnim
-        text "EGG CATCHER" size 80 color "#FFA500" xalign 0.5 at GlowAnim
-        text "Catch the falling eggs and save the day!" size 30 color "#FFA500" xalign 0.5 at semi_transparent
+        text "🥚 EGG CATCHER" size 60 xalign 0.5
+        text "Catch the falling eggs!" size 30 xalign 0.5
 
         hbox:
             spacing 30
-            textbutton "🎮 START GAME" text_size 40 action Jump("play_egg_catcher_game")
-            textbutton "🏠 GO HOME" text_size 40 action Return("quit")
+            textbutton "🎮 PLAY GAME" action Jump("play_egg_catcher_game")
+            textbutton "🏠 QUIT" action Return("quit")
 
 # -----------------------------
-# Game Screen
+# Egg Catcher Game Screen
 # -----------------------------
 screen egg_catcher_game():
     key "K_LEFT" action SetVariable("basket_x", max(basket_x-15,0))
@@ -176,11 +124,7 @@ screen egg_catcher_game():
 
     timer 0.016 repeat True action Function(egg_catcher_update)
 
-    add Solid("#87CEEB")
-
-    # Clouds
-    for i in range(5):
-        add Solid("#FFFFFF") at Transform(xpos=100*i + 50, ypos=100 + i*20, zoom=0.4)
+    add Solid("#87CEEB")  # Background
 
     # Eggs
     for e in eggs:
@@ -205,35 +149,10 @@ screen egg_catcher_game():
     frame:
         xalign 0.0
         yalign 0.0
-        xpadding 10
-        ypadding 10
         has vbox
         spacing 5
-        text "🏆 Score: [score]"
-        text "❤️ Lives: [lives]"
-        text "🥚 Caught: [caught]"
-
-    frame:
-        xalign 1.0
-        yalign 0.0
-        xpadding 10
-        ypadding 10
-        has vbox
-        spacing 5
-        text "Level: [level]"
-        text "Speed: [egg_speed]x"
-
-    # Paused overlay
-    if paused:
-        frame:
-            xalign 0.5
-            yalign 0.5
-            background "#FFFFFFCC"
-            padding 50
-            has vbox
-            spacing 20
-            text "⏸️ Game Paused"
-            text "Press SPACE to continue"
+        text "Score: [score]"
+        text "Lives: [lives]"
 
     # Game Over overlay
     if lives <= 0:
@@ -244,10 +163,7 @@ screen egg_catcher_game():
             padding 50
             has vbox
             spacing 20
-            text "🎯 Game Over!"
-            text "Final Score: [score]"
-            text "Eggs Caught: [caught]"
-            text "Level Reached: [level]"
+            text "🎯 Game Over! Final Score: [score]"
 
             hbox:
                 spacing 20
@@ -260,54 +176,29 @@ screen egg_catcher_game():
                     SetVariable("egg_speed",3),
                     SetVariable("eggs",[])
                 ]
-                textbutton "🏠 Back to Menu" action Return("quit")
+                textbutton "🏠 Back to Story" action Return("story_continue")
 
 # -----------------------------
-# Play Egg Catcher Mini-Game
+# Play Egg Catcher Label
 # -----------------------------
 label play_egg_catcher_game:
 
-    # Reset game variables
     $ eggs = []
     $ score = 0
     $ lives = 3
     $ caught = 0
     $ level = 1
-    $ paused = False
-    $ last_spawn = 0.0
-    $ score_popups = []
 
-    # Call the mini-game menu screen
-    $ menu_result = call screen minigame_screen("egg_catcher")
+    # Call the game screen
+    $ result = call screen egg_catcher_game()
 
-    # If player pressed Play
-    if menu_result == "play":
+    # Record to leaderboard (top 20) regardless of win/loss
+    if score > 0:
+        $ egg_catcher_leaderboard.append({
+            "score": score,
+            "timestamp": time.time()
+        })
+        $ egg_catcher_leaderboard.sort(key=lambda x: (-x["score"], x["timestamp"]))
+        $ egg_catcher_leaderboard = egg_catcher_leaderboard[:20]
 
-        # Launch the Egg Catcher game screen
-        call screen egg_catcher_game
-
-        # Game over / finished, save leaderboard entry
-        if score > 0:
-
-            # Ensure leaderboard exists
-            if not hasattr(store, "egg_catcher_leaderboard"):
-                $ store.egg_catcher_leaderboard = []
-
-            # Add current score with timestamp
-            $ store.egg_catcher_leaderboard.append({
-                "score": score,
-                "timestamp": renpy.get_time()
-            })
-
-            # Sort descending by score, then timestamp
-            $ store.egg_catcher_leaderboard.sort(key=lambda x: (-x["score"], x["timestamp"]))
-
-            # Keep only top 20
-            $ store.egg_catcher_leaderboard = store.egg_catcher_leaderboard[:20]
-
-        # Record last minigame score (optional, for display)
-        $ store.last_minigame_score = score
-
-    # Return to story arc (no matter what)
-    "You finished the Egg Catcher mini-game and return to the story."
     return
