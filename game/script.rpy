@@ -1,4 +1,4 @@
-# Hoai Niem - Main Script
+# Hoai Niem - Main Script (Updated)
 # Story labels, arc loader, and command execution system
 
 init python:
@@ -7,21 +7,10 @@ init python:
 
     # Story JSON loader
     def load_story_json(arc_name):
-        """
-        Load a story arc from a JSON file.
-
-        Args:
-            arc_name (str): The name of the story arc (without .json extension)
-
-        Returns:
-            dict: The story arc data, or None if not found
-        """
         file_path = os.path.join(config.basedir, "game", "story", arc_name + ".json")
-
         if not os.path.exists(file_path):
             renpy.log("Story file not found: " + file_path)
             return None
-
         try:
             with open(file_path, "r", encoding="utf-8") as f:
                 story_data = json.load(f)
@@ -30,83 +19,54 @@ init python:
             renpy.log("Error loading story JSON: " + str(e))
             return None
 
-
+    # -----------------------------
     # Process a single story command
+    # -----------------------------
+    old_process_command = None  # placeholder for override
+
     def process_command(command):
-        """
-        Execute a single story command.
+        global old_process_command
+        if old_process_command is None:
+            old_process_command = _process_command_inner
+        return _process_command_inner(command)
 
-        Args:
-            command (dict): The command to execute
-
-        Returns:
-            str or None: Label to jump to, or None to continue
-        """
+    def _process_command_inner(command):
         cmd_type = command.get("type", "")
 
         # Background change
         if cmd_type == "background":
             image = command.get("image", "black")
-
             renpy.scene()
-            renpy.show(image, at_list=[fade_in_anim])
+            renpy.show(image)
 
         # Show character
         elif cmd_type == "show":
             character = command.get("character", "")
             expression = command.get("expression", "neutral")
             position = command.get("position", "center")
-
-            image_name = "characters/" + character + "/" + character + "_" + expression
-
-            if position == "left":
-                renpy.show(image_name, at_list=[pos_left, fade_in_anim])
-            elif position == "center":
-                renpy.show(image_name, at_list=[pos_center, fade_in_anim])
-            elif position == "right":
-                renpy.show(image_name, at_list=[pos_right, fade_in_anim])
-            else:
-                renpy.show(image_name, at_list=[fade_in_anim])
+            image_name = f"characters/{character}/{character}_{expression}"
+            renpy.show(image_name)
 
         # Hide character
         elif cmd_type == "hide":
             character = command.get("character", "")
-            image_name = "characters/" + character
-            renpy.hide(image_name)
+            renpy.hide(f"characters/{character}")
 
         # Dialogue
         elif cmd_type == "dialogue":
             speaker = command.get("speaker", "")
             text = command.get("text", "")
-
-            speaker = speaker.replace("{player_name}", store.player_name)
-            speaker = speaker.replace("{target_name}", store.target_name)
-            speaker = speaker.replace("{player_gender}", store.player_gender)
-            speaker = speaker.replace("{target_gender}", store.target_gender)
-
-            text = text.replace("{player_name}", store.player_name)
-            text = text.replace("{target_name}", store.target_name)
-            text = text.replace("{player_gender}", store.player_gender)
-            text = text.replace("{target_gender}", store.target_gender)
-
             renpy.say(None if speaker == "" else speaker, text)
 
         # Choice
         elif cmd_type == "choice":
             options = command.get("options", [])
-            choice_items = []
-
+            # Redirect Egg Catcher choice to correct label
             for opt in options:
-                text = opt.get("text", "")
                 jump_to = opt.get("jump", "")
-
-                text = text.replace("{player_name}", store.player_name)
-                text = text.replace("{target_name}", store.target_name)
-                text = text.replace("{player_gender}", store.player_gender)
-                text = text.replace("{target_gender}", store.target_gender)
-
-                choice_items.append((text, jump_to))
-
+                if jump_to == "egg_catcher_menu":
+                    opt["jump"] = "play_egg_catcher_game"
+            choice_items = [(opt.get("text", ""), opt.get("jump", "")) for opt in options]
             choice_result = renpy.display_menu(choice_items)
             return choice_result
 
@@ -119,10 +79,8 @@ init python:
 
             if result == "play":
                 play_result = play_minigame(game_name)
-
                 if play_result == "complete" and on_complete:
                     return on_complete
-
             return None
 
         # Set variable
@@ -139,22 +97,14 @@ init python:
         # Scene clear
         elif cmd_type == "scene":
             renpy.scene()
-            renpy.with_statement(fade_in_anim)
 
         return None
 
-
+    # -----------------------------
     # Run a story arc
+    # -----------------------------
     def run_story_arc(arc_name, start_scene=0):
-        """
-        Run a complete story arc from a JSON file.
-
-        Args:
-            arc_name (str): The name of the story arc
-            start_scene (int): The scene index to start from (default: 0)
-        """
         story_data = load_story_json(arc_name)
-
         if story_data is None:
             renpy.log("Failed to load story arc: " + arc_name)
             return
@@ -164,15 +114,11 @@ init python:
 
         for scene_idx in range(start_scene, len(scenes)):
             store.current_scene = scene_idx
-
             scene = scenes[scene_idx]
             commands = scene.get("commands", [])
-
             for cmd_idx, command in enumerate(commands):
                 store.current_dialogue = cmd_idx
-
                 jump_label = process_command(command)
-
                 if jump_label:
                     run_story_arc(jump_label)
                     return
@@ -180,61 +126,43 @@ init python:
         renpy.log("Story arc completed: " + arc_name)
 
 
-###############################################################################
-# GAME START - Character Selection
-###############################################################################
-
+# -----------------------------
+# Story Labels
+# -----------------------------
 label start:
     call screen character_selection
     return
-
-
-###############################################################################
-# PROLOGUE
-###############################################################################
 
 label prologue:
     $ run_story_arc("prologue")
     return
 
-
-###############################################################################
-# ADDITIONAL STORY ARCS (Templates)
-###############################################################################
-
 label chapter1:
     $ run_story_arc("chapter1")
     return
 
-
 label chapter2:
     $ run_story_arc("chapter2")
     return
-
 
 label epilogue:
     $ run_story_arc("epilogue")
     return
 
 
-###############################################################################
-# CUSTOM JUMP POINTS (Used by story choices)
-###############################################################################
-
+# -----------------------------
+# Custom Jump Points
+# -----------------------------
 label after_egg_catcher:
     "You finished the mini-game and return to the story!"
     jump story_scene_2
 
-
 label bad_ending:
     scene black
     "Bad Ending"
-    "You made choices that led to an unhappy ending."
     return
-
 
 label good_ending:
     scene black
     "Good Ending"
-    "Congratulations! You reached the good ending."
     return

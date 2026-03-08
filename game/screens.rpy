@@ -48,16 +48,20 @@ init -1:
 
 
     screen game_menu(title="Menu"):
-        tag menu
+
+        modal True
+        zorder 100
 
         frame:
             xalign 0.5
             yalign 0.5
+            padding (40, 40)
 
         vbox:
             spacing 20
+            xalign 0.5
 
-            text title
+            text title size 40
 
             textbutton "Return":
                 action Return()
@@ -207,9 +211,10 @@ screen custom_choice(items):
 ###############################################################################
 
 
-screen minigame_overlay():
-    zorder 100
+screen minigame_overlay(minigame_name="Mini Game"):
+
     modal True
+    zorder 200
 
 
 # Semi-transparent background
@@ -229,7 +234,7 @@ screen minigame_overlay():
             yalign 0.0
             background "#16213e"
 
-            textbutton "\u2716":
+            textbutton "(X)":
                 xalign 0.99
                 yalign 0.5
                 text_size 24
@@ -253,27 +258,19 @@ screen minigame_overlay():
         # This is where the actual mini-game will be embedded
         # For HTML/JS games, we'll use a webview or iframe equivalent
             vbox:
+                spacing 20
                 xalign 0.5
                 yalign 0.5
-                spacing 20
 
-                text "Mini-Game: [minigame_name]":
-                    xalign 0.5
-                    size 32
-                    color "#ffffff"
+                text minigame_name size 40
 
-                text "Game will be loaded here...":
-                    xalign 0.5
-                    size 20
-                    color "#888888"
+                text "Mini-game running..."
 
-                textbutton "Complete Game":
-                    xalign 0.5
-                    xysize(200, 50)
-                    text_size 20
-                    text_color "#ffffff"
-                    text_hover_color "#FF6B9D"
-                    action [SetVariable("last_minigame_score", 100), Return("complete")]
+                textbutton "Finish Game":
+                    action Return("complete")
+
+                textbutton "Quit Game":
+                    action Return("quit")
 
 # Return to Story button (bottom)
     frame:
@@ -281,7 +278,7 @@ screen minigame_overlay():
         yalign 0.92
         xysize(300, 50)
 
-        textbutton "\u2190 Return to Story":
+        textbutton " (X) Return to Story":
             text_size 22
             xalign 0.5
             text_color "#ffffff"
