@@ -190,7 +190,7 @@ label play_egg_catcher_game:
     $ level = 1
 
     # Call the game screen
-    $ result = call_screen egg_catcher_game()
+    $ result = renpy.call_screen("egg_catcher_game")
 
     # Record to leaderboard (top 20) regardless of win/loss
     if score > 0:
