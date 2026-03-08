@@ -263,7 +263,7 @@ label play_egg_catcher_game:
     $ level = 1
 
     # Call the Egg Catcher Game Screen
-    $ result = call screen egg_catcher_game
+    $ result = call screen minigame_screen("egg_catcher")
 
     # Set last minigame score
     $ store.last_minigame_score = score
