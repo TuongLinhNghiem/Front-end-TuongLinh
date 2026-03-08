@@ -6,11 +6,6 @@ init python:
     import os
     import time
 
-    # -----------------------------
-    # Default Variables
-    # -----------------------------
-    default egg_catcher_leaderboard = []  # temporary leaderboard (top 20)
-    default minigame_results = {}  # store other minigame scores
 
     # -----------------------------
     # Save game data structure

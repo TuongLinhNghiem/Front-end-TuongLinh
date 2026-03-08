@@ -21,6 +21,7 @@ default paused = False
 default last_spawn = 0.0
 default score_popups = []
 default egg_catcher_leaderboard = []  # Default leaderboard
+default minigame_results = {}  # store other minigame scores
 
 # -----------------------------
 # Functions
