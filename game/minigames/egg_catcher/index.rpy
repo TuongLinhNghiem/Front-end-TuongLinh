@@ -209,7 +209,8 @@ screen egg_catcher_game():
     add Solid("#8B4513") at Transform(
         xpos=basket_x,
         ypos=500,
-        zoom=(basket_width/80, basket_height/40)
+        xzoom=basket_width/80,
+        yzoom=basket_height/40
     )
 
 

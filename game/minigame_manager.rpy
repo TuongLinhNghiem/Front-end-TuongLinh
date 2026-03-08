@@ -60,7 +60,7 @@ init python:
 
         label_to_call = game_info.get("renpy_label")
         if label_to_call:
-            renpy.call(label_to_call)
+            renpy.jump(label_to_call)
             return "complete"
         return "quit"
 
