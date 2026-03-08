@@ -95,5 +95,4 @@ default current_dialogue = 0
 
 # Mini-game tracking
 
-default minigame_results = {}
 default last_minigame_score = 0

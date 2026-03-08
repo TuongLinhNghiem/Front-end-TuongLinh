@@ -37,33 +37,61 @@ init python:
         if cmd_type == "background":
             image = command.get("image", "black")
             renpy.scene()
-            renpy.show(image)
+            renpy.show(image, at_list=[fade_in_anim])
 
         # Show character
         elif cmd_type == "show":
             character = command.get("character", "")
             expression = command.get("expression", "neutral")
             position = command.get("position", "center")
-            image_name = f"characters/{character}/{character}_{expression}"
-            renpy.show(image_name)
+            image_name = "characters/" + character + "/" + character + "_" + expression
+
+            if position == "left":
+                renpy.show(image_name, at_list=[pos_left, fade_in_anim])
+            elif position == "center": 
+                renpy.show(image_name, at_list=[pos_center, fade_in_anim])
+            elif position == "right":
+                renpy.show(image_name, at_list=[pos_right, fade_in_anim])
+            else:
+                renpy.show(image_name, at_list=[fade_in_anim])
 
         # Hide character
         elif cmd_type == "hide":
             character = command.get("character", "")
-            renpy.hide(f"characters/{character}")
+            renpy.hide(f"characters/[character]")
 
         # Dialogue
         elif cmd_type == "dialogue":
             speaker = command.get("speaker", "")
             text = command.get("text", "")
+            speaker = speaker.replace("{player_name}", store.player_name)
+            speaker = speaker.replace("{target_name}", store.target_name)
+            speaker = speaker.replace("{player_gender}", store.player_gender)
+            speaker = speaker.replace("{target_gender}", store.target_gender)
+
+            text = text.replace("{player_name}", store.player_name)
+            text = text.replace("{target_name}", store.target_name)
+            text = text.replace("{player_gender}", store.player_gender)
+            text = text.replace("{target_gender}", store.target_gender)
+
             renpy.say(None if speaker == "" else speaker, text)
+
 
         # Choice
         elif cmd_type == "choice":
             options = command.get("options", [])
+            choice_items = []
+
             # Redirect Egg Catcher choice to correct label
             for opt in options:
+                text = opt.get("text", "")
                 jump_to = opt.get("jump", "")
+
+                text = text.replace("{player_name}", store.player_name)
+                text = text.replace("{target_name}", store.target_name)
+                text = text.replace("{player_gender}", store.player_gender)
+                text = text.replace("{target_gender}", store.target_gender)
+
                 if jump_to == "egg_catcher_menu":
                     opt["jump"] = "play_egg_catcher_game"
             choice_items = [(opt.get("text", ""), opt.get("jump", "")) for opt in options]

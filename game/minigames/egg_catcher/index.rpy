@@ -1,9 +1,5 @@
 # Full Egg Catcher mini-game for Ren'Py (8.5+)
 
-init python:
-    import random
-    import time
-
 # -----------------------------
 # Game Variables
 # -----------------------------
@@ -21,25 +17,36 @@ default paused = False
 default last_spawn = 0.0
 default score_popups = []
 default egg_catcher_leaderboard = []  # Default leaderboard
-default minigame_results = {}  # store other minigame scores
 
 # -----------------------------
-# Functions
+# Egg Catcher Mini-game Functions
 # -----------------------------
+
 init python:
+    import random
+    import time
 
-    def add_score_popup(text, x, y, popup_class="positive"):
+    # Ensure score popups exist
+    if 'score_popups' not in globals():
+        score_popups = []
+
+    def add_score_popup(text, pos_x, pos_y, popup_class="positive"):
+        """
+        Adds a popup for scoring or losing points.
+        pos_x and pos_y avoid conflicts with Ren'Py reserved x/y in screens.
+        """
         global score_popups
         score_popups.append({
             "text": text,
-            "x": x,
-            "y": y,
-            "start_time": renpy.get_time(),
+            "x": pos_x,
+            "y": pos_y,
+            "start_time": time.time(),
             "class": popup_class
         })
 
+
     def egg_catcher_update():
-        global eggs, basket_x, score, lives, caught, level, egg_speed, spawn_rate, last_spawn
+        global eggs, basket_x, score, lives, caught, level, egg_speed, spawn_rate, last_spawn, paused
 
         if paused or lives <= 0:
             return
@@ -77,41 +84,71 @@ init python:
                         score = max(0, score - 20)
                         lives -= 1
                         add_score_popup("-20", e["x"], e["y"], "negative")
-                    continue
+                    continue  # Skip adding to new_eggs, egg caught
 
+            # Missed eggs
             if e["y"] >= 600:
                 if e["type"] in ["normal", "golden"]:
                     lives -= 1
-                continue
+                continue  # Skip adding missed eggs
 
             new_eggs.append(e)
+
         eggs = new_eggs
 
-        # Level up
+        # Level up logic
         if caught >= level * 15:
             level += 1
             egg_speed = min(6, egg_speed + 0.5)
             spawn_rate = max(0.8, spawn_rate - 0.1)
 
-        # Remove old popups
+        # Remove old popups after 1 second
         score_popups[:] = [p for p in score_popups if current_time - p["start_time"] < 1.0]
 
 # -----------------------------
-# Egg Catcher Menu
+# Animations
+# -----------------------------
+transform BounceAnim:
+    ypos 0
+    linear 0.4 ypos -10
+    linear 0.2 ypos -5
+    linear 0.4 ypos 0
+    repeat True
+
+transform GlowAnim:
+    alpha 1.0
+    linear 1.0 alpha 0.6
+    linear 1.0 alpha 1.0
+    repeat True
+
+transform semi_transparent:
+    alpha 0.9
+
+# -----------------------------
+# Egg Catcher Menu Screen
 # -----------------------------
 screen egg_catcher_menu():
+    default particles = [(renpy.random.randint(0,800), renpy.random.randint(0,600), renpy.random.uniform(2,5)) for i in range(50)]
+    add Solid("#fff0")
+
+    for px, py, zoom in particles:
+        add Solid("#ffffff") at Transform(xpos=px, ypos=py, zoom=zoom/5)
+
     frame:
+        style "menu_frame"
         xalign 0.5
         yalign 0.2
         has vbox
         spacing 15
-        text "🥚 EGG CATCHER" size 60 xalign 0.5
-        text "Catch the falling eggs!" size 30 xalign 0.5
+
+        text "🥚" size 60 xalign 0.5 at BounceAnim
+        text "EGG CATCHER" size 80 color "#FFA500" xalign 0.5 at GlowAnim
+        text "Catch the falling eggs and save the day!" size 30 color "#FFA500" xalign 0.5 at semi_transparent
 
         hbox:
             spacing 30
-            textbutton "🎮 PLAY GAME" action Jump("play_egg_catcher_game")
-            textbutton "🏠 QUIT" action Return("quit")
+            textbutton "🎮 START GAME" text_size 40 action Return("start")
+            textbutton "🏠 GO HOME" text_size 40 action Return("quit")
 
 # -----------------------------
 # Egg Catcher Game Screen
@@ -178,6 +215,24 @@ screen egg_catcher_game():
                     SetVariable("eggs",[])
                 ]
                 textbutton "🏠 Back to Story" action Return("story_continue")
+
+# -----------------------------
+# Egg Catcher Start Label
+# -----------------------------
+label egg_catcher_start:
+    $ result = renpy.call_screen("egg_catcher_menu")  # show menu first
+
+    if result == "start":
+        # Call the actual game
+        call play_egg_catcher_game
+
+        # After finishing the game (win or lose)
+        "You finish playing Egg Catcher!"
+        jump after_egg_catcher  # continue the story arc
+
+    elif result == "quit":
+        "You chose not to play."
+        jump after_egg_catcher  # continue the story arc
 
 # -----------------------------
 # Play Egg Catcher Label

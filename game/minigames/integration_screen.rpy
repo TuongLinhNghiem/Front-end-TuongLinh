@@ -1,8 +1,5 @@
 # Integration Screen (Mini-Game Overlay)
 
-init python:
-    from minigame_manager import play_minigame, get_minigame_info
-
 screen minigame_screen(game_name):
     modal True
     add Solid("#00000088")

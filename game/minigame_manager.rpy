@@ -107,4 +107,5 @@ init python:
 # -----------------------------
 # Current mini-game variable
 # -----------------------------
+default minigame_results = {}
 default minigame_name = ""

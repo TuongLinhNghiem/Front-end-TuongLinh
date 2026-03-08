@@ -111,7 +111,7 @@
             {
               "label": "option2",
               "text": "Take a walk around the school",
-              "jump": "take_walk"
+              "jump": "after_egg_catcher"
             }
           ]
         }
@@ -134,48 +134,6 @@
           "type": "minigame",
           "game": "egg_catcher",
           "onComplete": "after_egg_catcher"
-        }
-      ]
-    },
-    {
-      "scene_id": "take_walk",
-      "commands": [
-        {
-          "type": "background",
-          "image": "school_garden",
-          "transition": "fade"
-        },
-        {
-          "type": "show",
-          "character": "hoai",
-          "expression": "happy",
-          "position": "left"
-        },
-        {
-          "type": "show",
-          "character": "niem",
-          "expression": "happy",
-          "position": "right"
-        },
-        {
-          "type": "dialogue",
-          "speaker": "Niem",
-          "text": "The school garden is beautiful this time of year."
-        },
-        {
-          "type": "dialogue",
-          "speaker": "{player_name}",
-          "text": "It really is. It feels peaceful here."
-        },
-        {
-          "type": "dialogue",
-          "speaker": "Niem",
-          "text": "I'm so happy we could reconnect. I was worried we might never see each other again."
-        },
-        {
-          "type": "dialogue",
-          "speaker": "{player_name}",
-          "text": "Me too, {target_name}. But fate brought us together again."
         }
       ]
     },
