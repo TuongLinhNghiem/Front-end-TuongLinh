@@ -1,4 +1,4 @@
-# Integration Screen (Updated)
+# Integration Screen (Mini-Game Overlay)
 
 init python:
     from minigame_manager import play_minigame, get_minigame_info
@@ -39,5 +39,6 @@ screen minigame_screen(game_name):
                 spacing 30
                 xalign 0.5
 
+                # Proper Return values for Play/Quit
                 textbutton "🎮 Play Game" action Return("play")
                 textbutton "❌ Quit" action Return("quit")

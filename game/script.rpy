@@ -75,11 +75,14 @@ init python:
             game_name = command.get("game", "")
             on_complete = command.get("onComplete", None)
 
+        # Call the integration screen
             result = renpy.call_screen("minigame_screen", game_name)
 
             if result == "play":
-                play_result = play_minigame(game_name)
-                if play_result == "complete" and on_complete:
+        # Call the actual Egg Catcher game
+                renpy.call("play_egg_catcher_game")
+        # After finishing, jump to onComplete if specified
+                if on_complete:
                     return on_complete
             return None
 

@@ -2,8 +2,8 @@
 
 init python:
     import random
-    import renpy.exports as renpy
     import time
+    import renpy.exports as renpy
 
 # -----------------------------
 # Game Variables
@@ -21,6 +21,16 @@ default spawn_rate = 1.5
 default paused = False
 default last_spawn = 0.0
 default score_popups = []
+
+# Leaderboard tracking
+default egg_catcher_leaderboard = []
+
+# -----------------------------
+# Temporary Leaderboard
+# -----------------------------
+init python:
+    if not hasattr(store, "egg_catcher_leaderboard"):
+        store.egg_catcher_leaderboard = []  # Each entry: {"score": int, "datetime": str}
 
 # -----------------------------
 # Functions
@@ -43,16 +53,15 @@ init python:
         if paused or lives <= 0:
             return
 
-        import time
         current_time = time.time()
 
         # Spawn eggs
         if current_time - last_spawn > spawn_rate:
             last_spawn = current_time
-            egg_type_rand = random.random()
-            if egg_type_rand < 0.1:
+            r = random.random()
+            if r < 0.1:
                 e_type = "golden"
-            elif egg_type_rand < 0.2:
+            elif r < 0.2:
                 e_type = "broken"
             else:
                 e_type = "normal"
@@ -99,6 +108,17 @@ init python:
         # Remove old popups
         score_popups[:] = [p for p in score_popups if current_time - p["start_time"] < 1.0]
 
+    def record_leaderboard():
+        import datetime
+        entry = {
+            "score": score,
+            "datetime": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        }
+        store.egg_catcher_leaderboard.append(entry)
+        # Keep top 20
+        store.egg_catcher_leaderboard.sort(key=lambda x: x["score"], reverse=True)
+        store.egg_catcher_leaderboard = store.egg_catcher_leaderboard[:20]
+
 # -----------------------------
 # Animations
 # -----------------------------
@@ -117,15 +137,6 @@ transform GlowAnim:
 
 transform semi_transparent:
     alpha 0.9
-
-# -----------------------------
-# Styles
-# -----------------------------
-style menu_frame:
-    background None
-    xpadding 0
-    ypadding 0
-    spacing 20
 
 # -----------------------------
 # Menu Screen
@@ -252,24 +263,51 @@ screen egg_catcher_game():
                 textbutton "🏠 Back to Menu" action Return("quit")
 
 # -----------------------------
-# Single Fixed Label to Play Mini-Game
+# Play Egg Catcher Mini-Game
 # -----------------------------
 label play_egg_catcher_game:
 
+    # Reset game variables
     $ eggs = []
     $ score = 0
     $ lives = 3
     $ caught = 0
     $ level = 1
+    $ paused = False
+    $ last_spawn = 0.0
+    $ score_popups = []
 
-    # Call the Egg Catcher Game Screen
-    $ result = call screen minigame_screen("egg_catcher")
+    # Call the mini-game menu screen
+    $ menu_result = call screen minigame_screen("egg_catcher")
 
-    # Set last minigame score
-    $ store.last_minigame_score = score
+    # If player pressed Play
+    if menu_result == "play":
 
-    # Return to menu or story depending on result
-    if result == "quit":
-        jump egg_catcher_menu
-    else:
-        return
+        # Launch the Egg Catcher game screen
+        call screen egg_catcher_game
+
+        # Game over / finished, save leaderboard entry
+        if score > 0:
+
+            # Ensure leaderboard exists
+            if not hasattr(store, "egg_catcher_leaderboard"):
+                $ store.egg_catcher_leaderboard = []
+
+            # Add current score with timestamp
+            $ store.egg_catcher_leaderboard.append({
+                "score": score,
+                "timestamp": renpy.get_time()
+            })
+
+            # Sort descending by score, then timestamp
+            $ store.egg_catcher_leaderboard.sort(key=lambda x: (-x["score"], x["timestamp"]))
+
+            # Keep only top 20
+            $ store.egg_catcher_leaderboard = store.egg_catcher_leaderboard[:20]
+
+        # Record last minigame score (optional, for display)
+        $ store.last_minigame_score = score
+
+    # Return to story arc (no matter what)
+    "You finished the Egg Catcher mini-game and return to the story."
+    return
