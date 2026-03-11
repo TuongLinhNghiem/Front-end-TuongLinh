@@ -106,7 +106,7 @@
             {
               "label": "option1",
               "text": "Play a game together!",
-              "jump": "play_egg_catcher"
+              "jump": "play_egg_catcher_scene"
             },
             {
               "label": "option2",
@@ -118,7 +118,7 @@
       ]
     },
     {
-      "scene_id": "play_egg_catcher",
+      "scene_id": "play_egg_catcher_scene",
       "commands": [
         {
           "type": "dialogue",

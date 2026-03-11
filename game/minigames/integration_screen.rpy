@@ -1,4 +1,5 @@
 # Integration Screen (Mini-Game Overlay)
+# FIXED: Proper return value handling for minigame integration
 
 screen minigame_screen(game_name):
     modal True
@@ -36,6 +37,6 @@ screen minigame_screen(game_name):
                 spacing 30
                 xalign 0.5
 
-                # Proper Return values for Play/Quit
+                # FIXED: Proper Return values for Play/Quit
                 textbutton "🎮 Play Game" action Return("play")
                 textbutton "❌ Quit" action Return("quit")

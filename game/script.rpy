@@ -82,7 +82,9 @@ init python:
             options = command.get("options", [])
             choice_items = []
 
-            # Redirect Egg Catcher choice to correct label
+            # CHANGED: Removed the incorrect redirect that was causing navigation issues
+            # The redirect was changing egg_catcher_menu to play_egg_catcher_game
+            # but the JSON uses play_egg_catcher_scene which wasn't being handled
             for opt in options:
                 text = opt.get("text", "")
                 jump_to = opt.get("jump", "")
@@ -92,8 +94,8 @@ init python:
                 text = text.replace("{player_gender}", store.player_gender)
                 text = text.replace("{target_gender}", store.target_gender)
 
-                if jump_to == "egg_catcher_menu":
-                    opt["jump"] = "play_egg_catcher_game"
+                # CHANGED: Store the jump target as-is, no redirect
+                # The jump target will be handled by run_story_arc or special labels
             choice_items = [(opt.get("text", ""), opt.get("jump", "")) for opt in options]
             choice_result = renpy.display_menu(choice_items)
             return choice_result
@@ -103,13 +105,19 @@ init python:
             game_name = command.get("game", "")
             on_complete = command.get("onComplete", None)
 
-        # Call the integration screen
+            # CHANGED: Call the minigame integration screen with proper return handling
             result = renpy.call_screen("minigame_screen", game_name)
 
             if result == "play":
-        # Call the actual Egg Catcher game
-                renpy.call("play_egg_catcher_game")
-        # After finishing, jump to onComplete if specified
+                # Call the actual Egg Catcher game
+                gameplay_label = MINIGAMES.get(game_name, {}).get("renpy_label")
+                if gameplay_label:
+                    renpy.call(gameplay_label)
+                # After finishing, return the on_complete target to continue the story
+                if on_complete:
+                    return on_complete
+            elif result == "quit":
+                # Player chose to skip the minigame
                 if on_complete:
                     return on_complete
             return None
@@ -151,7 +159,7 @@ init python:
                 store.current_dialogue = cmd_idx
                 jump_label = process_command(command)
                 if jump_label:
-                    run_story_arc(jump_label)
+                    renpy.jump(jump_label)
                     return
 
         renpy.log("Story arc completed: " + arc_name)
@@ -162,7 +170,7 @@ init python:
 # -----------------------------
 label start:
     call screen character_selection
-    return
+    jump prologue
 
 label prologue:
     $ run_story_arc("prologue")
@@ -182,18 +190,27 @@ label epilogue:
 
 
 # -----------------------------
+# ADDED: Bridge label for play_egg_catcher_scene
+# This label handles the choice from prologue.json and launches the minigame
+# -----------------------------
+label play_egg_catcher_scene:
+    # ADDED: This bridge label connects the JSON choice to the minigame system
+    # It calls the minigame screen which handles Play/Quit options
+    $ result = renpy.call_screen("minigame_screen", "egg_catcher")
+    
+    if result == "play":
+        # Player chose to play - call the egg catcher game
+        call egg_catcher_start
+        
+    # After minigame completes (or if quit), continue to after_egg_catcher scene
+    jump after_egg_catcher
+
+
+# -----------------------------
 # Custom Jump Points
 # -----------------------------
 label after_egg_catcher:
-    "You finished the mini-game and return to the story!"
-    jump story_scene_2
-
-label bad_ending:
-    scene black
-    "Bad Ending"
-    return
-
-label good_ending:
-    scene black
-    "Good Ending"
+    # ADDED: This label continues the story after the minigame
+    # It runs the remaining prologue scenes starting from the after_egg_catcher scene
+    $ run_story_arc("prologue", start_scene=4)
     return

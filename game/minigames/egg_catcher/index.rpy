@@ -1,4 +1,5 @@
 # Full Egg Catcher mini-game for Ren'Py (8.5+)
+# FIXED: Updated for Ren'Py 8.5.2 compatibility and survival time leaderboard
 
 # -----------------------------
 # Game Variables
@@ -17,6 +18,9 @@ default paused = False
 default last_spawn = 0.0
 default score_popups = []
 default egg_catcher_leaderboard = []  # Default leaderboard
+# ADDED: Survival time tracking
+default game_start_time = 0.0
+default survival_time = 0.0
 
 # -----------------------------
 # Egg Catcher Mini-game Functions
@@ -40,18 +44,21 @@ init python:
             "text": text,
             "x": pos_x,
             "y": pos_y,
-            "start_time": time.time(),
+            "start_time": time.time(),  # FIXED: Using time.time() instead of renpy.get_time()
             "class": popup_class
         })
 
 
     def egg_catcher_update():
-        global eggs, basket_x, score, lives, caught, level, egg_speed, spawn_rate, last_spawn, paused
+        global eggs, basket_x, score, lives, caught, level, egg_speed, spawn_rate, last_spawn, paused, survival_time
 
         if paused or lives <= 0:
             return
 
-        current_time = time.time()
+        current_time = time.time()  # FIXED: Using time.time() instead of renpy.get_time()
+        
+        # ADDED: Update survival time
+        survival_time = current_time - store.game_start_time
 
         # Spawn eggs
         if current_time - last_spawn > spawn_rate:
@@ -178,7 +185,8 @@ screen egg_catcher_game():
 
     # Score popups
     for popup in score_popups:
-        $ elapsed = renpy.get_time() - popup["start_time"]
+        # FIXED: Using time.time() instead of renpy.get_time()
+        $ elapsed = time.time() - popup["start_time"]
         $ y_pos = popup["y"] - 50 * elapsed
         $ alpha_val = max(0, 1 - elapsed)
         text popup["text"] size 30 color ("#00FF00" if popup["class"]=="positive" else "#FF0000") at Transform(xpos=popup["x"], ypos=y_pos, alpha=alpha_val)
@@ -191,6 +199,9 @@ screen egg_catcher_game():
         spacing 5
         text "Score: [score]"
         text "Lives: [lives]"
+        # ADDED: Display survival time
+        $ display_time = int(survival_time)
+        text "Time: [display_time]s"
 
     # Game Over overlay
     if lives <= 0:
@@ -201,7 +212,11 @@ screen egg_catcher_game():
             padding 50
             has vbox
             spacing 20
-            text "🎯 Game Over! Final Score: [score]"
+            # ADDED: Show survival time in game over
+            $ final_time = int(survival_time)
+            text "🎯 Game Over!" size 40 xalign 0.5
+            text "Survival Time: [final_time] seconds" size 30 xalign 0.5
+            text "Score: [score]" size 24 xalign 0.5
 
             hbox:
                 spacing 20
@@ -212,7 +227,9 @@ screen egg_catcher_game():
                     SetVariable("caught",0),
                     SetVariable("level",1),
                     SetVariable("egg_speed",3),
-                    SetVariable("eggs",[])
+                    SetVariable("eggs",[]),
+                    SetVariable("survival_time",0.0),
+                    SetVariable("game_start_time", time.time()),
                 ]
                 textbutton "🏠 Back to Story" action Return("story_continue")
 
@@ -220,6 +237,11 @@ screen egg_catcher_game():
 # Egg Catcher Start Label
 # -----------------------------
 label egg_catcher_start:
+    # ADDED: Initialize game start time for survival tracking
+    $ import time
+    $ game_start_time = time.time()
+    $ survival_time = 0.0
+    
     $ result = renpy.call_screen("egg_catcher_menu")  # show menu first
 
     if result == "start":
@@ -228,11 +250,11 @@ label egg_catcher_start:
 
         # After finishing the game (win or lose)
         "You finish playing Egg Catcher!"
-        jump after_egg_catcher  # continue the story arc
+        return  # FIXED: Return to caller instead of jumping to after_egg_catcher
 
     elif result == "quit":
         "You chose not to play."
-        jump after_egg_catcher  # continue the story arc
+        return  # FIXED: Return to caller instead of jumping to after_egg_catcher
 
 # -----------------------------
 # Play Egg Catcher Label
@@ -244,17 +266,31 @@ label play_egg_catcher_game:
     $ lives = 3
     $ caught = 0
     $ level = 1
+    $ survival_time = 0.0
+    $ import time
+    $ game_start_time = time.time()
 
     # Call the game screen
     $ result = renpy.call_screen("egg_catcher_game")
 
-    # Record to leaderboard (top 20) regardless of win/loss
-    if score > 0:
+    # ADDED: Record survival time to leaderboard (top 20) regardless of win/loss
+    # CHANGED: Now records survival_time instead of score
+    $ final_survival_time = survival_time
+    
+    if final_survival_time > 0:
         $ egg_catcher_leaderboard.append({
+            "survival_time": final_survival_time,
             "score": score,
-            "timestamp": time.time()
+            "timestamp": time.time(),
+            "date": time.strftime("%Y-%m-%d %H:%M:%S"),
+            "player": store.player_name
         })
-        $ egg_catcher_leaderboard.sort(key=lambda x: (-x["score"], x["timestamp"]))
+        # CHANGED: Sort by survival_time (longest first), then by timestamp (earliest first for ties)
+        $ egg_catcher_leaderboard.sort(key=lambda x: (-x["survival_time"], x["timestamp"]))
+        # Keep only top 20
         $ egg_catcher_leaderboard = egg_catcher_leaderboard[:20]
+        
+        # ADDED: Show leaderboard after game
+        "Your survival time: [final_survival_time] seconds"
 
     return
