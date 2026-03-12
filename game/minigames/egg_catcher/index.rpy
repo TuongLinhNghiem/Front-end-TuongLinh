@@ -45,7 +45,7 @@ init python:
     BASKET_WIDTH = 80
     BASKET_HEIGHT = 40
     BASKET_Y = 620  # Position from top
-    MOVE_SPEED = 40
+    MOVE_SPEED = 20
 
     def add_score_popup(text, pos_x, pos_y, popup_class="positive"):
         """
@@ -267,14 +267,24 @@ screen egg_catcher_menu():
 # -----------------------------
 screen egg_catcher_game():
     # Keyboard controls
-    key "K_LEFT" action SetVariable("basket_x", max(basket_x - MOVE_SPEED, 0))
-    key "K_RIGHT" action SetVariable("basket_x", min(basket_x + MOVE_SPEED, GAME_WIDTH - BASKET_WIDTH))
-    key "K_a" action SetVariable("basket_x", max(basket_x - MOVE_SPEED, 0))
-    key "K_d" action SetVariable("basket_x", min(basket_x + MOVE_SPEED, GAME_WIDTH - BASKET_WIDTH))
+    # Left movement
+    key "keydown_K_LEFT" action SetVariable("move_left", True)
+    key "keyup_K_LEFT" action SetVariable("move_left", False)
+
+    # Right movement
+    key "keydown_K_RIGHT" action SetVariable("move_right", True)
+    key "keyup_K_RIGHT" action SetVariable("move_right", False)
+
+    # Optional WASD
+    key "keydown_K_a" action SetVariable("move_left", True)
+    key "keyup_K_a" action SetVariable("move_left", False)
+
+    key "keydown_K_d" action SetVariable("move_right", True)
+    key "keyup_K_d" action SetVariable("move_right", False)
     key "K_SPACE" action SetVariable("paused", not paused)
     
     # Game update timer
-    timer 0.016 repeat True action Function(egg_catcher_update)
+    timer 0.016 repeat True action [Function(egg_catcher_update), renpy.restart_interaction]
     
     # Background - gradient sky to grass (like HTML)
     add Solid("#87CEEB"):  # Sky blue
@@ -455,6 +465,7 @@ screen egg_catcher_game():
                             SetVariable("eggs", []),
                             SetVariable("survival_time", 0.0),
                             SetVariable("game_start_time", time.time()),
+                            SetVariable("last_spawn", time.time()),
                         ]
                         
                         text "🔄 Play Again" size 20 color "#FFFFFF" xalign 0.5 yalign 0.5
@@ -510,6 +521,7 @@ label play_egg_catcher_game:
     $ basket_x = 600
     $ import time
     $ game_start_time = time.time()
+    $ last_spawn = time.time()
 
     # Call the game screen
     $ result = renpy.call_screen("egg_catcher_game")
