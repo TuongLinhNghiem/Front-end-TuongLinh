@@ -45,7 +45,7 @@ init python:
     BASKET_WIDTH = 80
     BASKET_HEIGHT = 40
     BASKET_Y = 620  # Position from top
-    MOVE_SPEED = 22
+    MOVE_SPEED = 40
 
     def add_score_popup(text, pos_x, pos_y, popup_class="positive"):
         """
