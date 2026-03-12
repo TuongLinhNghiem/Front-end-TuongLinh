@@ -218,19 +218,19 @@ screen minigame_overlay(minigame_name="Mini Game"):
 
 
 # Semi-transparent background
-    add "00000080"
+    add Solid("#00000080")
 
 # Mini-game container frame
     frame:
         xalign 0.5
         yalign 0.5
-        xysize(1150, 650)
+        xysize (1150, 650)
         background "#1a1a2e"
         padding (10, 10)
 
     # Mini-game title bar
         frame:
-            xysize(1130, 50)
+            xysize (1130, 50)
             yalign 0.0
             background "#16213e"
 
@@ -251,7 +251,7 @@ screen minigame_overlay(minigame_name="Mini Game"):
     # Mini-game content area
         frame:
             yalign 0.5
-            xysize(1130, 590)
+            xysize (1130, 590)
             background "#0f3460"
             yoffset 25
 
@@ -276,7 +276,7 @@ screen minigame_overlay(minigame_name="Mini Game"):
     frame:
         xalign 0.5
         yalign 0.92
-        xysize(300, 50)
+        xysize (300, 50)
 
         textbutton " (X) Return to Story":
             text_size 22
