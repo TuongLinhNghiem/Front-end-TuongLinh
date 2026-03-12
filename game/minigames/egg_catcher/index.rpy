@@ -315,8 +315,9 @@ screen egg_catcher_game():
             pos (popup["x"], y_pos)
             size 28
             color popup_color
-            alpha alpha_val
+            
             bold True
+            at Transform(alpha=alpha_val)
     
     # IMPROVED: HUD - Top left panel
     frame:
