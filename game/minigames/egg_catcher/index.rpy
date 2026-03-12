@@ -45,7 +45,7 @@ init python:
     BASKET_WIDTH = 80
     BASKET_HEIGHT = 40
     BASKET_Y = 620  # Position from top
-    MOVE_SPEED = 20
+    MOVE_SPEED = 14
 
     def add_score_popup(text, pos_x, pos_y, popup_class="positive"):
         """
@@ -86,8 +86,8 @@ init python:
             basket_x = min(GAME_WIDTH - BASKET_WIDTH, basket_x + MOVE_SPEED)
 
         # Spawn eggs
-        if current_time - last_spawn > spawn_rate:
-            last_spawn = current_time
+        if current_time - store.last_spawn > spawn_rate:
+            store.last_spawn = current_time
             r = random.random()
             if r < 0.1:
                 e_type = "golden"
