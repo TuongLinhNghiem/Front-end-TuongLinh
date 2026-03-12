@@ -208,7 +208,7 @@ screen egg_catcher_menu():
             ysize 60
             background Solid("#1e3c72")
             hover_background Solid("#2a5298")
-            corner_radius 30
+            
             action Return("start")
             
             text "🎮 START GAME" size 24 color "#FFFFFF" xalign 0.5 yalign 0.5
@@ -219,7 +219,7 @@ screen egg_catcher_menu():
             ysize 60
             background Solid("#1e3c72")
             hover_background Solid("#2a5298")
-            corner_radius 30
+            
             action Return("quit")
             
             text "🏠 GO HOME" size 24 color "#FFFFFF" xalign 0.5 yalign 0.5
@@ -269,27 +269,27 @@ screen egg_catcher_game():
                 pos (e["x"], e["y"])
                 xsize EGG_WIDTH
                 ysize EGG_HEIGHT
-                corner_radius 15
+                
         elif e["type"] == "golden":
             # Golden egg with glow effect
             add Solid("#FFD700"):
                 pos (e["x"], e["y"])
                 xsize EGG_WIDTH
                 ysize EGG_HEIGHT
-                corner_radius 15
+                
                 additive 0.3
             add Solid("#FFA500"):
                 pos (e["x"], e["y"])
                 xsize EGG_WIDTH
                 ysize EGG_HEIGHT
-                corner_radius 15
+                
         elif e["type"] == "broken":
             # Brown broken egg
             add Solid("#8B4513"):
                 pos (e["x"], e["y"])
                 xsize EGG_WIDTH
                 ysize EGG_HEIGHT
-                corner_radius 15
+                
     
     # IMPROVED: Basket with proper size and position
     # Main basket body
@@ -297,13 +297,13 @@ screen egg_catcher_game():
         pos (basket_x, BASKET_Y)
         xsize BASKET_WIDTH
         ysize BASKET_HEIGHT
-        corner_radius 20
+        
     # Basket rim
     add Solid("#654321"):
         pos (basket_x - 5, BASKET_Y - 5)
         xsize BASKET_WIDTH + 10
         ysize 10
-        corner_radius 5
+        
     
     # Score popups
     for popup in score_popups:
@@ -323,7 +323,7 @@ screen egg_catcher_game():
         pos (20, 20)
         background Solid("#FFFFFF")
         padding (15, 15)
-        corner_radius 10
+        
         
         vbox:
             spacing 8
@@ -338,7 +338,7 @@ screen egg_catcher_game():
         pos (GAME_WIDTH - 150, 20)
         background Solid("#FFFFFF")
         padding (15, 15)
-        corner_radius 10
+        
         
         vbox:
             spacing 5
@@ -351,7 +351,7 @@ screen egg_catcher_game():
         pos (GAME_WIDTH - 220, GAME_HEIGHT - 60)
         background Solid("#FFFFFF")
         padding (10, 10)
-        corner_radius 10
+        
         
         text "🎮 ← → or A/D | SPACE pause" size 16 color "#333333"
     
@@ -365,7 +365,7 @@ screen egg_catcher_game():
             yalign 0.5
             background Solid("#FFFFFF")
             padding (40, 40)
-            corner_radius 15
+            
             
             vbox:
                 spacing 20
@@ -376,7 +376,7 @@ screen egg_catcher_game():
                     ysize 50
                     background Solid("#1e3c72")
                     hover_background Solid("#2a5298")
-                    corner_radius 25
+                    
                     action SetVariable("paused", False)
                     
                     text "▶️ Resume" size 22 color "#FFFFFF" xalign 0.5 yalign 0.5
@@ -391,7 +391,7 @@ screen egg_catcher_game():
             yalign 0.5
             background Solid("#FFFFFF")
             padding (50, 50)
-            corner_radius 15
+            
             
             vbox:
                 spacing 15
@@ -414,7 +414,7 @@ screen egg_catcher_game():
                         ysize 50
                         background Solid("#1e3c72")
                         hover_background Solid("#2a5298")
-                        corner_radius 25
+                        
                         action [
                             SetVariable("score", 0),
                             SetVariable("lives", 3),
@@ -434,7 +434,7 @@ screen egg_catcher_game():
                         ysize 50
                         background Solid("#FF6B6B")
                         hover_background Solid("#ee5a24")
-                        corner_radius 25
+                        
                         action Return("story_continue")
                         
                         text "🏠 Back to Story" size 20 color "#FFFFFF" xalign 0.5 yalign 0.5
