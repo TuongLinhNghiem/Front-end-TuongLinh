@@ -185,7 +185,6 @@ screen egg_catcher_menu():
             xsize 120
             ysize 50
             alpha 0.8
-            corner_radius 25
     
     # Title area
     vbox:
@@ -261,7 +260,6 @@ screen egg_catcher_game():
             xsize 150
             ysize 50
             alpha 0.8
-            corner_radius 25
     
     # IMPROVED: Falling eggs with proper sizing
     for e in eggs:
