@@ -1,25 +1,19 @@
-
 {
   "arc_name": "chapter1",
-  "arc_title": "Chapter 1: School Days",
+  "arc_title": "Chapter 1: Testing Memory",
   "scenes": [
     {
-      "scene_id": "morning_class",
+      "scene_id": "intro",
       "commands": [
         {
           "type": "background",
-          "image": "classroom_morning",
+          "image": "classroom",
           "transition": "fade"
         },
         {
           "type": "dialogue",
           "speaker": "Narrator",
-          "text": "The first class of the day begins. The classroom is filled with the murmur of students chatting."
-        },
-        {
-          "type": "dialogue",
-          "speaker": "{player_name}",
-          "text": "This place feels different from my old school. Everyone seems so focused."
+          "text": "Classes have begun at Sakura Academy. The days are filled with learning and new experiences."
         },
         {
           "type": "show",
@@ -30,145 +24,99 @@
         {
           "type": "dialogue",
           "speaker": "Niem",
-          "text": "Hey {player_name}! Want to sit together?"
+          "text": "Hey {player_name}! There's a memory challenge game in the activity room. Want to try it?"
         },
         {
           "type": "dialogue",
           "speaker": "{player_name}",
-          "text": "Absolutely! Let's sit in the back row."
+          "text": "A memory challenge? That sounds fun! Let's see who has the better memory!"
         }
       ]
     },
     {
-      "scene_id": "lunch_break",
+      "scene_id": "choice",
       "commands": [
         {
-          "type": "background",
-          "image": "school_cafeteria",
-          "transition": "fade"
-        },
-        {
-          "type": "show",
-          "character": "hoai",
-          "expression": "happy",
-          "position": "left"
-        },
-        {
-          "type": "show",
-          "character": "niem",
-          "expression": "happy",
-          "position": "right"
-        },
-        {
           "type": "dialogue",
           "speaker": "Niem",
-          "text": "The cafeteria food here is actually pretty good!"
-        },
-        {
-          "type": "dialogue",
-          "speaker": "{player_name}",
-          "text": "I'll take your word for it. What's on the menu today?"
-        },
-        {
-          "type": "dialogue",
-          "speaker": "Niem",
-          "text": "They have that special curry everyone talks about. Want to try it?"
+          "text": "I've been practicing! I bet I can remember more sequences than you!"
         },
         {
           "type": "choice",
           "options": [
             {
-              "label": "eat_curry",
-              "text": "Sure, let's try the curry!",
-              "jump": "eat_cafe"
+              "label": "option1",
+              "text": "Challenge accepted! Let's play!",
+              "jump": "play_memory_match_scene"
             },
             {
-              "label": "skip_food",
-              "text": "Maybe I'll pass for now...",
-              "jump": "skip_cafe"
+              "label": "option2",
+              "text": "Maybe later, let's study instead",
+              "jump": "after_memory_match"
             }
           ]
         }
       ]
     },
     {
-      "scene_id": "eat_cafe",
+      "scene_id": "play_memory_match_scene",
       "commands": [
         {
           "type": "dialogue",
           "speaker": "{player_name}",
-          "text": "Alright, I'm feeling adventurous today. Let's do it!"
+          "text": "Get ready, {target_name}! I'm going to crush this memory challenge!"
         },
         {
           "type": "dialogue",
           "speaker": "Niem",
-          "text": "That's the spirit! I'll get us both a bowl."
+          "text": "We'll see about that! May the best memory win!"
         },
         {
-          "type": "dialogue",
-          "speaker": "{player_name}",
-          "text": "This actually tastes amazing!"
-        },
-        {
-          "type": "setvar",
-          "name": "has_tried_curry",
-          "value": true
+          "type": "minigame",
+          "game": "memory_match",
+          "onComplete": "after_memory_match"
         }
       ]
     },
     {
-      "scene_id": "skip_cafe",
-      "commands": [
-        {
-          "type": "dialogue",
-          "speaker": "{player_name}",
-          "text": "I think I'll wait for dinner. Not very hungry right now."
-        },
-        {
-          "type": "dialogue",
-          "speaker": "Niem",
-          "text": "No problem! More for me then!"
-        }
-      ]
-    },
-    {
-      "scene_id": "afternoon",
+      "scene_id": "after_memory_match",
       "commands": [
         {
           "type": "background",
-          "image": "school_rooftop",
+          "image": "school_sunset",
           "transition": "fade"
-        },
-        {
-          "type": "dialogue",
-          "speaker": "Narrator",
-          "text": "After classes, {player_name} heads to the rooftop to get some fresh air."
         },
         {
           "type": "show",
           "character": "hoai",
-          "expression": "thoughtful",
+          "expression": "happy",
           "position": "left"
         },
         {
+          "type": "show",
+          "character": "niem",
+          "expression": "happy",
+          "position": "right"
+        },
+        {
           "type": "dialogue",
-          "speaker": "{player_name}",
-          "text": "First day at Sakura Academy... It's been quite eventful."
+          "speaker": "Niem",
+          "text": "That was amazing! Your memory is really sharp!"
         },
         {
           "type": "dialogue",
           "speaker": "{player_name}",
-          "text": "I wonder what tomorrow will bring."
+          "text": "Thanks! You were pretty impressive too. We should do this more often!"
+        },
+        {
+          "type": "setvar",
+          "name": "bond_level",
+          "value": 20
         },
         {
           "type": "dialogue",
           "speaker": "Narrator",
-          "text": "The sun begins to set, casting a warm orange glow over the horizon."
-        },
-        {
-          "type": "dialogue",
-          "speaker": "Narrator",
-          "text": "A new chapter in {player_name}'s life has only just begun..."
+          "text": "The friendly competition brought {player_name} and {target_name} closer together."
         },
         {
           "type": "jump",

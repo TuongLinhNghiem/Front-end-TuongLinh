@@ -1,0 +1,170 @@
+{
+  "arc_name": "chapter2",
+  "arc_title": "Chapter 2: The Friendly Battle",
+  "scenes": [
+    {
+      "scene_id": "intro",
+      "commands": [
+        {
+          "type": "background",
+          "image": "training_grounds",
+          "transition": "fade"
+        },
+        {
+          "type": "dialogue",
+          "speaker": "Narrator",
+          "text": "Weeks have passed since the start of the semester. {player_name} and {target_name} have grown closer as friends."
+        },
+        {
+          "type": "show",
+          "character": "niem",
+          "expression": "determined",
+          "position": "right"
+        },
+        {
+          "type": "dialogue",
+          "speaker": "Niem",
+          "text": "{player_name}! There's a sparring tournament happening today. Want to be my partner?"
+        },
+        {
+          "type": "dialogue",
+          "speaker": "{player_name}",
+          "text": "A sparring tournament? That sounds exciting! I'm in!"
+        }
+      ]
+    },
+    {
+      "scene_id": "training",
+      "commands": [
+        {
+          "type": "background",
+          "image": "arena",
+          "transition": "fade"
+        },
+        {
+          "type": "show",
+          "character": "hoai",
+          "expression": "confident",
+          "position": "left"
+        },
+        {
+          "type": "show",
+          "character": "niem",
+          "expression": "confident",
+          "position": "right"
+        },
+        {
+          "type": "dialogue",
+          "speaker": "{player_name}",
+          "text": "Alright {target_name}, let's show them what we've got! But remember, may the best fighter win!"
+        },
+        {
+          "type": "dialogue",
+          "speaker": "Niem",
+          "text": "Don't hold back, {player_name}! I certainly won't!"
+        }
+      ]
+    },
+    {
+      "scene_id": "choice",
+      "commands": [
+        {
+          "type": "dialogue",
+          "speaker": "Announcer",
+          "text": "The match between {player_name} and {target_name} is about to begin!"
+        },
+        {
+          "type": "choice",
+          "options": [
+            {
+              "label": "option1",
+              "text": "Start the battle!",
+              "jump": "play_pvp_scene"
+            },
+            {
+              "label": "option2",
+              "text": "Forfeit the match",
+              "jump": "after_pvp"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene_id": "play_pvp_scene",
+      "commands": [
+        {
+          "type": "dialogue",
+          "speaker": "{player_name}",
+          "text": "Here I come, {target_name}! Prepare yourself!"
+        },
+        {
+          "type": "dialogue",
+          "speaker": "Niem",
+          "text": "Bring it on!"
+        },
+        {
+          "type": "minigame",
+          "game": "pvp",
+          "onComplete": "after_pvp"
+        }
+      ]
+    },
+    {
+      "scene_id": "after_pvp",
+      "commands": [
+        {
+          "type": "background",
+          "image": "arena_sunset",
+          "transition": "fade"
+        },
+        {
+          "type": "show",
+          "character": "hoai",
+          "expression": "tired_happy",
+          "position": "left"
+        },
+        {
+          "type": "show",
+          "character": "niem",
+          "expression": "tired_happy",
+          "position": "right"
+        },
+        {
+          "type": "dialogue",
+          "speaker": "Niem",
+          "text": "That... was... amazing! You really gave it your all!"
+        },
+        {
+          "type": "dialogue",
+          "speaker": "{player_name}",
+          "text": "You too, {target_name}! That was the most fun I've had in ages!"
+        },
+        {
+          "type": "setvar",
+          "name": "bond_level",
+          "value": 35
+        },
+        {
+          "type": "dialogue",
+          "speaker": "Narrator",
+          "text": "Through their friendly rivalry, {player_name} and {target_name}'s bond grew even stronger."
+        },
+        {
+          "type": "dialogue",
+          "speaker": "Niem",
+          "text": "Same time next week?"
+        },
+        {
+          "type": "dialogue",
+          "speaker": "{player_name}",
+          "text": "You're on!"
+        },
+        {
+          "type": "jump",
+          "arc": "chapter3"
+        }
+      ]
+    }
+  ]
+}

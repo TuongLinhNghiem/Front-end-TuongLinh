@@ -13,36 +13,42 @@ init python:
             "description": "Catch falling eggs in your basket before they hit the ground!",
             "controls": "Use LEFT/RIGHT or A/D to move. SPACE to pause.",
             "renpy_label": "egg_catcher_start",
+            "chapter": "prologue",
         },
         "memory_match": {
-            "name": "Memory Match",
-            "description": "Match pairs of cards to win!",
-            "controls": "Click on cards to reveal them.",
+            "name": "Shape Matcher",
+            "description": "Remember the sequence of shapes and repeat it! Test your memory!",
+            "controls": "Click on shapes to repeat the sequence.",
             "renpy_label": "memory_match_start",
+            "chapter": "chapter1",
         },
         "pvp": {
             "name": "PvP Battle",
-            "description": "Compete against another player!",
-            "controls": "Use arrow keys or WASD to move.",
+            "description": "Battle against your rival in an epic showdown!",
+            "controls": "SPACE to attack, U for ultimate, P to pause.",
             "renpy_label": "pvp_start",
+            "chapter": "chapter2",
         },
         "space_shooter": {
             "name": "Space Shooter",
             "description": "Blast through waves of enemies!",
             "controls": "Use arrow keys to move and SPACE to shoot.",
             "renpy_label": "space_shooter_start",
+            "chapter": "chapter3",
         },
         "racing": {
             "name": "Racing",
             "description": "Race to the finish line!",
             "controls": "Use arrow keys to steer and accelerate.",
             "renpy_label": "racing_start",
+            "chapter": "chapter4",
         },
         "flyme2themoon": {
             "name": "Fly Me to the Moon",
             "description": "Fly as high as you can!",
             "controls": "Use arrow keys or WASD to control the rocket.",
             "renpy_label": "flyme2themoon_start",
+            "chapter": "chapter5",
         }
     }
 
