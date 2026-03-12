@@ -209,7 +209,7 @@ screen egg_catcher_game():
             xalign 0.5
             yalign 0.5
             background "#FFFFFFDD"
-            padding 50
+            padding (50, 50)
             has vbox
             spacing 20
             # ADDED: Show survival time in game over
