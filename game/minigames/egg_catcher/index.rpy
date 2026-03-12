@@ -26,6 +26,8 @@ default egg_catcher_leaderboard = []
 # Survival time tracking
 default game_start_time = 0.0
 default survival_time = 0.0
+default move_left = False
+default move_right = False
 
 # -----------------------------
 # Egg Catcher Mini-game Functions
@@ -64,6 +66,7 @@ init python:
         IMPROVED: Better collision detection matching visual sizes.
         """
         global eggs, basket_x, score, lives, caught, level, egg_speed, spawn_rate, last_spawn, paused, survival_time
+        global move_left, move_right
 
         if paused or lives <= 0:
             return
@@ -72,6 +75,15 @@ init python:
         
         # Update survival time
         survival_time = current_time - store.game_start_time
+
+        # --------------------------------
+        # Continuous basket movement
+        # --------------------------------
+        if move_left:
+            basket_x = max(0, basket_x - MOVE_SPEED)
+
+        if move_right:
+            basket_x = min(GAME_WIDTH - BASKET_WIDTH, basket_x + MOVE_SPEED)
 
         # Spawn eggs
         if current_time - last_spawn > spawn_rate:
@@ -84,39 +96,57 @@ init python:
             else:
                 e_type = "normal"
             # IMPROVED: Spawn within game bounds
-            spawn_x = random.randint(50, GAME_WIDTH - 50)
-            eggs.append({"x": spawn_x, "y": -40, "type": e_type})
+            spawn_x = random.randint(0, GAME_WIDTH - EGG_WIDTH)
+            eggs.append({"x": spawn_x, "y": -EGG_HEIGHT, "type": e_type})
 
         new_eggs = []
+
+        basket_left = basket_x
+        basket_right = basket_x + BASKET_WIDTH
+        basket_top = BASKET_Y
+        basket_bottom = BASKET_Y + BASKET_HEIGHT
+
         for e in eggs:
             e["y"] += egg_speed
 
             # IMPROVED: Accurate collision detection
             # Check if egg bottom is at basket level
+            egg_left = e["x"]
+            egg_right = e["x"] + EGG_WIDTH
+            egg_top = e["y"]
             egg_bottom = e["y"] + EGG_HEIGHT
-            egg_center_x = e["x"] + EGG_WIDTH / 2
             
-            # Collision: egg bottom within basket top area AND center within basket width
-            if (BASKET_Y <= egg_bottom <= BASKET_Y + BASKET_HEIGHT + 10 and
-                basket_x < egg_center_x < basket_x + BASKET_WIDTH):
-                
-                # Egg caught in basket
+            # --------------------------------
+        # Collision detection (AABB overlap)
+        # --------------------------------
+            collision = (
+                egg_bottom >= basket_top and
+                egg_top <= basket_bottom and
+                egg_right >= basket_left and
+                egg_left <= basket_right
+            )
+
+            if collision:
+
                 if e["type"] == "normal":
                     score += 10
                     caught += 1
                     add_score_popup("+10", e["x"], e["y"])
+
                 elif e["type"] == "golden":
                     score += 50
                     caught += 1
                     add_score_popup("+50", e["x"], e["y"])
+
                 elif e["type"] == "broken":
                     score = max(0, score - 20)
                     lives -= 1
                     add_score_popup("-20", e["x"], e["y"], "negative")
+
                 continue  # Egg caught, don't add to new_eggs
 
             # Egg missed - fell below screen
-            if e["y"] > GAME_HEIGHT:
+            if egg_top > GAME_HEIGHT:
                 if e["type"] in ["normal", "golden"]:
                     lives -= 1
                 continue  # Don't add missed eggs
