@@ -99,7 +99,7 @@ screen memory_match_menu():
             pos positions[i]
             xsize 80
             ysize 80
-            corner_radius 40 if shape == 'circle' else 10
+            # 40 if shape == 'circle' else 10
             alpha 0.3
             at FloatAnim
     
@@ -123,7 +123,7 @@ screen memory_match_menu():
             ysize 60
             background Solid("#ff6b6b")
             hover_background Solid("#ee5a24")
-            corner_radius 30
+            # 30
             action Return("start")
             
             text "🎮 PLAY GAME" size 24 color "#FFFFFF" xalign 0.5 yalign 0.5
@@ -133,7 +133,7 @@ screen memory_match_menu():
             ysize 60
             background Solid("#1e3c72")
             hover_background Solid("#2a5298")
-            corner_radius 30
+            # 30
             action Return("quit")
             
             text "🏠 GO HOME" size 24 color "#FFFFFF" xalign 0.5 yalign 0.5
@@ -164,7 +164,7 @@ screen memory_match_game():
         pos (20, 20)
         background Solid("#FFFFFF")
         padding (20, 15)
-        corner_radius 15
+        # 15
         
         hbox:
             spacing 40
@@ -177,7 +177,7 @@ screen memory_match_game():
         pos (20, 80)
         background Solid("#FFFFFF")
         padding (15, 10)
-        corner_radius 10
+        # 10
         
         text "Sequence: [memory_sequence_length] shapes" size 20 color "#666666"
     
@@ -187,7 +187,7 @@ screen memory_match_game():
         yalign 0.2
         background Solid("#FFFFFF")
         padding (20, 15)
-        corner_radius 10
+        # 10
         
         if memory_showing_sequence:
             text "👀 Watch carefully..." size 28 color "#FFA500" bold True
@@ -217,18 +217,18 @@ screen memory_match_game():
                 
                 # Shape-specific styling
                 if shape == 'circle':
-                    corner_radius 75
+                    # 75
                 elif shape == 'triangle':
                     # Triangle approximation
-                    corner_radius 10
+                    # 10
                 elif shape == 'diamond':
-                    corner_radius 10
+                    # 10
                 elif shape == 'star':
-                    corner_radius 10
+                    # 10
                 elif shape == 'hexagon':
-                    corner_radius 10
+                    # 10
                 else:
-                    corner_radius 10
+                    # 10
                 
                 # Disable during sequence showing
                 if not memory_game_active or memory_showing_sequence:
@@ -262,7 +262,7 @@ screen memory_match_game():
                 ysize 50
                 background Solid("#1e3c72")
                 hover_background Solid("#2a5298")
-                corner_radius 25
+                # 25
                 action Return("start_game")
                 
                 text "▶️ Start Game" size 22 color "#FFFFFF" xalign 0.5 yalign 0.5
@@ -273,7 +273,7 @@ screen memory_match_game():
                 ysize 50
                 background Solid("#FFA500")
                 hover_background Solid("#FF8C00")
-                corner_radius 25
+                # 25
                 action Return("replay")
                 
                 text "🔄 Replay" size 22 color "#FFFFFF" xalign 0.5 yalign 0.5
@@ -283,7 +283,7 @@ screen memory_match_game():
             ysize 50
             background Solid("#FF6B6B")
             hover_background Solid("#ee5a24")
-            corner_radius 25
+            # 25
             action Return("quit_game")
             
             text "🏠 Menu" size 22 color "#FFFFFF" xalign 0.5 yalign 0.5
@@ -302,7 +302,7 @@ screen memory_match_gameover():
         yalign 0.5
         background Solid("#FFFFFF")
         padding (50, 50)
-        corner_radius 15
+        # 15
         
         vbox:
             spacing 20
@@ -321,7 +321,7 @@ screen memory_match_gameover():
                     ysize 50
                     background Solid("#1e3c72")
                     hover_background Solid("#2a5298")
-                    corner_radius 25
+                    # 25
                     action Return("play_again")
                     
                     text "🔄 Play Again" size 20 color "#FFFFFF" xalign 0.5 yalign 0.5
@@ -331,7 +331,7 @@ screen memory_match_gameover():
                     ysize 50
                     background Solid("#FF6B6B")
                     hover_background Solid("#ee5a24")
-                    corner_radius 25
+                    # 25
                     action Return("quit_game")
                     
                     text "🏠 Back to Story" size 20 color "#FFFFFF" xalign 0.5 yalign 0.5
