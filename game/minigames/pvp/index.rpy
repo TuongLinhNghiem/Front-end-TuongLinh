@@ -140,7 +140,7 @@ screen pvp_menu():
             ysize 60
             background Solid("#1e3c72")
             hover_background Solid("#2a5298")
-            corner_radius 30
+            # 30
             action Return("start")
             
             text "⚔️ BATTLE!" size 24 color "#FFFFFF" xalign 0.5 yalign 0.5
@@ -150,7 +150,7 @@ screen pvp_menu():
             ysize 60
             background Solid("#333333")
             hover_background Solid("#444444")
-            corner_radius 30
+            # 30
             action Return("quit")
             
             text "🏠 GO HOME" size 24 color "#FFFFFF" xalign 0.5 yalign 0.5
@@ -180,7 +180,7 @@ screen pvp_game():
         pos (20, 20)
         background Solid("#000000")
         padding (15, 15)
-        corner_radius 10
+        # 10
         xsize 280
         
         vbox:
@@ -191,7 +191,7 @@ screen pvp_game():
                 add Solid("#00ffff"):
                     xsize 60
                     ysize 60
-                    corner_radius 30
+                    # 30
                 vbox:
                     spacing 5
                     text "[player_name]" size 22 color "#00ffff" bold True
@@ -229,7 +229,7 @@ screen pvp_game():
         ypos 20
         background Solid("#000000")
         padding (20, 15)
-        corner_radius 10
+        # 10
         
         vbox:
             spacing 5
@@ -241,7 +241,7 @@ screen pvp_game():
         pos (980, 20)
         background Solid("#000000")
         padding (15, 15)
-        corner_radius 10
+        # 10
         xsize 280
         
         vbox:
@@ -256,7 +256,7 @@ screen pvp_game():
                 add Solid("#ff0040"):
                     xsize 60
                     ysize 60
-                    corner_radius 30
+                    # 30
             
             # HP Bar
             hbox:
@@ -296,7 +296,7 @@ screen pvp_game():
             add Solid("#00ffff"):
                 xsize 120
                 ysize 180
-                corner_radius 10
+                # 10
             text "[player_name]" size 18 color "#00ffff" xalign 0.5
         
         # VS indicator
@@ -308,7 +308,7 @@ screen pvp_game():
             add Solid("#ff0040"):
                 xsize 120
                 ysize 180
-                corner_radius 10
+                # 10
             text "[target_name]" size 18 color "#ff0040" xalign 0.5
     
     # Controls hint
@@ -317,7 +317,7 @@ screen pvp_game():
         yalign 0.95
         background Solid("#000000")
         padding (15, 10)
-        corner_radius 10
+        # 10
         
         text "SPACE: Attack | U: Ultimate | P: Pause" size 16 color "#888888"
     
@@ -328,7 +328,7 @@ screen pvp_game():
         ysize 40
         background Solid("#333333")
         hover_background Solid("#444444")
-        corner_radius 20
+        # 20
         action Return("skip")
         
         text "Skip Battle" size 16 color "#FFFFFF" xalign 0.5 yalign 0.5
@@ -343,7 +343,7 @@ screen pvp_game():
             yalign 0.5
             background Solid("#FFFFFF")
             padding (40, 40)
-            corner_radius 15
+            # 15
             
             vbox:
                 spacing 20
@@ -353,7 +353,7 @@ screen pvp_game():
                     ysize 50
                     background Solid("#1e3c72")
                     hover_background Solid("#2a5298")
-                    corner_radius 25
+                    # 25
                     action Return("resume")
                     
                     text "▶️ Resume" size 22 color "#FFFFFF" xalign 0.5 yalign 0.5
@@ -372,7 +372,7 @@ screen pvp_story_screen():
         yalign 0.5
         background Solid("#1a1a2e")
         padding (50, 50)
-        corner_radius 15
+        # 15
         xsize 700
         
         vbox:
@@ -390,7 +390,7 @@ screen pvp_story_screen():
                 ysize 50
                 background Solid("#1e3c72")
                 hover_background Solid("#2a5298")
-                corner_radius 25
+                # 25
                 xalign 0.5
                 action Return("next_stage")
                 
@@ -413,7 +413,7 @@ screen pvp_gameover():
         yalign 0.5
         background Solid("#FFFFFF")
         padding (50, 50)
-        corner_radius 15
+        # 15
         
         vbox:
             spacing 20
@@ -431,7 +431,7 @@ screen pvp_gameover():
                     ysize 50
                     background Solid("#1e3c72")
                     hover_background Solid("#2a5298")
-                    corner_radius 25
+                    # 25
                     action Return("retry")
                     
                     text "🔄 Retry" size 20 color "#FFFFFF" xalign 0.5 yalign 0.5
@@ -441,7 +441,7 @@ screen pvp_gameover():
                     ysize 50
                     background Solid("#FF6B6B")
                     hover_background Solid("#ee5a24")
-                    corner_radius 25
+                    # 25
                     action Return("quit")
                     
                     text "🏠 Back to Story" size 20 color "#FFFFFF" xalign 0.5 yalign 0.5
