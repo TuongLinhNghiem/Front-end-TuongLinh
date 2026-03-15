@@ -100,7 +100,7 @@ screen memory_match_menu():
             xsize 80
             ysize 80
             # 40 if shape == 'circle' else 10
-            #alpha 0.3
+            alpha 0.3
             at FloatAnim
     
     # Title area
@@ -110,7 +110,7 @@ screen memory_match_menu():
         spacing 15
         
         text "🔷 SHAPE MATCHER" size 64 color "#FFFFFF" xalign 0.5 bold True at GlowAnim
-        text "Test your memory with morphing shapes!" size 28 color "#FFFFFF" xalign 0.5 ##alpha 0.9
+        text "Test your memory with morphing shapes!" size 28 color "#FFFFFF" xalign 0.5 #alpha 0.9
     
     # Menu buttons
     hbox:
@@ -274,7 +274,7 @@ screen memory_match_gameover():
     modal True
     
     add Solid("#000000"):
-        #alpha 0.8
+        alpha 0.8
     
     frame:
         xalign 0.5
