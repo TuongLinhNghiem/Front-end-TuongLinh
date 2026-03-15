@@ -100,7 +100,7 @@ screen memory_match_menu():
             xsize 80
             ysize 80
             # 40 if shape == 'circle' else 10
-            alpha 0.3
+            #alpha 0.3
             at FloatAnim
     
     # Title area
@@ -110,7 +110,7 @@ screen memory_match_menu():
         spacing 15
         
         text "🔷 SHAPE MATCHER" size 64 color "#FFFFFF" xalign 0.5 bold True at GlowAnim
-        text "Test your memory with morphing shapes!" size 28 color "#FFFFFF" xalign 0.5 alpha 0.9
+        text "Test your memory with morphing shapes!" size 28 color "#FFFFFF" xalign 0.5 ##alpha 0.9
     
     # Menu buttons
     hbox:
@@ -144,7 +144,7 @@ screen memory_match_menu():
         color "#FFFFFF"
         xalign 0.5
         yalign 0.85
-        alpha 0.8
+        #alpha 0.8
 
 # -----------------------------
 # Memory Match Game Screen
@@ -207,28 +207,7 @@ screen memory_match_game():
             $ is_selected = (memory_selected_shape == shape)
             $ is_correct = (memory_correct_shape == shape)
             
-            button:
-                xsize 150
-                ysize 150
-                background Solid(shape_color)
-                hover_background Solid(shape_color)
-                if is_selected:
-                    at CorrectPulse
                 
-                # Shape-specific styling
-                if shape == 'circle':
-                    # 75
-                elif shape == 'triangle':
-                    # Triangle approximation
-                    # 10
-                elif shape == 'diamond':
-                    # 10
-                elif shape == 'star':
-                    # 10
-                elif shape == 'hexagon':
-                    # 10
-                else:
-                    # 10
                 
                 # Disable during sequence showing
                 if not memory_game_active or memory_showing_sequence:
@@ -295,7 +274,7 @@ screen memory_match_gameover():
     modal True
     
     add Solid("#000000"):
-        alpha 0.8
+        #alpha 0.8
     
     frame:
         xalign 0.5
