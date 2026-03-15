@@ -203,9 +203,9 @@ screen memory_match_game():
         spacing 30
         
         for shape in MEMORY_SHAPES:
-            $ shape_color = MEMORY_SHAPE_COLORS.get(shape, '#FFFFFF')
-            $ is_selected = (memory_selected_shape == shape)
-            $ is_correct = (memory_correct_shape == shape)
+            default shape_color = MEMORY_SHAPE_COLORS.get(shape, "#FFFFFF")
+            default is_selected = (memory_selected_shape == shape)
+            default is_correct = (memory_correct_shape == shape)
             
                 
                 
