@@ -10,8 +10,6 @@
 # Game Variables
 # -----------------------------
 default basket_x = 600
-default basket_width = 80
-default basket_height = 40
 default eggs = []
 default score = 0
 default lives = 3
@@ -26,8 +24,8 @@ default egg_catcher_leaderboard = []
 # Survival time tracking
 default game_start_time = 0.0
 default survival_time = 0.0
-default move_left = False
-default move_right = False
+
+
 
 # -----------------------------
 # Egg Catcher Mini-game Functions
@@ -36,6 +34,7 @@ default move_right = False
 init python:
     import random
     import time
+    import pygame
 
     # Game constants - IMPROVED: Proper sizing for 1280x720
     GAME_WIDTH = 1280
@@ -66,28 +65,28 @@ init python:
         IMPROVED: Better collision detection matching visual sizes.
         """
         global eggs, basket_x, score, lives, caught, level, egg_speed, spawn_rate, last_spawn, paused, survival_time
-        global move_left, move_right
+
 
         if paused or lives <= 0:
             return
 
         current_time = time.time()
-        
+
+        # Keyboard controls
+        keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_LEFT] or keys[pygame.K_a]:
+            basket_x = max(0, basket_x - MOVE_SPEED)
+
+        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+            basket_x = min(GAME_WIDTH - BASKET_WIDTH, basket_x + MOVE_SPEED)
+
         # Update survival time
         survival_time = current_time - store.game_start_time
 
-        # --------------------------------
-        # Continuous basket movement
-        # --------------------------------
-        if move_left:
-            basket_x = max(0, basket_x - MOVE_SPEED)
-
-        if move_right:
-            basket_x = min(GAME_WIDTH - BASKET_WIDTH, basket_x + MOVE_SPEED)
-
         # Spawn eggs
-        if current_time - store.last_spawn > spawn_rate:
-            store.last_spawn = current_time
+        if current_time - last_spawn > spawn_rate:
+            last_spawn = current_time
             r = random.random()
             if r < 0.1:
                 e_type = "golden"
@@ -115,7 +114,7 @@ init python:
             egg_right = e["x"] + EGG_WIDTH
             egg_top = e["y"]
             egg_bottom = e["y"] + EGG_HEIGHT
-            
+
             # --------------------------------
         # Collision detection (AABB overlap)
         # --------------------------------
@@ -164,6 +163,10 @@ init python:
         # Remove old popups after 1 second
         score_popups[:] = [p for p in score_popups if current_time - p["start_time"] < 1.0]
 
+    def update_and_refresh():
+        egg_catcher_update()
+        renpy.restart_interaction()
+
 # -----------------------------
 # Animations
 # -----------------------------
@@ -200,14 +203,14 @@ transform ScorePopup(y_start, y_offset):
 # -----------------------------
 screen egg_catcher_menu():
     modal True
-    
+
     # Background gradient (sky to grass)
     add Solid("#87CEEB"):
         ysize 360
     add Solid("#98FB98"):
         ypos 360
         ysize 360
-    
+
     # Decorative clouds
     for i in range(3):
         add Solid("#FFFFFF"):
@@ -215,45 +218,45 @@ screen egg_catcher_menu():
             xsize 120
             ysize 50
             alpha 0.8
-    
+
     # Title area
     vbox:
         xalign 0.5
         yalign 0.3
         spacing 15
-        
+
         text "🥚" size 80 xalign 0.5 at BounceAnim
         text "EGG CATCHER" size 72 color "#FFA500" xalign 0.5 bold True at GlowAnim
         text "Catch the falling eggs and save the day!" size 28 color "#8B4513" xalign 0.5
-    
+
     # Menu buttons
     hbox:
         xalign 0.5
         yalign 0.65
         spacing 40
-        
+
         # Play button
         button:
             xsize 200
             ysize 60
             background Solid("#1e3c72")
             hover_background Solid("#2a5298")
-            
+
             action Return("start")
-            
+
             text "🎮 START GAME" size 24 color "#FFFFFF" xalign 0.5 yalign 0.5
-        
+
         # Quit button
         button:
             xsize 200
             ysize 60
             background Solid("#1e3c72")
             hover_background Solid("#2a5298")
-            
+
             action Return("quit")
-            
+
             text "🏠 GO HOME" size 24 color "#FFFFFF" xalign 0.5 yalign 0.5
-    
+
     # Instructions
     text "Controls: ← → or A/D to move | SPACE to pause":
         size 18
@@ -266,33 +269,19 @@ screen egg_catcher_menu():
 # IMPROVED: Better layout, collision, and visuals
 # -----------------------------
 screen egg_catcher_game():
-    # Keyboard controls
-    # Left movement
-    key "keydown_K_LEFT" action SetVariable("move_left", True)
-    key "keyup_K_LEFT" action SetVariable("move_left", False)
 
-    # Right movement
-    key "keydown_K_RIGHT" action SetVariable("move_right", True)
-    key "keyup_K_RIGHT" action SetVariable("move_right", False)
-
-    # Optional WASD
-    key "keydown_K_a" action SetVariable("move_left", True)
-    key "keyup_K_a" action SetVariable("move_left", False)
-
-    key "keydown_K_d" action SetVariable("move_right", True)
-    key "keyup_K_d" action SetVariable("move_right", False)
     key "K_SPACE" action SetVariable("paused", not paused)
-    
+
     # Game update timer
-    timer 0.016 repeat True action [Function(egg_catcher_update), renpy.restart_interaction]
-    
+    timer 0.016 repeat True action Function(update_and_refresh)
+
     # Background - gradient sky to grass (like HTML)
     add Solid("#87CEEB"):  # Sky blue
         ysize 500
     add Solid("#98FB98"):  # Light green grass
         ypos 500
         ysize 220
-    
+
     # Decorative clouds
     for i in range(3):
         add Solid("#FFFFFF"):
@@ -300,51 +289,59 @@ screen egg_catcher_game():
             xsize 150
             ysize 50
             alpha 0.8
-    
+
     # IMPROVED: Falling eggs with proper sizing
+    # FIXED: Egg rendering (dynamic + safe)
     for e in eggs:
+        $ ex = int(e["x"])
+        $ ey = int(e["y"])
+
         if e["type"] == "normal":
-            # White egg
-            add Solid("#FFFFFF"):
-                pos (e["x"], e["y"])
-                xsize EGG_WIDTH
-                ysize EGG_HEIGHT
-                
+            add Solid("#FFFFFF") at Transform(
+                xpos=ex,
+                ypos=ey,
+                xsize=EGG_WIDTH,
+                ysize=EGG_HEIGHT
+            ) #zorder 10
+
         elif e["type"] == "golden":
-            # Golden egg with glow effect
-            add Solid("#FFD700"):
-                pos (e["x"], e["y"])
-                xsize EGG_WIDTH
-                ysize EGG_HEIGHT
-                
-                additive 0.3
-            add Solid("#FFA500"):
-                pos (e["x"], e["y"])
-                xsize EGG_WIDTH
-                ysize EGG_HEIGHT
-                
+            add Solid("#FFD700") at Transform(
+                xpos=ex,
+                ypos=ey,
+                xsize=EGG_WIDTH,
+                ysize=EGG_HEIGHT
+            ) #zorder 10
+
+            add Solid("#FFA500") at Transform(
+                xpos=ex,
+                ypos=ey,
+                xsize=EGG_WIDTH,
+                ysize=EGG_HEIGHT
+            ) #zorder 11
+
         elif e["type"] == "broken":
-            # Brown broken egg
-            add Solid("#8B4513"):
-                pos (e["x"], e["y"])
-                xsize EGG_WIDTH
-                ysize EGG_HEIGHT
-                
-    
+            add Solid("#8B4513") at Transform(
+                xpos=ex,
+                ypos=ey,
+                xsize=EGG_WIDTH,
+                ysize=EGG_HEIGHT
+            ) #zorder 10
+
+
     # IMPROVED: Basket with proper size and position
     # Main basket body
     add Solid("#8B4513"):
         pos (basket_x, BASKET_Y)
         xsize BASKET_WIDTH
         ysize BASKET_HEIGHT
-        
+
     # Basket rim
     add Solid("#654321"):
         pos (basket_x - 5, BASKET_Y - 5)
         xsize BASKET_WIDTH + 10
         ysize 10
-        
-    
+
+
     # Score popups
     for popup in score_popups:
         $ elapsed = time.time() - popup["start_time"]
@@ -355,17 +352,17 @@ screen egg_catcher_game():
             pos (popup["x"], y_pos)
             size 28
             color popup_color
-            
+
             bold True
             at Transform(alpha=alpha_val)
-    
+
     # IMPROVED: HUD - Top left panel
     frame:
         pos (20, 20)
         background Solid("#FFFFFF")
         padding (15, 15)
-        
-        
+
+
         vbox:
             spacing 8
             $ display_time = int(survival_time)
@@ -373,41 +370,41 @@ screen egg_catcher_game():
             text "⏱️ Time: [display_time]s" size 22 color "#333333" bold True
             text "❤️ Lives: [lives]" size 22 color "#FF0000" bold True
             text "🥚 Caught: [caught]" size 22 color "#333333" bold True
-    
+
     # Level indicator - Top right
     frame:
         pos (GAME_WIDTH - 150, 20)
         background Solid("#FFFFFF")
         padding (15, 15)
-        
-        
+
+
         vbox:
             spacing 5
             text "Level [level]" size 24 color "#FFA500" bold True xalign 0.5
             $ speed_display = "{:.1f}x".format(egg_speed)
             text "Speed: [speed_display]" size 18 color "#666666" xalign 0.5
-    
+
     # Controls hint - Bottom right
     frame:
         pos (GAME_WIDTH - 220, GAME_HEIGHT - 60)
         background Solid("#FFFFFF")
         padding (10, 10)
-        
-        
+
+
         text "🎮 ← → or A/D | SPACE pause" size 16 color "#333333"
-    
+
     # Pause overlay
     if paused:
         add Solid("#000000"):
             alpha 0.7
-        
+
         frame:
             xalign 0.5
             yalign 0.5
             background Solid("#FFFFFF")
             padding (40, 40)
-            
-            
+
+
             vbox:
                 spacing 20
                 text "⏸️ PAUSED" size 48 color "#333333" xalign 0.5 bold True
@@ -417,23 +414,23 @@ screen egg_catcher_game():
                     ysize 50
                     background Solid("#1e3c72")
                     hover_background Solid("#2a5298")
-                    
+
                     action SetVariable("paused", False)
-                    
+
                     text "▶️ Resume" size 22 color "#FFFFFF" xalign 0.5 yalign 0.5
-    
+
     # Game Over overlay
     if lives <= 0:
         add Solid("#000000"):
             alpha 0.7
-        
+
         frame:
             xalign 0.5
             yalign 0.5
             background Solid("#FFFFFF")
             padding (50, 50)
-            
-            
+
+
             vbox:
                 spacing 15
                 $ final_time = int(survival_time)
@@ -442,20 +439,20 @@ screen egg_catcher_game():
                 text "🏆 Score: [score]" size 24 color "#333333" xalign 0.5
                 text "🥚 Eggs Caught: [caught]" size 24 color "#333333" xalign 0.5
                 text "📊 Level Reached: [level]" size 24 color "#333333" xalign 0.5
-                
+
                 null height 20
-                
+
                 hbox:
                     spacing 30
                     xalign 0.5
-                    
+
                     # Play Again button
                     button:
                         xsize 180
                         ysize 50
                         background Solid("#1e3c72")
                         hover_background Solid("#2a5298")
-                        
+
                         action [
                             SetVariable("score", 0),
                             SetVariable("lives", 3),
@@ -467,18 +464,18 @@ screen egg_catcher_game():
                             SetVariable("game_start_time", time.time()),
                             SetVariable("last_spawn", time.time()),
                         ]
-                        
+
                         text "🔄 Play Again" size 20 color "#FFFFFF" xalign 0.5 yalign 0.5
-                    
+
                     # Back to Story button
                     button:
                         xsize 180
                         ysize 50
                         background Solid("#FF6B6B")
                         hover_background Solid("#ee5a24")
-                        
+
                         action Return("story_continue")
-                        
+
                         text "🏠 Back to Story" size 20 color "#FFFFFF" xalign 0.5 yalign 0.5
 
 # -----------------------------
@@ -489,7 +486,7 @@ label egg_catcher_start:
     $ import time
     $ game_start_time = time.time()
     $ survival_time = 0.0
-    
+
     # Show menu first
     $ result = renpy.call_screen("egg_catcher_menu")
 
@@ -528,7 +525,7 @@ label play_egg_catcher_game:
 
     # Record survival time to leaderboard (top 20)
     $ final_survival_time = survival_time
-    
+
     if final_survival_time > 0:
         $ egg_catcher_leaderboard.append({
             "survival_time": final_survival_time,
@@ -541,7 +538,7 @@ label play_egg_catcher_game:
         $ egg_catcher_leaderboard.sort(key=lambda x: (-x["survival_time"], x["timestamp"]))
         # Keep only top 20
         $ egg_catcher_leaderboard = egg_catcher_leaderboard[:20]
-        
+
         # Show result
         "Your survival time: [final_survival_time] seconds"
 

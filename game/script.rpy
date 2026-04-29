@@ -48,7 +48,7 @@ init python:
 
             if position == "left":
                 renpy.show(image_name, at_list=[pos_left, fade_in_anim])
-            elif position == "center": 
+            elif position == "center":
                 renpy.show(image_name, at_list=[pos_center, fade_in_anim])
             elif position == "right":
                 renpy.show(image_name, at_list=[pos_right, fade_in_anim])
@@ -197,11 +197,11 @@ label play_egg_catcher_scene:
     # ADDED: This bridge label connects the JSON choice to the minigame system
     # It calls the minigame screen which handles Play/Quit options
     $ result = renpy.call_screen("minigame_screen", "egg_catcher")
-    
+
     if result == "play":
         # Player chose to play - call the egg catcher game
         call egg_catcher_start
-        
+
     # After minigame completes (or if quit), continue to after_egg_catcher scene
     jump after_egg_catcher
 
@@ -213,4 +213,39 @@ label after_egg_catcher:
     # ADDED: This label continues the story after the minigame
     # It runs the remaining prologue scenes starting from the after_egg_catcher scene
     $ run_story_arc("prologue", start_scene=4)
+
+# -----------------------------
+# Bridge label for Memory Match (Chapter 1)
+# -----------------------------
+label play_memory_match_scene:
+    # Bridge label connecting chapter1.json choice to memory match minigame
+    $ result = renpy.call_screen("minigame_screen", "memory_match")
+
+    if result == "play":
+        call memory_match_start
+
+    # After minigame, continue to after_memory_match scene
+    jump after_memory_match
+
+label after_memory_match:
+    # Continue story after memory match minigame
+    $ run_story_arc("chapter1", start_scene=3)
+    return
+
+# -----------------------------
+# Bridge label for PvP Battle (Chapter 2)
+# -----------------------------
+label play_pvp_scene:
+    # Bridge label connecting chapter2.json choice to PvP minigame
+    $ result = renpy.call_screen("minigame_screen", "pvp")
+
+    if result == "play":
+        call pvp_start
+
+    # After minigame, continue to after_pvp scene
+    jump after_pvp
+    
+label after_pvp:
+    # Continue story after PvP minigame
+    $ run_story_arc("chapter2", start_scene=4)
     return
