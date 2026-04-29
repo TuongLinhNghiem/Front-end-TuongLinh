@@ -402,7 +402,9 @@ label memory_match_start:
     $ result = renpy.call_screen("memory_match_menu")
 
     if result == "start":
+        window hide
         call play_memory_match_game
+        window show
         return
     elif result == "quit":
         return
@@ -462,8 +464,8 @@ label play_memory_match_game:
                     jump memory_show_sequence
             else:
                 # Wrong! - UI feedback only
-                $ set_memory_feedback('wrong', "❌ Wrong! [memory_lives] lives left.")
                 $ memory_lives -= 1
+                $ set_memory_feedback('wrong', "❌ Wrong! [memory_lives] lives left.")
                 if memory_lives <= 0:
                     $ set_memory_feedback('game_over')
                     jump memory_game_over
@@ -505,15 +507,19 @@ label play_memory_match_game:
 
     # Game over
     label memory_game_over:
-        show screen memory_match_game
-        $ result = ui.interact()
+        $ result = renpy.call_screen("memory_match_gameover")
 
         if result == "play_again":
             $ memory_level = 1
             $ memory_score = 0
             $ memory_lives = 3
+            $ memory_sequence = []
+            $ memory_player_sequence = []
+            $ memory_game_active = False
+            $ memory_showing_sequence = False
             $ memory_sequence_length = 3
             $ memory_feedback_message = ""
+            $ memory_selected_shape = None
             $ set_memory_feedback('start')
             jump memory_game_loop
         else:

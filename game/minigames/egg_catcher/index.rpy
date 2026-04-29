@@ -76,7 +76,6 @@ init python:
         # Keyboard controls
         if egg_keys_left:
             basket_x = max(0, basket_x - MOVE_SPEED)
-
         if egg_keys_right:
             basket_x = min(GAME_WIDTH - BASKET_WIDTH, basket_x + MOVE_SPEED)
 

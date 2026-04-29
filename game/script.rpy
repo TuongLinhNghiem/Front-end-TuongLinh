@@ -249,12 +249,11 @@ label play_pvp_scene:
 
     # After minigame, continue to after_pvp scene
     jump after_pvp
-    
+
 label after_pvp:
     # Continue story after PvP minigame
     $ run_story_arc("chapter2", start_scene=4)
     return
-
 # -----------------------------
 # Compatibility label for older minigame return values
 # -----------------------------
