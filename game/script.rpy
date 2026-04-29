@@ -157,9 +157,14 @@ init python:
             commands = scene.get("commands", [])
             for cmd_idx, command in enumerate(commands):
                 store.current_dialogue = cmd_idx
-                jump_label = process_command(command)
-                if jump_label:
-                    renpy.jump(jump_label)
+                jump_target = process_command(command)
+                if jump_target:
+                    if renpy.has_label(jump_target):
+                        renpy.jump(jump_target)
+                    elif load_story_json(jump_target) is not None:
+                        run_story_arc(jump_target)
+                    else:
+                        renpy.log("Story target not found: " + jump_target)
                     return
 
         renpy.log("Story arc completed: " + arc_name)
@@ -248,4 +253,10 @@ label play_pvp_scene:
 label after_pvp:
     # Continue story after PvP minigame
     $ run_story_arc("chapter2", start_scene=4)
+    return
+
+# -----------------------------
+# Compatibility label for older minigame return values
+# -----------------------------
+label quit_game:
     return

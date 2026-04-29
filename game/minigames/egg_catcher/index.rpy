@@ -21,6 +21,8 @@ default paused = False
 default last_spawn = 0.0
 default score_popups = []
 default egg_catcher_leaderboard = []
+default egg_keys_left = False
+default egg_keys_right = False
 # Survival time tracking
 default game_start_time = 0.0
 default survival_time = 0.0
@@ -34,7 +36,6 @@ default survival_time = 0.0
 init python:
     import random
     import time
-    import pygame
 
     # Game constants - IMPROVED: Proper sizing for 1280x720
     GAME_WIDTH = 1280
@@ -73,12 +74,10 @@ init python:
         current_time = time.time()
 
         # Keyboard controls
-        keys = pygame.key.get_pressed()
-
-        if keys[pygame.K_LEFT] or keys[pygame.K_a]:
+        if egg_keys_left:
             basket_x = max(0, basket_x - MOVE_SPEED)
 
-        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+        if egg_keys_right:
             basket_x = min(GAME_WIDTH - BASKET_WIDTH, basket_x + MOVE_SPEED)
 
         # Update survival time
@@ -269,7 +268,14 @@ screen egg_catcher_menu():
 # IMPROVED: Better layout, collision, and visuals
 # -----------------------------
 screen egg_catcher_game():
-
+    key "K_LEFT" action SetVariable("egg_keys_left", True)
+    key "keyup_K_LEFT" action SetVariable("egg_keys_left", False)
+    key "K_a" action SetVariable("egg_keys_left", True)
+    key "keyup_K_a" action SetVariable("egg_keys_left", False)
+    key "K_RIGHT" action SetVariable("egg_keys_right", True)
+    key "keyup_K_RIGHT" action SetVariable("egg_keys_right", False)
+    key "K_d" action SetVariable("egg_keys_right", True)
+    key "keyup_K_d" action SetVariable("egg_keys_right", False)
     key "K_SPACE" action SetVariable("paused", not paused)
 
     # Game update timer
@@ -516,6 +522,8 @@ label play_egg_catcher_game:
     $ egg_speed = 3.0
     $ spawn_rate = 1.5
     $ basket_x = 600
+    $ egg_keys_left = False
+    $ egg_keys_right = False
     $ import time
     $ game_start_time = time.time()
     $ last_spawn = time.time()

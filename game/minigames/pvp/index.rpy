@@ -370,12 +370,12 @@ screen flyme_game():
     key "K_d" action SetDict(store, "flyme_keys_right", True)
     key "K_SPACE" action SetDict(store, "flyme_keys_space", True)
 
-    # Key release bindings (keyup events)
-    key "K_LEFT" action SetDict(store, "flyme_keys_left", False) keyup True
-    key "K_RIGHT" action SetDict(store, "flyme_keys_right", False) keyup True
-    key "K_a" action SetDict(store, "flyme_keys_left", False) keyup True
-    key "K_d" action SetDict(store, "flyme_keys_right", False) keyup True
-    key "K_SPACE" action SetDict(store, "flyme_keys_space", False) keyup True
+    # Key release bindings (Ren'Py uses keyup_* event names)
+    key "keyup_K_LEFT" action SetDict(store, "flyme_keys_left", False)
+    key "keyup_K_RIGHT" action SetDict(store, "flyme_keys_right", False)
+    key "keyup_K_a" action SetDict(store, "flyme_keys_left", False)
+    key "keyup_K_d" action SetDict(store, "flyme_keys_right", False)
+    key "keyup_K_SPACE" action SetDict(store, "flyme_keys_space", False)
 
     # Escape to pause
     key "K_ESCAPE" action Return("pause")
