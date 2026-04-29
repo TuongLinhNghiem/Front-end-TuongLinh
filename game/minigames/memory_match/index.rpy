@@ -489,6 +489,7 @@ label play_memory_match_game:
         $ memory_showing_sequence = True
         $ memory_player_sequence = []
         $ set_memory_feedback('watch')
+        show screen memory_match_game
 
         # Brief pause then show sequence via UI
         $ i = 0
@@ -502,7 +503,9 @@ label play_memory_match_game:
             $ i += 1
 
         $ memory_showing_sequence = False
+        $ memory_selected_shape = None
         $ set_memory_feedback('repeat')
+        hide screen memory_match_game
         jump memory_game_loop
 
     # Game over
