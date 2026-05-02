@@ -78,17 +78,26 @@ init python:
     import math
 
     FLYME_ASSET_CANDIDATES = {
+        "bg": [
+            "minigames/flyme2themoon/2-images/bg.png",
+        ],
         "player": [
-            "minigames/pvp/images/player.png",
+            "minigames/flyme2themoon/2-images/player.png",
+        ],
+        "player_left": [
+            "minigames/flyme2themoon/2-images/player-left.png",
+        ],
+        "player_right": [
+            "minigames/flyme2themoon/2-images/player-right.png",
         ],
         "obstacle": [
-            "minigames/pvp/images/obstacle.png",
+            "minigames/flyme2themoon/2-images/obstacle.png",
         ],
         "star": [
-            "minigames/pvp/images/star.png",
+            "minigames/flyme2themoon/2-images/star.png",
         ],
         "goal": [
-            "minigames/pvp/images/goal.png",
+            "minigames/flyme2themoon/2-images/goal.png",
         ],
     }
 
@@ -97,6 +106,13 @@ init python:
             if renpy.loadable(candidate):
                 return candidate
         return None
+
+    def flyme_get_player_asset(direction):
+        if direction < 0:
+            return flyme_get_asset("player_left") or flyme_get_asset("player")
+        if direction > 0:
+            return flyme_get_asset("player_right") or flyme_get_asset("player")
+        return flyme_get_asset("player")
 
     def flyme_reset_game():
         """Reset game state for a new game."""
@@ -215,7 +231,8 @@ init python:
             return
 
         # Camera follows player
-        store.flyme_camera_y = store.flyme_player_y - FLYME_VIEWPORT_HEIGHT * 0.72
+        target_camera_y = store.flyme_player_y - FLYME_VIEWPORT_HEIGHT * 0.72
+        store.flyme_camera_y = min(store.flyme_camera_y, target_camera_y)
 
         # Spawn more obstacles as player goes higher
         while store.flyme_spawn_y > store.flyme_player_y - 3200:
@@ -407,7 +424,8 @@ screen flyme_game():
     # Game update timer (60 FPS)
     timer 0.016 repeat True action Function(flyme_update, 0.016)
 
-    $ player_asset = flyme_get_asset("player")
+    $ bg_asset = flyme_get_asset("bg")
+    $ player_asset = flyme_get_player_asset(flyme_player_direction)
     $ obstacle_asset = flyme_get_asset("obstacle")
     $ star_asset = flyme_get_asset("star")
     $ goal_asset = flyme_get_asset("goal")
@@ -420,6 +438,12 @@ screen flyme_game():
         ysize FLYME_VIEWPORT_HEIGHT
         background Solid("#0a1028")
         padding (0, 0)
+
+
+    if bg_asset:
+        $ bg_scroll = int((-flyme_camera_y * 0.12) % 180)
+        add Transform(bg_asset, xpos=FLYME_FIELD_X, ypos=FLYME_FIELD_Y - 180 + bg_scroll, xsize=FLYME_GAME_WIDTH, ysize=420, alpha=0.35)
+
 
     add Solid("#152038"):
         pos (FLYME_FIELD_X, FLYME_FIELD_Y + FLYME_VIEWPORT_HEIGHT - 110)
@@ -454,11 +478,7 @@ screen flyme_game():
         $ draw_x = FLYME_FIELD_X + flyme_goal["x"]
         if -120 < draw_y < FLYME_VIEWPORT_HEIGHT + 120:
             if goal_asset:
-                add goal_asset:
-                    pos (draw_x, draw_y)
-                    xsize flyme_goal["w"]
-                    ysize flyme_goal["h"]
-                    at FlymePulse
+                add Transform(goal_asset, xpos=draw_x, ypos=draw_y, xsize=flyme_goal["w"], ysize=flyme_goal["h"]) at FlymePulse
             else:
                 text "Moon":
                     pos (draw_x, draw_y + 28)
@@ -471,11 +491,7 @@ screen flyme_game():
         $ draw_x = FLYME_FIELD_X + star["x"]
         if -50 < draw_y < FLYME_VIEWPORT_HEIGHT + 50:
             if star_asset:
-                add star_asset:
-                    pos (draw_x, draw_y)
-                    xsize star["w"]
-                    ysize star["h"]
-                    at FlymeGlow
+                add Transform(star_asset, xpos=draw_x, ypos=draw_y, xsize=star["w"], ysize=star["h"]) at FlymeGlow
             else:
                 text "*":
                     pos (draw_x + 10, draw_y + 2)
@@ -488,10 +504,7 @@ screen flyme_game():
         $ draw_x = FLYME_FIELD_X + obs["x"]
         if -80 < draw_y < FLYME_VIEWPORT_HEIGHT + 80:
             if obstacle_asset:
-                add obstacle_asset:
-                    pos (draw_x, draw_y)
-                    xsize obs["w"]
-                    ysize obs["h"]
+                add Transform(obstacle_asset, xpos=draw_x, ypos=draw_y, xsize=obs["w"], ysize=obs["h"])
             else:
                 add Solid("#ff6b6b"):
                     pos (draw_x, draw_y)
@@ -514,11 +527,7 @@ screen flyme_game():
     if flyme_invulnerable:
         $ blink_alpha = 0.3 + 0.7 * abs(math.sin(flyme_time * 20))
         if player_asset:
-            add player_asset:
-                pos (draw_x, draw_y)
-                xsize FLYME_PLAYER_W
-                ysize FLYME_PLAYER_H
-                alpha blink_alpha
+            add Transform(player_asset, xpos=draw_x, ypos=draw_y, xsize=FLYME_PLAYER_W, ysize=FLYME_PLAYER_H, alpha=blink_alpha)
         else:
             add Solid(player_color):
                 pos (draw_x, draw_y)
@@ -527,10 +536,7 @@ screen flyme_game():
                 alpha blink_alpha
     else:
         if player_asset:
-            add player_asset:
-                pos (draw_x, draw_y)
-                xsize FLYME_PLAYER_W
-                ysize FLYME_PLAYER_H
+            add Transform(player_asset, xpos=draw_x, ypos=draw_y, xsize=FLYME_PLAYER_W, ysize=FLYME_PLAYER_H)
         else:
             add Solid(player_color):
                 pos (draw_x, draw_y)
