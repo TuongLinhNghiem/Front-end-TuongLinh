@@ -79,28 +79,16 @@ init python:
 
     FLYME_ASSET_CANDIDATES = {
         "player": [
-            "images/minigames/pvp/player.png",
-            "minigames/pvp/player.png",
-            "images/flyme_player.png",
-            "images/player.png",
+            "minigames/pvp/images/player.png",
         ],
         "obstacle": [
-            "images/minigames/pvp/obstacle.png",
-            "minigames/pvp/obstacle.png",
-            "images/flyme_obstacle.png",
-            "images/obstacle.png",
+            "minigames/pvp/images/obstacle.png",
         ],
         "star": [
-            "images/minigames/pvp/star.png",
-            "minigames/pvp/star.png",
-            "images/flyme_star.png",
-            "images/star.png",
+            "minigames/pvp/images/star.png",
         ],
         "goal": [
-            "images/minigames/pvp/goal.png",
-            "minigames/pvp/goal.png",
-            "images/flyme_goal.png",
-            "images/moon.png",
+            "minigames/pvp/images/goal.png",
         ],
     }
 
