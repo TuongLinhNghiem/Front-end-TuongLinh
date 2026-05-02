@@ -17,6 +17,7 @@ default memory_game_active = False
 default memory_showing_sequence = False
 default memory_sequence_length = 3
 default memory_selected_shape = None
+default memory_sequence_timer = 0.6
 default memory_feedback_message = ""
 default memory_feedback_type = "neutral"  # neutral, watch, correct, wrong
 default memory_character_expression = "neutral"
@@ -352,6 +353,16 @@ screen memory_match_game():
             text "🏠 Menu" size 20 color "#FFFFFF" xalign 0.5 yalign 0.5
 
 # -----------------------------
+# Sequence Playback Screen
+# -----------------------------
+screen memory_match_sequence():
+    modal True
+
+    use memory_match_game
+
+    timer memory_sequence_timer action Return("next_step")
+
+# -----------------------------
 # Game Over Screen
 # -----------------------------
 screen memory_match_gameover():
@@ -426,6 +437,7 @@ label play_memory_match_game:
     $ memory_sequence_length = 3
     $ memory_feedback_message = ""
     $ memory_selected_shape = None
+    $ memory_sequence_timer = 0.6
     $ game_start_time = time.time()
 
     # Show game screen and handle game loop
@@ -471,7 +483,8 @@ label play_memory_match_game:
                     jump memory_game_over
                 else:
                     $ memory_player_sequence = []
-                    jump memory_show_sequence
+                    $ memory_selected_shape = None
+                    jump memory_game_loop
 
             jump memory_game_loop
 
@@ -489,23 +502,25 @@ label play_memory_match_game:
         $ memory_showing_sequence = True
         $ memory_player_sequence = []
         $ set_memory_feedback('watch')
-        show screen memory_match_game
 
         # Brief pause then show sequence via UI
         $ i = 0
         while i < len(memory_sequence):
             $ memory_selected_shape = memory_sequence[i]
-            $ renpy.restart_interaction()
-            pause 0.6
+            $ memory_sequence_timer = 0.6
+            $ result = renpy.call_screen("memory_match_sequence")
+            if result == "quit_game":
+                jump memory_match_end
             $ memory_selected_shape = None
-            $ renpy.restart_interaction()
-            pause 0.2
+            $ memory_sequence_timer = 0.2
+            $ result = renpy.call_screen("memory_match_sequence")
+            if result == "quit_game":
+                jump memory_match_end
             $ i += 1
 
         $ memory_showing_sequence = False
         $ memory_selected_shape = None
         $ set_memory_feedback('repeat')
-        hide screen memory_match_game
         jump memory_game_loop
 
     # Game over
@@ -523,6 +538,7 @@ label play_memory_match_game:
             $ memory_sequence_length = 3
             $ memory_feedback_message = ""
             $ memory_selected_shape = None
+            $ memory_sequence_timer = 0.6
             $ set_memory_feedback('start')
             jump memory_game_loop
         else:

@@ -13,6 +13,9 @@
 # -----------------------------
 define FLYME_GAME_WIDTH = 720
 define FLYME_GAME_HEIGHT = 1080
+define FLYME_VIEWPORT_HEIGHT = 720
+define FLYME_FIELD_X = 280
+define FLYME_FIELD_Y = 0
 define FLYME_PLAYER_W = 60
 define FLYME_PLAYER_H = 60
 define FLYME_OBSTACLE_W = 70
@@ -74,15 +77,48 @@ init python:
     import random
     import math
 
+    FLYME_ASSET_CANDIDATES = {
+        "player": [
+            "images/minigames/pvp/player.png",
+            "minigames/pvp/player.png",
+            "images/flyme_player.png",
+            "images/player.png",
+        ],
+        "obstacle": [
+            "images/minigames/pvp/obstacle.png",
+            "minigames/pvp/obstacle.png",
+            "images/flyme_obstacle.png",
+            "images/obstacle.png",
+        ],
+        "star": [
+            "images/minigames/pvp/star.png",
+            "minigames/pvp/star.png",
+            "images/flyme_star.png",
+            "images/star.png",
+        ],
+        "goal": [
+            "images/minigames/pvp/goal.png",
+            "minigames/pvp/goal.png",
+            "images/flyme_goal.png",
+            "images/moon.png",
+        ],
+    }
+
+    def flyme_get_asset(kind):
+        for candidate in FLYME_ASSET_CANDIDATES.get(kind, []):
+            if renpy.loadable(candidate):
+                return candidate
+        return None
+
     def flyme_reset_game():
         """Reset game state for a new game."""
         store.flyme_player_x = FLYME_GAME_WIDTH / 2 - 30
-        store.flyme_player_y = FLYME_GAME_HEIGHT - 200
+        store.flyme_player_y = 0.0
         store.flyme_player_vx = 0.0
         store.flyme_player_vy = 0.0
         store.flyme_player_direction = 0
-        store.flyme_camera_y = store.flyme_player_y - FLYME_GAME_HEIGHT / 2
-        store.flyme_spawn_y = store.flyme_player_y - 200
+        store.flyme_camera_y = store.flyme_player_y - FLYME_VIEWPORT_HEIGHT * 0.72
+        store.flyme_spawn_y = store.flyme_player_y - 220
         store.flyme_time = 0.0
         store.flyme_obstacles = []
         store.flyme_stars = []
@@ -95,8 +131,8 @@ init python:
         store.flyme_game_won = False
 
         # Spawn initial obstacles and stars
-        for i in range(1, 16):
-            flyme_spawn_row(store.flyme_player_y - i * 300)
+        for i in range(1, 18):
+            flyme_spawn_row(store.flyme_player_y - i * 260)
 
     def flyme_spawn_row(y):
         """Spawn a row of obstacles and stars at given y position."""
@@ -186,20 +222,20 @@ init python:
             store.flyme_player_vx = 0
 
         # Game over if player falls too far
-        if store.flyme_player_y > store.flyme_camera_y + FLYME_GAME_HEIGHT + 300:
+        if store.flyme_player_y > store.flyme_camera_y + FLYME_VIEWPORT_HEIGHT + 220:
             store.flyme_hearts = 0
             return
 
         # Camera follows player
-        store.flyme_camera_y = store.flyme_player_y - FLYME_GAME_HEIGHT * 0.6
+        store.flyme_camera_y = store.flyme_player_y - FLYME_VIEWPORT_HEIGHT * 0.72
 
         # Spawn more obstacles as player goes higher
-        while store.flyme_spawn_y > store.flyme_player_y - 3000:
-            flyme_spawn_row(store.flyme_spawn_y - 300)
+        while store.flyme_spawn_y > store.flyme_player_y - 3200:
+            flyme_spawn_row(store.flyme_spawn_y - 260)
 
         # Update obstacle positions (oscillating)
         for obs in store.flyme_obstacles:
-            obs["y"] = obs["base_y"] + math.sin(store.flyme_time * 2 + obs["phase"]) * 40
+            obs["y"] = obs["base_y"] + math.sin(store.flyme_time * 2 + obs["phase"]) * 28
 
         # Collision with obstacles
         if not store.flyme_invulnerable:
@@ -364,18 +400,18 @@ screen flyme_game():
     modal True
 
     # Key press bindings
-    key "K_LEFT" action SetDict(store, "flyme_keys_left", True)
-    key "K_RIGHT" action SetDict(store, "flyme_keys_right", True)
-    key "K_a" action SetDict(store, "flyme_keys_left", True)
-    key "K_d" action SetDict(store, "flyme_keys_right", True)
-    key "K_SPACE" action SetDict(store, "flyme_keys_space", True)
+    key "K_LEFT" action SetVariable("flyme_keys_left", True)
+    key "K_RIGHT" action SetVariable("flyme_keys_right", True)
+    key "K_a" action SetVariable("flyme_keys_left", True)
+    key "K_d" action SetVariable("flyme_keys_right", True)
+    key "K_SPACE" action SetVariable("flyme_keys_space", True)
 
     # Key release bindings (Ren'Py uses keyup_* event names)
-    key "keyup_K_LEFT" action SetDict(store, "flyme_keys_left", False)
-    key "keyup_K_RIGHT" action SetDict(store, "flyme_keys_right", False)
-    key "keyup_K_a" action SetDict(store, "flyme_keys_left", False)
-    key "keyup_K_d" action SetDict(store, "flyme_keys_right", False)
-    key "keyup_K_SPACE" action SetDict(store, "flyme_keys_space", False)
+    key "keyup_K_LEFT" action SetVariable("flyme_keys_left", False)
+    key "keyup_K_RIGHT" action SetVariable("flyme_keys_right", False)
+    key "keyup_K_a" action SetVariable("flyme_keys_left", False)
+    key "keyup_K_d" action SetVariable("flyme_keys_right", False)
+    key "keyup_K_SPACE" action SetVariable("flyme_keys_space", False)
 
     # Escape to pause
     key "K_ESCAPE" action Return("pause")
@@ -383,142 +419,206 @@ screen flyme_game():
     # Game update timer (60 FPS)
     timer 0.016 repeat True action Function(flyme_update, 0.016)
 
-    # Background - dark space
-    add Solid("#0a0a1a")
+    $ player_asset = flyme_get_asset("player")
+    $ obstacle_asset = flyme_get_asset("obstacle")
+    $ star_asset = flyme_get_asset("star")
+    $ goal_asset = flyme_get_asset("goal")
 
-    # Background stars
-    for i in range(30):
-        $ star_x = ((i * 47 + int(flyme_camera_y * 0.1)) % FLYME_GAME_WIDTH)
-        $ star_y = ((i * 73) % FLYME_GAME_HEIGHT)
+    add Solid("#060816")
+
+    frame:
+        pos (FLYME_FIELD_X, FLYME_FIELD_Y)
+        xsize FLYME_GAME_WIDTH
+        ysize FLYME_VIEWPORT_HEIGHT
+        background Solid("#0a1028")
+        padding (0, 0)
+
+    add Solid("#152038"):
+        pos (FLYME_FIELD_X, FLYME_FIELD_Y + FLYME_VIEWPORT_HEIGHT - 110)
+        xsize FLYME_GAME_WIDTH
+        ysize 110
+        alpha 0.22
+
+    add Solid("#7d89ff22"):
+        pos (FLYME_FIELD_X + 28, FLYME_FIELD_Y + 32)
+        xsize FLYME_GAME_WIDTH - 56
+        ysize FLYME_VIEWPORT_HEIGHT - 120
+
+    for i in range(40):
+        $ bg_star_x = FLYME_FIELD_X + ((i * 97 + 43) % (FLYME_GAME_WIDTH - 20)) + 10
+        $ bg_star_y = FLYME_FIELD_Y + (((i * 173) - int(flyme_camera_y * 0.18)) % FLYME_VIEWPORT_HEIGHT)
+        $ bg_star_size = 2 + (i % 3)
         add Solid("#ffffff"):
-            pos (star_x, star_y)
-            xsize 2
-            ysize 2
+            pos (bg_star_x, bg_star_y)
+            xsize bg_star_size
+            ysize bg_star_size
+            alpha 0.65
 
-    # Goal (if exists and score >= 30)
+    for i in range(4):
+        $ nebula_y = FLYME_FIELD_Y + (((i * 210) - int(flyme_camera_y * 0.1)) % (FLYME_VIEWPORT_HEIGHT + 180)) - 90
+        add Solid("#6574cd33"):
+            pos (FLYME_FIELD_X + 40, nebula_y)
+            xsize FLYME_GAME_WIDTH - 80
+            ysize 120
+
     if flyme_goal and flyme_score >= 30:
-        $ draw_y = flyme_goal["y"] - flyme_camera_y
-        if -120 < draw_y < FLYME_GAME_HEIGHT + 120:
-            add Solid("#ffd700"):
-                pos (flyme_goal["x"], draw_y)
-                xsize flyme_goal["w"]
-                ysize flyme_goal["h"]
-                at FlymePulse
+        $ draw_y = FLYME_FIELD_Y + flyme_goal["y"] - flyme_camera_y
+        $ draw_x = FLYME_FIELD_X + flyme_goal["x"]
+        if -120 < draw_y < FLYME_VIEWPORT_HEIGHT + 120:
+            if goal_asset:
+                add goal_asset:
+                    pos (draw_x, draw_y)
+                    xsize flyme_goal["w"]
+                    ysize flyme_goal["h"]
+                    at FlymePulse
+            else:
+                text "Moon":
+                    pos (draw_x, draw_y + 28)
+                    size 30
+                    color "#ffe082"
+                    at FlymePulse
 
-    # Stars
     for star in flyme_stars:
-        $ draw_y = star["y"] - flyme_camera_y
-        if -50 < draw_y < FLYME_GAME_HEIGHT + 50:
-            add Solid("#ffd700"):
-                pos (star["x"], draw_y)
-                xsize star["w"]
-                ysize star["h"]
-                at FlymeGlow
+        $ draw_y = FLYME_FIELD_Y + star["y"] - flyme_camera_y
+        $ draw_x = FLYME_FIELD_X + star["x"]
+        if -50 < draw_y < FLYME_VIEWPORT_HEIGHT + 50:
+            if star_asset:
+                add star_asset:
+                    pos (draw_x, draw_y)
+                    xsize star["w"]
+                    ysize star["h"]
+                    at FlymeGlow
+            else:
+                text "*":
+                    pos (draw_x + 10, draw_y + 2)
+                    size 34
+                    color "#ffd54f"
+                    at FlymeGlow
 
-    # Obstacles
     for obs in flyme_obstacles:
-        $ draw_y = obs["y"] - flyme_camera_y
-        if -80 < draw_y < FLYME_GAME_HEIGHT + 80:
-            add Solid("#ff4444"):
-                pos (obs["x"], draw_y)
-                xsize obs["w"]
-                ysize obs["h"]
+        $ draw_y = FLYME_FIELD_Y + obs["y"] - flyme_camera_y
+        $ draw_x = FLYME_FIELD_X + obs["x"]
+        if -80 < draw_y < FLYME_VIEWPORT_HEIGHT + 80:
+            if obstacle_asset:
+                add obstacle_asset:
+                    pos (draw_x, draw_y)
+                    xsize obs["w"]
+                    ysize obs["h"]
+            else:
+                add Solid("#ff6b6b"):
+                    pos (draw_x, draw_y)
+                    xsize obs["w"]
+                    ysize obs["h"]
+                add Solid("#ffd1d1"):
+                    pos (draw_x + 10, draw_y + 10)
+                    xsize obs["w"] - 20
+                    ysize obs["h"] - 20
+                    alpha 0.25
 
-    # Player
-    $ draw_y = flyme_player_y - flyme_camera_y
-    $ player_color = "#00ffff"
+    $ draw_y = FLYME_FIELD_Y + flyme_player_y - flyme_camera_y
+    $ draw_x = FLYME_FIELD_X + flyme_player_x
+    $ player_color = "#6cf0ff"
     if flyme_player_direction == -1:
-        $ player_color = "#00dddd"
+        $ player_color = "#57d8ff"
     elif flyme_player_direction == 1:
-        $ player_color = "#00ffff"
+        $ player_color = "#95f7ff"
 
-    # Player with invulnerability effect
     if flyme_invulnerable:
         $ blink_alpha = 0.3 + 0.7 * abs(math.sin(flyme_time * 20))
-        add Solid(player_color):
-            pos (flyme_player_x, draw_y)
-            xsize FLYME_PLAYER_W
-            ysize FLYME_PLAYER_H
-            alpha blink_alpha
+        if player_asset:
+            add player_asset:
+                pos (draw_x, draw_y)
+                xsize FLYME_PLAYER_W
+                ysize FLYME_PLAYER_H
+                alpha blink_alpha
+        else:
+            add Solid(player_color):
+                pos (draw_x, draw_y)
+                xsize FLYME_PLAYER_W
+                ysize FLYME_PLAYER_H
+                alpha blink_alpha
     else:
-        add Solid(player_color):
-            pos (flyme_player_x, draw_y)
-            xsize FLYME_PLAYER_W
-            ysize FLYME_PLAYER_H
+        if player_asset:
+            add player_asset:
+                pos (draw_x, draw_y)
+                xsize FLYME_PLAYER_W
+                ysize FLYME_PLAYER_H
+        else:
+            add Solid(player_color):
+                pos (draw_x, draw_y)
+                xsize FLYME_PLAYER_W
+                ysize FLYME_PLAYER_H
 
-    # Thrust flame effect
     if flyme_thrust_power > 0.1:
         $ flame_height = int(flyme_thrust_power * 30)
         add Solid("#ff6600"):
-            pos (flyme_player_x + FLYME_PLAYER_W/2 - 5, draw_y + FLYME_PLAYER_H)
+            pos (draw_x + FLYME_PLAYER_W / 2 - 5, draw_y + FLYME_PLAYER_H)
             xsize 10
             ysize flame_height
             alpha flyme_thrust_power
 
-    # HUD - Top
     frame:
-        pos (10, 10)
-        background Solid("#00000080")
-        padding (15, 10)
+        pos (20, 16)
+        background Solid("#00000090")
+        padding (16, 12)
 
-        hbox:
-            spacing 20
-            text "Score: [flyme_score]" size 20 color "#ffffff" bold True
-            text "High: [flyme_high]" size 20 color "#ffd700"
+        vbox:
+            spacing 6
+            text "FlyMe2TheMoon" size 22 color "#8ce8ff" bold True
+            text "Score: [flyme_score]" size 18 color "#ffffff" bold True
+            text "Best: [flyme_high]" size 18 color "#ffd54f"
 
-    # Hearts
     hbox:
-        xalign 0.95
-        ypos 10
-        spacing 5
+        xpos 22
+        ypos 110
+        spacing 6
 
         if flyme_hearts >= 1:
-            text "❤️" size 24
+            text "HP" size 20 color "#ff6b6b" bold True
         else:
-            text "🖤" size 24
+            text "--" size 20 color "#666666" bold True
         if flyme_hearts >= 2:
-            text "❤️" size 24
+            text "HP" size 20 color "#ff6b6b" bold True
         else:
-            text "🖤" size 24
+            text "--" size 20 color "#666666" bold True
         if flyme_hearts >= 3:
-            text "❤️" size 24
+            text "HP" size 20 color "#ff6b6b" bold True
         else:
-            text "🖤" size 24
+            text "--" size 20 color "#666666" bold True
 
-    # Progress bar for 30 stars
     if flyme_score < 30:
         frame:
-            pos (10, 45)
-            background Solid("#00000080")
-            padding (5, 5)
+            pos (20, 150)
+            background Solid("#00000090")
+            padding (8, 8)
 
-            bar:
-                value flyme_score
-                range 30
-                xsize 200
-                ysize 15
-                left_bar Solid("#ffd700")
-                right_bar Solid("#333333")
+            vbox:
+                spacing 4
+                bar:
+                    value flyme_score
+                    range 30
+                    xsize 220
+                    ysize 16
+                    left_bar Solid("#ffd700")
+                    right_bar Solid("#333333")
 
-            text "[flyme_score]/30 stars" size 12 color "#ffffff" xalign 0.5
+                text "[flyme_score]/30 stars to the moon" size 12 color "#ffffff"
 
-    # Menu button
     button:
-        pos (FLYME_GAME_WIDTH - 60, 10)
-        xsize 50
-        ysize 30
+        pos (FLYME_FIELD_X + FLYME_GAME_WIDTH - 64, 16)
+        xsize 48
+        ysize 32
         background Solid("#ffffff30")
-        hover_background Solid("#ffffff50")
+        hover_background Solid("#ffffff55")
         action Return("pause")
 
-        text "||" size 20 color "#ffffff" xalign 0.5 yalign 0.5
+        text "||" size 18 color "#ffffff" xalign 0.5 yalign 0.5
 
-    # Controls hint
-    text "← → to move | SPACE to thrust":
+    text "Move with LEFT/RIGHT or A/D, hold SPACE to climb":
         size 14
-        color "#666666"
+        color "#b5c7ff"
         xalign 0.5
-        ypos (FLYME_GAME_HEIGHT - 30)
+        ypos (FLYME_VIEWPORT_HEIGHT - 30)
 
 # -----------------------------
 # Pause Screen
