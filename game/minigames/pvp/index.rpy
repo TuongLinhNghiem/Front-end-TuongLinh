@@ -5,7 +5,7 @@
 # - Collect stars, avoid obstacles
 # - 3 lives (hearts) system
 # - Thrust physics with momentum
-# - Goal at 30 stars
+# - Win at 30 stars
 # - Leaderboard tracking
 
 # -----------------------------
@@ -22,8 +22,6 @@ define FLYME_OBSTACLE_W = 70
 define FLYME_OBSTACLE_H = 70
 define FLYME_STAR_W = 40
 define FLYME_STAR_H = 40
-define FLYME_GOAL_W = 100
-define FLYME_GOAL_H = 100
 define FLYME_GRAVITY = 600
 define FLYME_THRUST_FORCE = 800
 define FLYME_MAX_VX = 300
@@ -58,8 +56,6 @@ default flyme_spawn_y = 0.0
 # Game objects (stored as lists of dicts)
 default flyme_obstacles = []
 default flyme_stars = []
-default flyme_goal = None
-
 # Input state - using store variables for key tracking
 default flyme_keys_left = False
 default flyme_keys_right = False
@@ -77,43 +73,6 @@ init python:
     import random
     import math
 
-    FLYME_ASSET_CANDIDATES = {
-        "bg": [
-            "minigames/flyme2themoon/2-images/bg.png",
-        ],
-        "player": [
-            "minigames/flyme2themoon/2-images/player.png",
-        ],
-        "player_left": [
-            "minigames/flyme2themoon/2-images/player-left.png",
-        ],
-        "player_right": [
-            "minigames/flyme2themoon/2-images/player-right.png",
-        ],
-        "obstacle": [
-            "minigames/flyme2themoon/2-images/obstacle.png",
-        ],
-        "star": [
-            "minigames/flyme2themoon/2-images/star.png",
-        ],
-        "goal": [
-            "minigames/flyme2themoon/2-images/goal.png",
-        ],
-    }
-
-    def flyme_get_asset(kind):
-        for candidate in FLYME_ASSET_CANDIDATES.get(kind, []):
-            if renpy.loadable(candidate):
-                return candidate
-        return None
-
-    def flyme_get_player_asset(direction):
-        if direction < 0:
-            return flyme_get_asset("player_left") or flyme_get_asset("player")
-        if direction > 0:
-            return flyme_get_asset("player_right") or flyme_get_asset("player")
-        return flyme_get_asset("player")
-
     def flyme_reset_game():
         """Reset game state for a new game."""
         store.flyme_player_x = FLYME_GAME_WIDTH / 2 - 30
@@ -126,7 +85,6 @@ init python:
         store.flyme_time = 0.0
         store.flyme_obstacles = []
         store.flyme_stars = []
-        store.flyme_goal = None
         store.flyme_score = 0
         store.flyme_hearts = 3
         store.flyme_thrust_power = 0.0
@@ -164,15 +122,6 @@ init python:
             store.flyme_stars.append(star)
 
         store.flyme_spawn_y = y
-
-        # Spawn goal when score >= 30
-        if store.flyme_score >= 30 and store.flyme_goal is None:
-            store.flyme_goal = {
-                "x": FLYME_GAME_WIDTH / 2 - 50,
-                "y": y - 500,
-                "w": FLYME_GOAL_W,
-                "h": FLYME_GOAL_H
-            }
 
     def flyme_update(dt):
         """Update game state."""
@@ -272,13 +221,8 @@ init python:
         for i in reversed(stars_to_remove):
             store.flyme_stars.pop(i)
 
-        # Collision with goal
-        if store.flyme_goal and store.flyme_score >= 30:
-            if (store.flyme_player_x < store.flyme_goal["x"] + store.flyme_goal["w"] and
-                store.flyme_player_x + FLYME_PLAYER_W > store.flyme_goal["x"] and
-                store.flyme_player_y < store.flyme_goal["y"] + store.flyme_goal["h"] and
-                store.flyme_player_y + FLYME_PLAYER_H > store.flyme_goal["y"]):
-                store.flyme_game_won = True
+        if store.flyme_score >= 30:
+            store.flyme_game_won = True
 
 # -----------------------------
 # Animations
@@ -423,12 +367,8 @@ screen flyme_game():
 
     # Game update timer (60 FPS)
     timer 0.016 repeat True action Function(flyme_update, 0.016)
-
-    $ bg_asset = flyme_get_asset("bg")
-    $ player_asset = flyme_get_player_asset(flyme_player_direction)
-    $ obstacle_asset = flyme_get_asset("obstacle")
-    $ star_asset = flyme_get_asset("star")
-    $ goal_asset = flyme_get_asset("goal")
+    timer 0.016 repeat True action If(flyme_hearts <= 0, true=Return("gameover"), false=NullAction())
+    timer 0.016 repeat True action If(flyme_game_won, true=Return("victory"), false=NullAction())
 
     add Solid("#060816")
 
@@ -438,12 +378,6 @@ screen flyme_game():
         ysize FLYME_VIEWPORT_HEIGHT
         background Solid("#0a1028")
         padding (0, 0)
-
-
-    if bg_asset:
-        $ bg_scroll = int((-flyme_camera_y * 0.12) % 180)
-        add Transform(bg_asset, xpos=FLYME_FIELD_X, ypos=FLYME_FIELD_Y - 180 + bg_scroll, xsize=FLYME_GAME_WIDTH, ysize=420, alpha=0.35)
-
 
     add Solid("#152038"):
         pos (FLYME_FIELD_X, FLYME_FIELD_Y + FLYME_VIEWPORT_HEIGHT - 110)
@@ -467,89 +401,98 @@ screen flyme_game():
             alpha 0.65
 
     for i in range(4):
-        $ nebula_y = FLYME_FIELD_Y + (((i * 210) - int(flyme_camera_y * 0.1)) % (FLYME_VIEWPORT_HEIGHT + 180)) - 90
+        $ nebula_base_y = -1600 + i * 420
+        $ nebula_y = FLYME_FIELD_Y + (nebula_base_y - flyme_camera_y * 0.1)
         add Solid("#6574cd33"):
             pos (FLYME_FIELD_X + 40, nebula_y)
             xsize FLYME_GAME_WIDTH - 80
             ysize 120
 
-    if flyme_goal and flyme_score >= 30:
-        $ draw_y = FLYME_FIELD_Y + flyme_goal["y"] - flyme_camera_y
-        $ draw_x = FLYME_FIELD_X + flyme_goal["x"]
-        if -120 < draw_y < FLYME_VIEWPORT_HEIGHT + 120:
-            if goal_asset:
-                add Transform(goal_asset, xpos=draw_x, ypos=draw_y, xsize=flyme_goal["w"], ysize=flyme_goal["h"]) at FlymePulse
-            else:
-                text "Moon":
-                    pos (draw_x, draw_y + 28)
-                    size 30
-                    color "#ffe082"
-                    at FlymePulse
-
     for star in flyme_stars:
-        $ draw_y = FLYME_FIELD_Y + star["y"] - flyme_camera_y
-        $ draw_x = FLYME_FIELD_X + star["x"]
-        if -50 < draw_y < FLYME_VIEWPORT_HEIGHT + 50:
-            if star_asset:
-                add Transform(star_asset, xpos=draw_x, ypos=draw_y, xsize=star["w"], ysize=star["h"]) at FlymeGlow
-            else:
-                text "*":
-                    pos (draw_x + 10, draw_y + 2)
-                    size 34
-                    color "#ffd54f"
-                    at FlymeGlow
+        python:
+            draw_y = FLYME_FIELD_Y + star["y"] - flyme_camera_y
+            draw_x = FLYME_FIELD_X + star["x"]
+        text "★":
+            pos (draw_x + 2, draw_y - 2)
+            size 36
+            color "#ffd54f"
+            outlines [(2, "#fff4b0", 0, 0)]
+            at FlymeGlow
 
     for obs in flyme_obstacles:
-        $ draw_y = FLYME_FIELD_Y + obs["y"] - flyme_camera_y
-        $ draw_x = FLYME_FIELD_X + obs["x"]
-        if -80 < draw_y < FLYME_VIEWPORT_HEIGHT + 80:
-            if obstacle_asset:
-                add Transform(obstacle_asset, xpos=draw_x, ypos=draw_y, xsize=obs["w"], ysize=obs["h"])
-            else:
-                add Solid("#ff6b6b"):
-                    pos (draw_x, draw_y)
-                    xsize obs["w"]
-                    ysize obs["h"]
-                add Solid("#ffd1d1"):
-                    pos (draw_x + 10, draw_y + 10)
-                    xsize obs["w"] - 20
-                    ysize obs["h"] - 20
-                    alpha 0.25
+        python:
+            draw_y = FLYME_FIELD_Y + obs["y"] - flyme_camera_y
+            draw_x = FLYME_FIELD_X + obs["x"]
+        add Solid("#f2edf4"):
+            pos (draw_x + 16, draw_y)
+            xsize 38
+            ysize 104
+        add Solid("#f0c1d9"):
+            pos (draw_x + 22, draw_y + 14)
+            xsize 8
+            ysize 22
+        add Solid("#f0c1d9"):
+            pos (draw_x + 38, draw_y + 46)
+            xsize 8
+            ysize 22
+        add Solid("#f0c1d9"):
+            pos (draw_x + 26, draw_y + 78)
+            xsize 8
+            ysize 18
 
     $ draw_y = FLYME_FIELD_Y + flyme_player_y - flyme_camera_y
     $ draw_x = FLYME_FIELD_X + flyme_player_x
-    $ player_color = "#6cf0ff"
-    if flyme_player_direction == -1:
-        $ player_color = "#57d8ff"
-    elif flyme_player_direction == 1:
-        $ player_color = "#95f7ff"
-
+    $ ship_alpha = 1.0
     if flyme_invulnerable:
-        $ blink_alpha = 0.3 + 0.7 * abs(math.sin(flyme_time * 20))
-        if player_asset:
-            add Transform(player_asset, xpos=draw_x, ypos=draw_y, xsize=FLYME_PLAYER_W, ysize=FLYME_PLAYER_H, alpha=blink_alpha)
-        else:
-            add Solid(player_color):
-                pos (draw_x, draw_y)
-                xsize FLYME_PLAYER_W
-                ysize FLYME_PLAYER_H
-                alpha blink_alpha
-    else:
-        if player_asset:
-            add Transform(player_asset, xpos=draw_x, ypos=draw_y, xsize=FLYME_PLAYER_W, ysize=FLYME_PLAYER_H)
-        else:
-            add Solid(player_color):
-                pos (draw_x, draw_y)
-                xsize FLYME_PLAYER_W
-                ysize FLYME_PLAYER_H
+        $ ship_alpha = 0.3 + 0.7 * abs(math.sin(flyme_time * 20))
+
+    add Solid("#7bc043"):
+        pos (draw_x + 14, draw_y + 18)
+        xsize 32
+        ysize 54
+        alpha ship_alpha
+    add Solid("#1f9eff"):
+        pos (draw_x + 20, draw_y + 46)
+        xsize 20
+        ysize 22
+        alpha ship_alpha
+    text "▲":
+        pos (draw_x - 2, draw_y - 6)
+        size 64
+        color "#d71f28"
+        at Transform(alpha=ship_alpha)
+    text "●":
+        pos (draw_x + 19, draw_y + 16)
+        size 28
+        color "#f2d14b"
+        at Transform(alpha=ship_alpha)
+    text "◀":
+        pos (draw_x + 2, draw_y + 38)
+        size 34
+        color "#d71f28"
+        at Transform(alpha=ship_alpha)
+    text "▶":
+        pos (draw_x + 34, draw_y + 38)
+        size 34
+        color "#d71f28"
+        at Transform(alpha=ship_alpha)
 
     if flyme_thrust_power > 0.1:
-        $ flame_height = int(flyme_thrust_power * 30)
-        add Solid("#ff6600"):
-            pos (draw_x + FLYME_PLAYER_W / 2 - 5, draw_y + FLYME_PLAYER_H)
-            xsize 10
-            ysize flame_height
-            alpha flyme_thrust_power
+        text "◆":
+            pos (draw_x + 13, draw_y + 62)
+            size 22
+            color "#ff5c46"
+            at Transform(alpha=flyme_thrust_power)
+        text "◆":
+            pos (draw_x + 23, draw_y + 70)
+            size 20
+            color "#ffd447"
+            at Transform(alpha=flyme_thrust_power)
+        text "◆":
+            pos (draw_x + 31, draw_y + 62)
+            size 22
+            color "#ff5c46"
+            at Transform(alpha=flyme_thrust_power)
 
     frame:
         pos (20, 16)
