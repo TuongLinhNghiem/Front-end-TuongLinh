@@ -167,61 +167,49 @@ document.addEventListener("DOMContentLoaded", () => {
   const MAX_STAGE = 10;
 
   const stageStories = {
-    1: `<h2>Stage 1 - Childhood</h2>
-      <p>Raiden Mei was born into a wealthy family and raised to be the perfect lady.
-      Yet behind the glitter was loneliness and discrimination from friends. Everything changed when she met Kiana,
-      a goofy girl bursting with life. Kiana's smile chased away the darkness in Mei's heart
-      and began a deep, sacred friendship.</p>`,
-
-    2: `<h2>Stage 2 - Battle with the Herrscher of the Void</h2>
+    1: `<h2>Stage 1 - Battle with the Herrscher of the Void</h2>
       <p>When the Herrscher of the Void appeared, Mei, Kiana, Bronya, and Himeko plunged into a brutal fight.
       Their strength was not enough. Kiana vanished into the Herrscher's vortex of power.
       Himeko, the mentor Mei admired, sacrificed herself to protect her students.
       Mei could only watch helplessly as everything fell apart.</p>`,
 
-    3: `<h2>Stage 3 - Clash with Durandal</h2>
+    2: `<h2>Stage 2 - Clash with Durandal</h2>
       <p>Searching for Kiana, Mei faced Schicksal's strongest Valkyrie: Durandal.
       The uneven battle ended with Mei's defeat. Right before her eyes, Kiana was taken away again,
       this time by Durandal. Mei's heart grew heavier with pain and powerlessness.</p>`,
 
-    4: `<h2>Stage 4 - Becoming Herrscher of Thunder</h2>
+    3: `<h2>Stage 3 - Becoming Herrscher of Thunder</h2>
       <p>After countless struggles, Mei finally met Kiana again. But Kiana chose to keep fighting,
       even while the Herrscher's sickness ate away at her body. Mei wanted to follow Kevin to find a cure,
       but Kiana stopped her. Torn between love and despair, Mei chose a painful path.
       She awakened as the Herrscher of Thunder and defeated the very friend she longed to protect.</p>`,
 
-    5: `<h2>Stage 5 - Kalpas, the Raging Flame</h2>
+    4: `<h2>Stage 4 - Kalpas, the Raging Flame</h2>
       <p>Mei entered the Elysian Realm, the archive of the previous era's Herrschers.
       There she met Kalpas, the embodiment of unrestrained violence and strength.
       Their battle was a lesson about fear: only by facing it could Mei find the power to move forward.</p>`,
 
-    6: `<h2>Stage 6 - Aponia, the Chains of Fate</h2>
+    5: `<h2>Stage 5 - Aponia, the Chains of Fate</h2>
       <p>Next, Mei confronted Aponia, who believed every life must obey her "rules."
       Aponia tried to impose her will on Mei, demanding submission. Mei refused.
       In a tense fight, she shattered Aponia's chains and declared: her path would be chosen by herself, not fate.</p>`,
 
-    7: `<h2>Stage 7 - Herrscher of Corruption, Devouring Darkness</h2>
+    6: `<h2>Stage 6 - Herrscher of Corruption, Devouring Darkness</h2>
       <p>Deep within the Elysian Realm, Mei faced the Herrscher of Corruption,
       who sought to consume free will and turn all into soulless copies.
       It was a cruel trial that amplified Mei's regrets and weaknesses.
       She endured and affirmed: no one would erase the faith and feelings she vowed to protect.</p>`,
 
-    8: `<h2>Stage 8 - Elysia, the Heart of Humanity</h2>
+    7: `<h2>Stage 7 - Elysia, the Heart of Humanity</h2>
       <p>At last, Mei stood before Elysia, not merely an enemy but the embodiment of love and belief.
       This was not just a clash of power, but a trial of the heart.
       Elysia wanted Mei to find her true ideal. After their meaningful duel, Mei understood: her strength comes not from despair, but from the desire to protect Kiana and the world.</p>`,
 
-    9: `<h2>Stage 9 - Reunion and the Fight with Kevin</h2>
+    8: `<h2>Stage 8 - Reunion and the Fight with Kevin</h2>
       <p>Leaving the Elysian Realm, Mei was more resolute than ever.
       She reunited with Kiana, Bronya, and their allies. Together they opposed Kevin,
       who sought to remake the world with Herrscher power.
-      The fierce battle proved one thing: when they stand together, no power can defeat them.</p>`,
-
-    10: `<h2>Stage 10 - Herrscher of Origin</h2>
-      <p>In the final battle, humanity faced the Herrscher of the End, the threat of absolute annihilation.
-      Mei transcended fate and became the Herrscher of Origin,
-      the union of thunder and human will. Alongside Kiana, Bronya, and every ally,
-      she helped defeat the Herrscher of the End and opened a new era for the world.</p>`
+      The fierce battle proved one thing: when they stand together, no power can defeat them.</p>`
   };
 
   // ---- entities ----
