@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
     playerSwordImg.src = `mei-images/player-sword${stage}.png`;
 
     // enemy sword theo stage
-    enemySwordImg.src = `mei-images/enem-sword${stage}.png`;
+    enemySwordImg.src = `mei-images/enemysword${stage}.png`;
 
     // Update stage title
     const stageTitle = document.getElementById("stage-title");
