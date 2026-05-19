@@ -125,7 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // player sword theo stage
     if (stage <= 2) playerSwordImg.src = "mei-images/sword1.png";
-    else if (stage <= 8) playerSwordImg.src = "mei-images/sword2.png";
+    else if (stage <= 6) playerSwordImg.src = "mei-images/sword2.png";
     else playerSwordImg.src = "mei-images/sword3.png";
 
     // enemy sword theo stage
@@ -138,16 +138,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function getStageTitle(stageNum) {
     const titles = {
-      1: "Childhood",
-      2: "Battle with the Herrscher of the Void",
-      3: "Clash with Durandal",
-      4: "Herrscher of Thunder",
-      5: "Kalpas, the Raging Flame",
-      6: "Aponia, the Chains of Fate",
-      7: "Herrscher of Corruption",
-      8: "Elysia, the Heart of Humanity",
-      9: "Reunion and the Fight with Kevin",
-      10: "Herrscher of Origin"
+      1: "Battle with the Herrscher of the Void",
+      2: "Clash with Durandal",
+      3: "Herrscher of Thunder",
+      4: "Kalpas, the Raging Flame",
+      5: "Aponia, the Chains of Fate",
+      6: "Herrscher of Corruption",
+      7: "Elysia, the Heart of Humanity",
+      8: "Reunion and the Fight with Kevin"
     };
     return titles[stageNum] || "Unknown Stage";
   }
