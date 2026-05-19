@@ -124,9 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
     gameContainer.style.backgroundImage = `url(mei-images/bg${stage}.jpg)`;
 
     // player sword theo stage
-    if (stage <= 2) playerSwordImg.src = "mei-images/sword1.png";
-    else if (stage <= 6) playerSwordImg.src = "mei-images/sword2.png";
-    else playerSwordImg.src = "mei-images/sword3.png";
+    playerSwordImg.src = `mei-images/sword${stage}.png`;
 
     // enemy sword theo stage
     enemySwordImg.src = `mei-images/enemy-sword${stage}.png`;
@@ -143,9 +141,8 @@ document.addEventListener("DOMContentLoaded", () => {
       3: "Herrscher of Thunder",
       4: "Kalpas, the Raging Flame",
       5: "Aponia, the Chains of Fate",
-      6: "Herrscher of Corruption",
-      7: "Elysia, the Heart of Humanity",
-      8: "Reunion and the Fight with Kevin"
+      6: "Elysia, the Heart of Humanity",
+      7: "Reunion and the Fight with Kevin"
     };
     return titles[stageNum] || "Unknown Stage";
   }
@@ -192,18 +189,12 @@ document.addEventListener("DOMContentLoaded", () => {
       Aponia tried to impose her will on Mei, demanding submission. Mei refused.
       In a tense fight, she shattered Aponia's chains and declared: her path would be chosen by herself, not fate.</p>`,
 
-    6: `<h2>Stage 6 - Herrscher of Corruption, Devouring Darkness</h2>
-      <p>Deep within the Elysian Realm, Mei faced the Herrscher of Corruption,
-      who sought to consume free will and turn all into soulless copies.
-      It was a cruel trial that amplified Mei's regrets and weaknesses.
-      She endured and affirmed: no one would erase the faith and feelings she vowed to protect.</p>`,
-
-    7: `<h2>Stage 7 - Elysia, the Heart of Humanity</h2>
+    6: `<h2>Stage 7 - Elysia, the Heart of Humanity</h2>
       <p>At last, Mei stood before Elysia, not merely an enemy but the embodiment of love and belief.
       This was not just a clash of power, but a trial of the heart.
       Elysia wanted Mei to find her true ideal. After their meaningful duel, Mei understood: her strength comes not from despair, but from the desire to protect Kiana and the world.</p>`,
 
-    8: `<h2>Stage 8 - Reunion and the Fight with Kevin</h2>
+    7: `<h2>Stage 8 - Reunion and the Fight with Kevin</h2>
       <p>Leaving the Elysian Realm, Mei was more resolute than ever.
       She reunited with Kiana, Bronya, and their allies. Together they opposed Kevin,
       who sought to remake the world with Herrscher power.
