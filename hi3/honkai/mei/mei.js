@@ -124,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
     gameContainer.style.backgroundImage = `url(mei-images/bg${stage}.jpg)`;
 
     // player sword theo stage
-    playerSwordImg.src = `mei-images/sword${stage}.png`;
+    playerSwordImg.src = `mei-images/player-sword${stage}.png`;
 
     // enemy sword theo stage
     enemySwordImg.src = `mei-images/enemy-sword${stage}.png`;
