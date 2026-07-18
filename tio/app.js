@@ -78,7 +78,7 @@ app.use(errorHandler);
 /* ------------------------------------------------------------------ *
  * Boot
  * ------------------------------------------------------------------ */
-app.listen(config.port, () => {
+if (require.main === module) app.listen(config.port, () => {
   console.log(`[TryItOn!] Server running → http://localhost:${config.port}`);
 });
 

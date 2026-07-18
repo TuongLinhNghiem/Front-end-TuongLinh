@@ -64,8 +64,8 @@ const Navbar = {
         </div>`
       : `
         <div class="navbar__links" style="margin-left:auto;gap:8px">
-          <a class="btn btn--ghost btn--sm" href="/login">Login</a>
-          <a class="btn btn--primary btn--sm" href="/register">Get Started</a>
+          <a class="btn btn--ghost btn--sm" href="/auth/login">Login</a>
+          <a class="btn btn--primary btn--sm" href="/auth/register">Get Started</a>
         </div>`;
 
     return `

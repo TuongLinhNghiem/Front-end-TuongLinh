@@ -23,7 +23,7 @@ function requireAuth(req, res, next) {
   if (req.path.startsWith('/api/')) {
     return res.status(401).json({ error: 'Authentication required.' });
   }
-  return res.redirect('/login');
+  return res.redirect('/auth/login');
 }
 
 function redirectIfAuth(req, res, next) {

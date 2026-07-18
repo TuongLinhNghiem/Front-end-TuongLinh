@@ -35,22 +35,29 @@ const authController = {
         username: username || '',
         error: errors.join(' | ')
       }).toString();
-      return res.redirect(`/register?${qs}`);
+      return res.redirect(`/auth/register?${qs}`);
     }
 
     // Uniqueness checks.
     if (await User.findByEmail(email)) {
-      return res.redirect(`/register?error=${encodeURIComponent('That email is already registered.')}`);
+      return res.redirect(`/auth/register?error=${encodeURIComponent('That email is already registered.')}`);
     }
     if (await User.findByUsername(username)) {
-      return res.redirect(`/register?error=${encodeURIComponent('That username is already taken.')}`);
+      return res.redirect(`/auth/register?error=${encodeURIComponent('That username is already taken.')}`);
     }
 
     const user = await User.create({ email, username, password });
 
-    // Auto-login the new user.
-    req.session.user = { id: user.id, username: user.username, email: user.email };
-    res.redirect('/dashboard');
+    // A new ID prevents session fixation; save it before redirecting so the
+    // dashboard request can reliably use the authenticated session.
+    req.session.regenerate((err) => {
+      if (err) return res.status(500).send('Unable to create a session.');
+      req.session.user = { id: user.id, username: user.username, email: user.email };
+      return req.session.save((saveErr) => {
+        if (saveErr) return res.status(500).send('Unable to save the session.');
+        return res.redirect('/dashboard');
+      });
+    });
   },
 
   /**
@@ -70,21 +77,27 @@ const authController = {
     const errors = validate.login({ email, password });
 
     if (errors.length) {
-      return res.redirect(`/login?error=${encodeURIComponent(errors[0])}`);
+      return res.redirect(`/auth/login?error=${encodeURIComponent(errors[0])}`);
     }
 
     const user = await User.findByEmail(email);
     if (!user) {
-      return res.redirect(`/login?error=${encodeURIComponent('No account found for that email.')}`);
+      return res.redirect(`/auth/login?error=${encodeURIComponent('No account found for that email.')}`);
     }
 
     const ok = await User.verifyPassword(password, user.password_hash);
     if (!ok) {
-      return res.redirect(`/login?error=${encodeURIComponent('Incorrect password.')}`);
+      return res.redirect(`/auth/login?error=${encodeURIComponent('Incorrect password.')}`);
     }
 
-    req.session.user = { id: user.id, username: user.username, email: user.email };
-    res.redirect('/dashboard');
+    req.session.regenerate((err) => {
+      if (err) return res.status(500).send('Unable to create a session.');
+      req.session.user = { id: user.id, username: user.username, email: user.email };
+      return req.session.save((saveErr) => {
+        if (saveErr) return res.status(500).send('Unable to save the session.');
+        return res.redirect('/dashboard');
+      });
+    });
   },
 
   /**
