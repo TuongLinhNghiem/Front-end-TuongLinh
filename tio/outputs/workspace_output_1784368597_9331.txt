@@ -1,0 +1,4 @@
+static css: HTTP 200
+shops.json: HTTP 200
+avatar head: HTTP 200
+404 page: HTTP 404

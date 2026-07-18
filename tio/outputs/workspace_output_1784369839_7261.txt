@@ -1,0 +1,38 @@
+EXIT=0
+===== RESULTS =====
+→ server pid: 12034
+✓ server is up
+✓ GET / (landing) → HTTP 200
+✓ GET /auth/register → HTTP 200
+✓ GET /auth/login → HTTP 200
+✓ GET /data/shops.json → HTTP 200
+✓ GET /css/variables.css → HTTP 200
+✓ GET /js/api.js → HTTP 200
+✓ GET /images/avatar/logo.png → HTTP 200
+✓ GET /nope (404 page) → HTTP 404
+✓ POST /auth/register → HTTP 302
+✓ POST /auth/login → HTTP 302
+✓ GET /dashboard → HTTP 200
+✓ GET /profile → HTTP 200
+✓ GET /avatar → HTTP 200
+✓ GET /design → HTTP 200
+✓ GET /wardrobe → HTTP 200
+✓ GET /shop → HTTP 200
+✓ GET /recommend → HTTP 200
+✓ GET /dashboard (no auth) → HTTP 302
+✓ GET /api/me → HTTP 200
+   /api/me body: {"id":3,"email":"tester_1784369840@tryiton.test","username":"tester_1784369840","avatar_url":null,"measurements":null,"created_at":"2026-07-18 10:17:21"}
+✓ POST /api/outfits (create) → HTTP 201
+✓ GET /api/outfits → HTTP 200
+   /api/outfits body: [{"id":5,"user_id":3,"name":"Test Outfit","shirt":"red","pants":"blue","hat":"yellow","created_at":"2026-07-18 10:17:21"}]
+✓ POST /api/outfits/5/duplicate → HTTP 201
+✓ DELETE /api/outfits/5 → HTTP 204
+✓ /data/shops.json → 3 shops
+✓ GET /auth/logout → HTTP 302
+✓ GET /dashboard (after logout) → HTTP 302
+
+=============================
+  SMOKE TEST COMPLETE
+  Passed: 26
+  Failed: 0
+=============================

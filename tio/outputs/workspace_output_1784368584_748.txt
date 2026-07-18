@@ -1,0 +1,7 @@
+[TryItOn!] Server running → http://localhost:3000
+---curl landing---
+HTTP 404
+---curl register page---
+HTTP 404
+---curl api/me (no auth)---
+HTTP 302

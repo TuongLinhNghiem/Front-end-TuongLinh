@@ -1,0 +1,36 @@
+-rw-r--r-- 1 root root 1564 Jul 18 10:11 public/404.html
+-rw-r--r-- 1 root root 1609 Jul 18 10:11 public/500.html
+-rw-r--r-- 1 root root 6880 Jul 18 10:11 public/js/pages/recommend.js
+-rw-r--r-- 1 root root 3032 Jul 18 10:10 public/recommend.html
+=== 404 head ===
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 — Page not found · TryItOn!</title>
+
+  <link rel="stylesheet" href="/css/variables.css" />
+  <link rel="stylesheet" href="/css/base.css" />
+  <link rel="stylesheet" href="/css/buttons.css" />
+  <link rel="stylesheet" href="/css/animations.css" />
+  <link rel="stylesheet" href="/css/utilities.css" />
+  <link rel="icon" type="image/png" href="/images/avatar/logo.png" />
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+=== 500 head ===
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>500 — Something went wrong · TryItOn!</title>
+
+  <link rel="stylesheet" href="/css/variables.css" />
+  <link rel="stylesheet" href="/css/base.css" />
+  <link rel="stylesheet" href="/css/buttons.css" />
+  <link rel="stylesheet" href="/css/animations.css" />
+  <link rel="stylesheet" href="/css/utilities.css" />
+  <link rel="icon" type="image/png" href="/images/avatar/logo.png" />
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>

@@ -1,0 +1,28 @@
+.swatch-btn--blue   { background: var(--color-blue); }
+.swatch-btn--yellow { background: var(--color-yellow); }
+.swatch-row { display: flex; gap: var(--space-3); }
+
+@media (max-width: 860px) { .designer { grid-template-columns: 1fr; } .designer__stage { position: static; } }
+
+/* Colour readout badges under the avatar preview */
+.avatar-readout {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-top: var(--space-5);
+  flex-wrap: wrap;
+}
+.flex-center { display: flex; justify-content: center; align-items: center; }
+
+/* Avatar readout badges under the preview stage */
+.avatar-readout {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-5);
+}
+
+/* ---------- Outfit Designer ---------- */
+.save-bar {
+  display: flex;

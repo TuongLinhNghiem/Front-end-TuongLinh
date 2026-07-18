@@ -1,0 +1,4 @@
+-rw-r--r-- 1 root root  1564 Jul 18 10:11 public/404.html
+-rw-r--r-- 1 root root  1609 Jul 18 10:11 public/500.html
+-rw-r--r-- 1 root root 10783 Jul 18 09:57 public/index.html
+public/index.html: HTML document, Unicode text, UTF-8 text

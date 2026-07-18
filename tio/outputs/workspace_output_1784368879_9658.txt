@@ -1,0 +1,182 @@
+/**
+ * routes/pages.js
+ * Application pages that require authentication.
+ *
+ * Each route simply serves its static HTML file. The page's own
+ * JavaScript then fetches any dynamic data it needs from /api/*.
+ *
+ * `requireAuth` ensures unauthenticated visitors are redirected to
+ * /login before reaching the static file.
+ */
+
+'use strict';
+
+const express = require('express');
+const router = express.Router();
+
+const { requireAuth } = require('../middleware/auth');
+
+// Helper: serve a file from /public.
+const serve = (file) => (req, res) => res.sendFile(file, { root: 'public' });
+
+router.get('/dashboard',    requireAuth, serve('dashboard.html'));
+router.get('/profile',      requireAuth, serve('profile.html'));
+router.get('/avatar',       requireAuth, serve('avatar.html'));
+router.get('/design',       requireAuth, serve('design.html'));
+router.get('/wardrobe',     requireAuth, serve('wardrobe.html'));
+router.get('/shop',         requireAuth, serve('shop.html'));
+router.get('/recommend',    requireAuth, serve('recommend.html'));
+
+module.exports = router;
+/**
+ * routes/api.js
+ * JSON API surface consumed by the frontend.
+ *
+ * All routes require an authenticated session (see requireAuth).
+ */
+
+'use strict';
+
+const express = require('express');
+const router = express.Router();
+
+const { requireAuth } = require('../middleware/auth');
+const profile = require('../controllers/profileController');
+const outfit = require('../controllers/outfitController');
+
+// Everything under /api requires authentication.
+router.use(requireAuth);
+
+// Profile
+router.get('/me', profile.me);
+router.post('/me', profile.update);
+
+// Outfits CRUD + duplicate
+router.get('/outfits',           outfit.list);
+router.post('/outfits',          outfit.create);
+router.put('/outfits/:id',       outfit.update);
+router.delete('/outfits/:id',    outfit.remove);
+router.post('/outfits/:id/duplicate', outfit.duplicate);
+
+module.exports = router;
+/**
+ * controllers/outfitController.js
+ * CRUD operations for outfits belonging to the logged-in user.
+ *
+ * All endpoints are JSON (consumed by the frontend via fetch()).
+ */
+
+'use strict';
+
+const Outfit = require('../models/outfit');
+const validate = require('../middleware/validate');
+
+const outfitController = {
+  /** GET /api/outfits — list the current user's outfits. */
+  async list(req, res) {
+    const outfits = await Outfit.findByUser(req.session.user.id);
+    res.json(outfits);
+  },
+
+  /** POST /api/outfits — create a new outfit. */
+  async create(req, res) {
+    const errors = validate.outfit(req.body);
+    if (errors.length) return res.status(400).json({ error: errors.join(' | ') });
+
+    const outfit = await Outfit.create({
+      user_id: req.session.user.id,
+      name: req.body.name,
+      shirt: req.body.shirt,
+      pants: req.body.pants,
+      hat: req.body.hat
+    });
+    res.status(201).json(outfit);
+  },
+
+  /** PUT /api/outfits/:id — update an existing outfit. */
+  async update(req, res) {
+    const existing = await Outfit.findById(req.params.id);
+    if (!existing || existing.user_id !== req.session.user.id) {
+      return res.status(404).json({ error: 'Outfit not found.' });
+    }
+    const errors = validate.outfit(req.body);
+    if (errors.length) return res.status(400).json({ error: errors.join(' | ') });
+
+    const updated = await Outfit.update(req.params.id, req.body);
+    res.json(updated);
+  },
+
+  /** DELETE /api/outfits/:id — remove an outfit. */
+  async remove(req, res) {
+    const existing = await Outfit.findById(req.params.id);
+    if (!existing || existing.user_id !== req.session.user.id) {
+      return res.status(404).json({ error: 'Outfit not found.' });
+    }
+    await Outfit.remove(req.params.id);
+    res.json({ success: true });
+  },
+
+  /** POST /api/outfits/:id/duplicate — clone an outfit with a "(copy)" suffix. */
+  async duplicate(req, res) {
+    const existing = await Outfit.findById(req.params.id);
+    if (!existing || existing.user_id !== req.session.user.id) {
+      return res.status(404).json({ error: 'Outfit not found.' });
+    }
+    const copy = await Outfit.create({
+      user_id: existing.user_id,
+      name: `${existing.name} (copy)`,
+      shirt: existing.shirt,
+      pants: existing.pants,
+      hat: existing.hat
+    });
+    res.status(201).json(copy);
+  }
+};
+
+module.exports = outfitController;
+/**
+ * controllers/profileController.js
+ * Read / update the authenticated user's profile.
+ */
+
+'use strict';
+
+const User = require('../models/user');
+
+const profileController = {
+  /**
+   * GET /profile
+   * The HTML page fetches profile data via /api/me so the controller
+   * only needs to serve the static file here.
+   */
+  show(req, res) {
+    res.sendFile('profile.html', { root: 'public' });
+  },
+
+  /**
+   * GET /api/me
+   * Return the public-safe profile for the logged-in user.
+   */
+  async me(req, res) {
+    const profile = await User.publicProfile(req.session.user.id);
+    if (!profile) return res.status(404).json({ error: 'User not found.' });
+    res.json(profile);
+  },
+
+  /**
+   * POST /api/me
+   * Update editable profile fields (username, measurements).
+   */
+  async update(req, res) {
+    const { username, measurements } = req.body;
+    const updated = await User.updateProfile(req.session.user.id, {
+      username,
+      measurements: measurements ? JSON.stringify(measurements) : null
+    });
+    // Keep the session in sync.
+    req.session.user.username = updated.username;
+    res.json(updated);
+  }
+};
+
+module.exports = profileController;

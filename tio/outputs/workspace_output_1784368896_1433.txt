@@ -1,0 +1,14 @@
+=== pages.css modal check ===
+261:.modal {
+269:.modal[hidden] { display: none; }
+271:.modal__backdrop {
+280:.modal__panel {
+=== profile.html script refs ===
+18:<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+94:  <script src="/js/utils.js"></script>
+95:  <script src="/js/api.js"></script>
+96:  <script src="/js/components/navbar.js"></script>
+97:  <script src="/js/main.js"></script>
+98:  <script src="/js/pages/profile.js"></script>
+=== profile.js exists? ===
+ls: cannot access 'public/js/pages/profile.js': No such file or directory

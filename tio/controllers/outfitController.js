@@ -1,0 +1,76 @@
+/**
+ * controllers/outfitController.js
+ * CRUD operations for outfits belonging to the logged-in user.
+ *
+ * All endpoints are JSON (consumed by the frontend via fetch()).
+ */
+
+'use strict';
+
+const Outfit = require('../models/outfit');
+const validate = require('../middleware/validate');
+
+const outfitController = {
+  /** GET /api/outfits — list the current user's outfits. */
+  async list(req, res) {
+    const outfits = await Outfit.findByUser(req.session.user.id);
+    res.json(outfits);
+  },
+
+  /** POST /api/outfits — create a new outfit. */
+  async create(req, res) {
+    const errors = validate.outfit(req.body);
+    if (errors.length) return res.status(400).json({ error: errors.join(' | ') });
+
+    const outfit = await Outfit.create({
+      user_id: req.session.user.id,
+      name: req.body.name,
+      shirt: req.body.shirt,
+      pants: req.body.pants,
+      hat: req.body.hat
+    });
+    res.status(201).json(outfit);
+  },
+
+  /** PUT /api/outfits/:id — update an existing outfit. */
+  async update(req, res) {
+    const existing = await Outfit.findById(req.params.id);
+    if (!existing || existing.user_id !== req.session.user.id) {
+      return res.status(404).json({ error: 'Outfit not found.' });
+    }
+    const errors = validate.outfit(req.body);
+    if (errors.length) return res.status(400).json({ error: errors.join(' | ') });
+
+    const updated = await Outfit.update(req.params.id, req.body);
+    res.json(updated);
+  },
+
+  /** DELETE /api/outfits/:id — remove an outfit. */
+  async remove(req, res) {
+    const existing = await Outfit.findById(req.params.id);
+    if (!existing || existing.user_id !== req.session.user.id) {
+      return res.status(404).json({ error: 'Outfit not found.' });
+    }
+    await Outfit.remove(req.params.id);
+    // 204 No Content — standard for a successful DELETE.
+    res.status(204).end();
+  },
+
+  /** POST /api/outfits/:id/duplicate — clone an outfit with a "(copy)" suffix. */
+  async duplicate(req, res) {
+    const existing = await Outfit.findById(req.params.id);
+    if (!existing || existing.user_id !== req.session.user.id) {
+      return res.status(404).json({ error: 'Outfit not found.' });
+    }
+    const copy = await Outfit.create({
+      user_id: existing.user_id,
+      name: `${existing.name} (copy)`,
+      shirt: existing.shirt,
+      pants: existing.pants,
+      hat: existing.hat
+    });
+    res.status(201).json(copy);
+  }
+};
+
+module.exports = outfitController;

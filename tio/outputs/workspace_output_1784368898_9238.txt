@@ -1,0 +1,30 @@
+  .profile-list { grid-template-columns: 1fr; }
+}
+
+/* ---------- Modal ---------- */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1500;
+  display: grid;
+  place-items: center;
+  padding: var(--space-4);
+}
+.modal[hidden] { display: none; }
+
+.modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  animation: fade-in var(--dur-base) var(--ease-out);
+}
+
+.modal__panel {
+  position: relative;
+  width: min(520px, 100%);
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+  animation: scale-in var(--dur-base) var(--ease-out);
+}

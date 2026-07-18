@@ -1,0 +1,20 @@
+/**
+ * db/init.js
+ * Database initialisation script.
+ *
+ * Run with:  npm run init-db   (or)   node db/init.js
+ *
+ * Creates the SQLite file (if missing) and the three tables required
+ * by the platform:
+ *   - users     : registered accounts (passwords hashed with bcrypt)
+ *   - outfits   : saved outfits per user
+ *   - sessions  : express-session persistent store
+ *
+ * This script is idempotent — re-running it is safe.
+ */
+
+'use strict';
+
+const fs = require('fs');
+const path = require('path');
+const { db } = require('./connection');

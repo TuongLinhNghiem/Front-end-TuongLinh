@@ -1,0 +1,54 @@
+===== shops.json =====
+{
+  "shops": [
+    {
+      "id": "shop-a",
+      "name": "Shop A — The Red Label",
+      "tagline": "Bold, fiery, unforgettable.",
+      "color": "red",
+      "items": [
+        { "id": "a-shirt", "category": "shirt", "color": "red", "name": "Crimson Tee",  "price": 29 },
+        { "id": "a-pants", "category": "pants", "color": "red", "name": "Scarlet Chinos","price": 49 },
+        { "id": "a-hat",   "category": "hat",   "color": "red", "name": "Ruby Cap",     "price": 19 }
+      ]
+    },
+    {
+      "id": "shop-b",
+      "name": "Shop B — The Blue House",
+      "tagline": "Calm, classic, cool.",
+      "color": "blue",
+      "items": [
+        { "id": "b-shirt", "category": "shirt", "color": "blue", "name": "Ocean Tee",   "price": 29 },
+        { "id": "b-pants", "category": "pants", "color": "blue", "name": "Indigo Jeans","price": 59 },
+        { "id": "b-hat",   "category": "hat",   "color": "blue", "name": "Azure Cap",   "price": 19 }
+      ]
+    },
+    {
+      "id": "shop-c",
+      "name": "Shop C — The Yellow Studio",
+      "tagline": "Bright, warm, sunny.",
+      "color": "yellow",
+      "items": [
+        { "id": "c-shirt", "category": "shirt", "color": "yellow", "name": "Sunshine Tee",  "price": 29 },
+        { "id": "c-pants", "category": "pants", "color": "yellow", "name": "Golden Chinos", "price": 49 },
+        { "id": "c-hat",   "category": "hat",   "color": "yellow", "name": "Lemon Cap",     "price": 19 }
+      ]
+    }
+  ]
+}
+
+===== pages.css shop section =====
+4:   dashboard, profile, avatar, design, wardrobe, shop, recommend.
+127:.shop-tabs {
+133:.shop-tab {
+143:.shop-tab.is-active { background: var(--color-ink); color: #fff; border-color: var(--color-ink); }
+144:.shop-tab:hover:not(.is-active) { border-color: var(--color-dark-gray); }
+146:.shop-items {
+151:.shop-item {
+160:.shop-item:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+161:.shop-item__img {
+169:.shop-item__name { font-weight: var(--fw-semibold); }
+170:.shop-item__price { color: var(--color-dark-gray); margin: var(--space-1) 0 var(--space-3); }
+173:.recommend-builder {
+210:.recommend-results { display: flex; flex-direction: column; gap: var(--space-4); }
+234:@media (max-width: 860px) { .recommend-builder { grid-template-columns: 1fr; } }

@@ -1,0 +1,7 @@
+sqlite3 CLI not found, using node
+[
+  { name: 'users' },
+  { name: 'sqlite_sequence' },
+  { name: 'outfits' },
+  { name: 'sessions' }
+]

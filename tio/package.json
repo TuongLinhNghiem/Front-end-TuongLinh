@@ -1,0 +1,27 @@
+{
+  "name": "tryiton",
+  "version": "1.0.0",
+  "description": "TryItOn! — A fashion outfit design platform (thesis / startup proof-of-concept).",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node app.js",
+    "init-db": "node db/init.js"
+  },
+  "keywords": [
+    "fashion",
+    "outfit",
+    "avatar",
+    "designer",
+    "thesis",
+    "poc"
+  ],
+  "author": "TryItOn! Team",
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "sqlite3": "^5.1.7"
+  }
+}

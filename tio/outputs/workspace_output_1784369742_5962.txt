@@ -1,0 +1,47 @@
+/**
+ * routes/index.js
+ * Public top-level routes: landing page.
+ */
+
+'use strict';
+
+const express = require('express');
+const router = express.Router();
+
+// Landing page
+router.get('/', (req, res) => {
+  res.sendFile('index.html', { root: 'public' });
+});
+
+module.exports = router;
+---PAGES---
+/**
+ * routes/pages.js
+ * Application pages that require authentication.
+ *
+ * Each route simply serves its static HTML file. The page's own
+ * JavaScript then fetches any dynamic data it needs from /api/*.
+ *
+ * `requireAuth` ensures unauthenticated visitors are redirected to
+ * /login before reaching the static file.
+ */
+
+'use strict';
+
+const express = require('express');
+const router = express.Router();
+
+const { requireAuth } = require('../middleware/auth');
+
+// Helper: serve a file from /public.
+const serve = (file) => (req, res) => res.sendFile(file, { root: 'public' });
+
+router.get('/dashboard',    requireAuth, serve('dashboard.html'));
+router.get('/profile',      requireAuth, serve('profile.html'));
+router.get('/avatar',       requireAuth, serve('avatar.html'));
+router.get('/design',       requireAuth, serve('design.html'));
+router.get('/wardrobe',     requireAuth, serve('wardrobe.html'));
+router.get('/shop',         requireAuth, serve('shop.html'));
+router.get('/recommend',    requireAuth, serve('recommend.html'));
+
+module.exports = router;

@@ -1,0 +1,4 @@
+    await Outfit.remove(req.params.id);
+    // 204 No Content — standard for a successful DELETE.
+    res.status(204).end();
+  },

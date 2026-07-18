@@ -1,0 +1,13 @@
+101:.outfit-card {
+110:.outfit-card:hover {
+115:.outfit-card__preview {
+123:.outfit-card__body {
+127:.outfit-card__name {
+132:.outfit-card__date {
+138:.outfit-card__swatches {
+144:.outfit-card__actions {
+152:/* Colour swatch */
+153:.swatch {
+160:.swatch--red    { background: var(--color-red); }
+161:.swatch--blue   { background: var(--color-blue); }
+162:.swatch--yellow { background: var(--color-yellow); }

@@ -1,0 +1,74 @@
+-rw-r--r-- 1 root root 1564 Jul 18 10:11 public/404.html
+-rw-r--r-- 1 root root 1609 Jul 18 10:11 public/500.html
+=== 404 ===
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 — Page not found · TryItOn!</title>
+
+  <link rel="stylesheet" href="/css/variables.css" />
+  <link rel="stylesheet" href="/css/base.css" />
+  <link rel="stylesheet" href="/css/buttons.css" />
+  <link rel="stylesheet" href="/css/animations.css" />
+  <link rel="stylesheet" href="/css/utilities.css" />
+  <link rel="icon" type="image/png" href="/images/avatar/logo.png" />
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body>
+  <main>
+    <section class="page flex-center" style="min-height:80vh; text-align:center; flex-direction:column; gap:var(--space-5)">
+      <div class="reveal" style="font-size:clamp(80px, 18vw, 180px); font-weight:800; letter-spacing:-0.04em; line-height:1; color:var(--color-ink)">
+        404
+      </div>
+      <div class="reveal" data-delay="1">
+        <h1 class="page-title" style="font-size:var(--text-2xl)">Page not found</h1>
+        <p class="text-muted mt-2" style="max-width:420px">
+          The page you're looking for doesn't exist or may have been moved. Let's get you back on track.
+        </p>
+      </div>
+      <div class="flex reveal" data-delay="2" style="gap:var(--space-3); flex-wrap:wrap; justify-content:center">
+        <a href="/" class="btn btn--primary btn--lg">Back to home</a>
+        <a href="/login" class="btn btn--ghost btn--lg">Sign in</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
+=== 500 ===
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>500 — Something went wrong · TryItOn!</title>
+
+  <link rel="stylesheet" href="/css/variables.css" />
+  <link rel="stylesheet" href="/css/base.css" />
+  <link rel="stylesheet" href="/css/buttons.css" />
+  <link rel="stylesheet" href="/css/animations.css" />
+  <link rel="stylesheet" href="/css/utilities.css" />
+  <link rel="icon" type="image/png" href="/images/avatar/logo.png" />
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body>
+  <main>
+    <section class="page flex-center" style="min-height:80vh; text-align:center; flex-direction:column; gap:var(--space-5)">
+      <div class="reveal" style="font-size:clamp(80px, 18vw, 180px); font-weight:800; letter-spacing:-0.04em; line-height:1; color:var(--color-ink)">
+        500
+      </div>
+      <div class="reveal" data-delay="1">
+        <h1 class="page-title" style="font-size:var(--text-2xl)">Something went wrong</h1>
+        <p class="text-muted mt-2" style="max-width:420px">
+          An unexpected error occurred on our end. Please try again in a moment. If the problem persists, contact the site administrator.
+        </p>
+      </div>
+      <div class="flex reveal" data-delay="2" style="gap:var(--space-3); flex-wrap:wrap; justify-content:center">
+        <a href="/" class="btn btn--primary btn--lg">Back to home</a>
+        <a href="/login" class="btn btn--ghost btn--lg">Sign in</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

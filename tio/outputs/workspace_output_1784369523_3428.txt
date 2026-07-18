@@ -1,0 +1,12 @@
+-rw-r--r-- 1 root root 1564 Jul 18 10:11 public/404.html
+-rw-r--r-- 1 root root 1609 Jul 18 10:11 public/500.html
+-rw-r--r-- 1 root root 6245 Jul 18 10:12 public/js/pages/recommend.js
+-rw-r--r-- 1 root root 3032 Jul 18 10:10 public/recommend.html
+=== verifying 404 and 500 content ===
+<!DOCTYPE html>
+<html lang="en">
+<head>
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>

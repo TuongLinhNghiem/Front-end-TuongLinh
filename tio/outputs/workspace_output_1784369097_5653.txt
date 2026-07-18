@@ -1,0 +1,65 @@
+.nav-card:hover .nav-card__arrow { gap: var(--space-3); }
+
+/* Outfit card (wardrobe) */
+.outfit-card {
+  background: var(--color-white);
+  border: 1px solid var(--color-light-gray);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: transform var(--dur-base) var(--ease-out),
+              box-shadow var(--dur-base) var(--ease-out);
+}
+.outfit-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.outfit-card__preview {
+  background: var(--color-off-white);
+  height: 240px;
+  display: grid;
+  place-items: center;
+  position: relative;
+}
+
+.outfit-card__body {
+  padding: var(--space-4) var(--space-5);
+}
+
+.outfit-card__name {
+  font-weight: var(--fw-semibold);
+  font-size: var(--text-base);
+}
+
+.outfit-card__date {
+  color: var(--color-dark-gray);
+  font-size: var(--text-xs);
+  margin-top: var(--space-1);
+}
+
+.outfit-card__swatches {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.outfit-card__actions {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-light-gray);
+}
+
+/* Colour swatch */
+.swatch {
+  width: 18px;
+  height: 18px;
+  border-radius: var(--radius-full);
+  border: 2px solid #fff;
+  box-shadow: var(--shadow-xs);
+}
+.swatch--red    { background: var(--color-red); }
+.swatch--blue   { background: var(--color-blue); }
+.swatch--yellow { background: var(--color-yellow); }

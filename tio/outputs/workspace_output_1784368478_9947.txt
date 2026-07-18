@@ -1,0 +1,14 @@
+Generating avatar assets…
+  ✓ legs-red.png
+  ✓ body-red.png
+  ✓ hat-red.png
+  ✓ legs-blue.png
+  ✓ body-blue.png
+  ✓ hat-blue.png
+  ✓ legs-yellow.png
+  ✓ body-yellow.png
+  ✓ hat-yellow.png
+  ✓ head.png
+  ✓ logo.png
+
+Done. 11 files in /workspace/public/images/avatar

@@ -1,0 +1,36 @@
+total 200
+drwxr-xr-x  16 user user  4096 Jul 18 10:12 .
+drwxr-xr-x  20 root root  4096 Jun 22 03:39 ..
+drwxr-xr-x   4 user user  4096 Jun 19 10:20 .agent_hooks
+drwxr-xr-x  10 root root  4096 Jul 18 09:42 .browser_data
+drwxr-xr-x   3 root root  4096 Jun 22 03:37 .psiphon_data
+-rw-r--r--   1 root root 14765 Jul 18 10:13 README.md
+-rw-r--r--   1 root root  2681 Jul 18 09:42 app.js
+drwxr-xr-x   3 root root  4096 Jul 18 09:40 assets
+drwxr-xr-x   2 root root  4096 Jul 18 09:41 config
+drwxr-xr-x   2 root root  4096 Jul 18 09:44 controllers
+drwxr-xr-x   2 root root  4096 Jul 18 09:55 db
+-rw-r--r--   1 root root  6597 Jul 18 09:54 generate_avatar_assets.py
+drwxr-xr-x   2 root root  4096 Jul 18 09:43 middleware
+drwxr-xr-x   2 root root  4096 Jul 18 09:43 models
+drwxr-xr-x 193 root root  4096 Jul 18 09:54 node_modules
+drwxr-xr-x   2 root root 12288 Jul 18 10:14 outputs
+-rw-r--r--   1 root root 90196 Jul 18 09:54 package-lock.json
+-rw-r--r--   1 root root   562 Jul 18 09:41 package.json
+drwxr-xr-x   6 root root  4096 Jul 18 10:11 public
+drwxr-xr-x   2 root root  4096 Jul 18 09:45 routes
+drwxr-xr-x   2 root root  4096 Jul 18 10:14 summarized_conversations
+-rw-r--r--   1 root root  1847 Jul 18 10:12 todo.md
+---
+/workspace/public/404.html
+/workspace/public/500.html
+/workspace/public/avatar.html
+/workspace/public/dashboard.html
+/workspace/public/design.html
+/workspace/public/index.html
+/workspace/public/login.html
+/workspace/public/profile.html
+/workspace/public/recommend.html
+/workspace/public/register.html
+/workspace/public/shop.html
+/workspace/public/wardrobe.html

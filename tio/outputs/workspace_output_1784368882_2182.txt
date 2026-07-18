@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="TryItOn! — Design your style before you wear it. A fashion outfit design platform." />
+  <title>TryItOn! — Design your style before you wear it</title>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/css/variables.css" />
+  <link rel="stylesheet" href="/css/base.css" />
+  <link rel="stylesheet" href="/css/navbar.css" />
+  <link rel="stylesheet" href="/css/buttons.css" />
+  <link rel="stylesheet" href="/css/cards.css" />
+  <link rel="stylesheet" href="/css/avatar.css" />
+  <link rel="stylesheet" href="/css/animations.css" />
+  <link rel="stylesheet" href="/css/utilities.css" />
+  <link rel="stylesheet" href="/css/landing.css" />
+  <link rel="icon" type="image/png" href="/images/avatar/logo.png" />
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body>
+  <!-- Navbar (injected by js/components/navbar.js) -->
+  <div id="navbar"></div>
+
+  <main>
+    <!-- ============================ HERO ============================ -->
+    <section class="hero">
+      <div class="hero__inner">
+        <div class="hero__content">
+          <span class="hero__eyebrow reveal">✨ The fashion design playground</span>
+          <h1 class="hero__title reveal" data-delay="1">
+            Design your style<br />
+            <span class="accent">before you wear it.</span>
+          </h1>
+          <p class="hero__lead reveal" data-delay="2">
+            TryItOn! is a minimalist outfit design platform. Build a personal avatar,
+            mix and match shirts, pants and hats, and save complete looks to your
+            wardrobe — all in your browser, no AI, no 3D.
+          </p>
+          <div class="hero__cta reveal" data-delay="3">
+            <a href="/register" class="btn btn--dark btn--lg">Get Started — it's free</a>
+            <a href="#demo" class="btn btn--ghost btn--lg">Try the demo</a>
+          </div>
+          <div class="hero__stats reveal" data-delay="4">
+            <div>
+              <div class="hero__stat-num">3</div>
+              <div class="hero__stat-label">Clothing categories</div>
+            </div>
+            <div>
+              <div class="hero__stat-num">9</div>
+              <div class="hero__stat-label">Colour combinations</div>
+            </div>
+            <div>
+              <div class="hero__stat-num">∞</div>
+              <div class="hero__stat-label">Saved outfits</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero__visual reveal" data-delay="2">
+          <div class="hero__card">
+            <!-- Live composed avatar preview -->
+            <div id="heroAvatar"></div>
+          </div>
+          <div class="hero__chip hero__chip--1">👕 Shirt</div>
+          <div class="hero__chip hero__chip--2">🧢 Hat</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================== FEATURES ========================== -->
+    <section class="section section--gray" id="features">
+      <div class="section__inner">
+        <div class="section__eyebrow reveal">Features</div>
+        <h2 class="section__title reveal" data-delay="1">Everything you need to design a look</h2>
+        <p class="section__lead reveal" data-delay="2">
+          A focused toolkit that takes you from a blank avatar to a wardrobe full
+          of saved outfits — clean, fast, and made for creators.
+        </p>
+
+        <div class="features">
+          <article class="feature reveal">
+            <div class="feature__icon">🧍</div>
+            <h3 class="feature__title">Avatar Designer</h3>
+            <p class="feature__desc">
+              Build a personal 2D avatar from layered PNGs. Swap shirts, pants and
+              hats and watch your avatar update in real time.
+            </p>
+          </article>
+          <article class="feature reveal" data-delay="1">
+            <div class="feature__icon">🎨</div>
+            <h3 class="feature__title">Outfit Designer</h3>
+            <p class="feature__desc">
+              Combine a shirt, pants and hat into a named outfit and save it to your
+              personal wardrobe with a single click.
+            </p>
+          </article>
+          <article class="feature reveal" data-delay="2">
+            <div class="feature__icon">👗</div>
+            <h3 class="feature__title">Wardrobe</h3>
+            <p class="feature__desc">
+              Every saved outfit lives in a card-based wardrobe. Edit, duplicate or
+              delete looks whenever inspiration strikes.
+            </p>
+          </article>
+          <article class="feature reveal" data-delay="3">
+            <div class="feature__icon">🛍️</div>
+            <h3 class="feature__title">Curated Shops</h3>
+            <p class="feature__desc">
+              Three demo shops, each themed around a single colour — the Red Label,
+              the Blue House and the Yellow Studio.
+            </p>
+          </article>
+          <article class="feature reveal" data-delay="4">
+            <div class="feature__icon">🧭</div>
+            <h3 class="feature__title">Recommendations</h3>
+            <p class="feature__desc">
+              Pick the items you want to buy and we instantly surface the shops that
+              match — simple filtering, no black boxes.
+            </p>
+          </article>
+          <article class="feature reveal" data-delay="5">
+            <div class="feature__icon">🔒</div>
+            <h3 class="feature__title">Secure by design</h3>
+            <p class="feature__desc">
+              Passwords are hashed with bcrypt, sessions are managed server-side,
+              and your account stays yours.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ ABOUT =========================== -->
+    <section class="section" id="about">
+      <div class="section__inner">
+        <div class="about">
+          <div class="about__visual reveal">🧍‍♂️</div>
+          <div class="reveal" data-delay="1">
+            <div class="section__eyebrow" style="text-align:left">About</div>
+            <h2 class="about__title">A thesis-grade proof of concept</h2>
+            <p class="about__text">
+              TryItOn! started as a university thesis project exploring how a
+              lightweight, layered 2D avatar system could make fashion design
+              approachable for everyone. The platform is intentionally minimal —
+              no heavy 3D engines, no AI image generation, just clean composable
+              layers that respond instantly.
+            </p>
+            <p class="about__text">
+              Built with vanilla HTML, CSS and JavaScript on the front end and a
+              Node.js + Express + SQLite stack on the back end, TryItOn! is a
+              blueprint for a future startup: scalable folder structure, modular
+              controllers and models, and a design language inspired by Apple,
+              Nike and Figma.
+            </p>
+            <a href="/register" class="btn btn--primary">Join the journey →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ DEMO =========================== -->
+    <section class="section section--gray" id="demo">
+      <div class="section__inner">
+        <div class="section__eyebrow reveal">Live demo</div>
+        <h2 class="section__title reveal" data-delay="1">Design an outfit right now</h2>
+        <p class="section__lead reveal" data-delay="2">
+          Pick a colour for each category and watch the avatar change instantly.
+          This is the same engine that powers the Avatar and Outfit designers.
+        </p>
+
+        <div class="demo reveal" data-delay="3">
+          <div class="demo__stage">
+            <div id="demoAvatar"></div>
+          </div>
+
+          <div class="demo__controls">
+            <div class="demo__group">
+              <span class="demo__group-label">Shirt</span>
+              <div class="demo__swatches" data-layer="shirt">
+                <button class="swatch-btn swatch-btn--red is-selected" data-color="red" aria-label="Red shirt"></button>
+                <button class="swatch-btn swatch-btn--blue" data-color="blue" aria-label="Blue shirt"></button>
+                <button class="swatch-btn swatch-btn--yellow" data-color="yellow" aria-label="Yellow shirt"></button>
+              </div>
+            </div>
+            <div class="demo__group">
+              <span class="demo__group-label">Pants</span>
+              <div class="demo__swatches" data-layer="pants">
+                <button class="swatch-btn swatch-btn--red" data-color="red" aria-label="Red pants"></button>
+                <button class="swatch-btn swatch-btn--blue is-selected" data-color="blue" aria-label="Blue pants"></button>
+                <button class="swatch-btn swatch-btn--yellow" data-color="yellow" aria-label="Yellow pants"></button>
+              </div>
+            </div>
+            <div class="demo__group">
+              <span class="demo__group-label">Hat</span>
+              <div class="demo__swatches" data-layer="hat">
+                <button class="swatch-btn swatch-btn--red" data-color="red" aria-label="Red hat"></button>
+                <button class="swatch-btn swatch-btn--blue" data-color="blue" aria-label="Blue hat"></button>
+                <button class="swatch-btn swatch-btn--yellow is-selected" data-color="yellow" aria-label="Yellow hat"></button>
+              </div>
+            </div>
+            <p class="text-muted text-sm">
+              Sign up to save outfits like this to your own wardrobe.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================= CTA ============================ -->
+    <section class="cta">
+      <h2 class="cta__title reveal">Ready to design your first look?</h2>
+      <p class="cta__lead reveal" data-delay="1">
+        Create a free account and start building your wardrobe in under a minute.
+      </p>
+      <div class="reveal" data-delay="2">
+        <a href="/register" class="btn btn--dark btn--lg">Get Started</a>
+        <a href="/login" class="btn btn--ghost btn--lg" style="margin-left:12px">I have an account</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer (injected by js/main.js) -->
+  <div id="footer"></div>
+
+  <!-- Scripts -->
+  <script src="/js/utils.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/components/avatar.js"></script>
+  <script src="/js/components/navbar.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/js/pages/landing.js"></script>
+</body>
+</html>

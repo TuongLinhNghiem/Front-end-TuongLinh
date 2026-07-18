@@ -1,0 +1,40 @@
+ * Recommendation page logic:
+ *   - multi-select colour chips for shirt / pants / hat
+ *   - loads shops from /data/shops.json (static demo data)
+ *   - scores every shop by counting how many of the user's selected
+ *     (category, colour) picks the shop actually stocks
+ *   - renders a ranked list; the top match gets the .is-best highlight
+ *
+ * NO AI — a simple set-intersection filter + sort.
+ */
+
+'use strict';
+
+(function () {
+  const COLORS      = ['red', 'blue', 'yellow'];
+  const CATEGORIES  = ['shirt', 'pants', 'hat'];
+  const COLOR_LABEL = { red: 'Red', blue: 'Blue', yellow: 'Yellow' };
+
+  // selections[category] = Set of colours the user toggled on.
+  const selections = { shirt: new Set(), pants: new Set(), hat: new Set() };
+
+  let shops = [];
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    try {
+      const data = await Api.getShops();
+      shops = data.shops || [];
+    } catch (_) {
+      document.getElementById('results').innerHTML =
+        '<p class="text-muted">Could not load shop data.</p>';
+      return;
+    }
+
+    renderChips();
+    wireControls();
+    update(); // initial render shows the empty-state prompt
+  });
+
+  /* ---------- Build the colour chips ---------- */
+  function renderChips() {
+    CATEGORIES.forEach((cat) => {

@@ -1,0 +1,97 @@
+/**
+ * js/pages/dashboard.js
+ * Personalises the dashboard greeting using the logged-in user's name.
+ */
+
+'use strict';
+
+(function () {
+  document.addEventListener('DOMContentLoaded', async () => {
+    const greeting = document.getElementById('greeting');
+    const sub = document.getElementById('greetingSub');
+    if (!greeting) return;
+
+    try {
+      const user = await Api.getMe();
+      const hour = new Date().getHours();
+      const part = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
+      greeting.textContent = `${part}, ${user.username} 👋`;
+      if (sub) sub.textContent = 'Pick up where you left off — design a new look today.';
+    } catch (_) {
+      // If not logged in, the server will have already redirected to /login.
+    }
+  });
+})();
+/**
+ * js/components/avatar.js
+ * Renders the layered 2D avatar.
+ *
+ * The avatar is composed of four absolutely-positioned <img> layers:
+ *   legs → body → head → hat
+ * Each layer's src points to a colour-specific PNG under
+ * /images/avatar/. Swapping a colour = swapping one src — the
+ * change is instant and animated via CSS (avatar-pop keyframe).
+ *
+ * NO AI, NO 3D — purely 2D PNG compositing.
+ */
+
+'use strict';
+
+const COLORS = ['red', 'blue', 'yellow'];
+
+const Avatar = {
+  /**
+   * Build the avatar markup for a given outfit.
+   * @param {{shirt:string, pants:string, hat:string}} colors
+   * @param {string} size 'lg' | 'md' | 'sm'
+   * @returns {string} HTML
+   */
+  render(colors, size = 'md') {
+    const sizeClass = size === 'lg' ? 'avatar-stage--lg' : size === 'sm' ? 'avatar-stage--sm' : '';
+    const mini = size === 'sm' ? ' avatar--mini' : '';
+    return `
+      <div class="avatar-stage ${sizeClass}">
+        <div class="avatar${mini}">
+          <img class="avatar__layer avatar__legs" src="${this._src('legs', colors.pants)}" alt="" />
+          <img class="avatar__layer avatar__body" src="${this._src('body', colors.shirt)}" alt="" />
+          <img class="avatar__layer avatar__head" src="${this._src('head', 'skin')}" alt="" />
+          <img class="avatar__layer avatar__hat"  src="${this._src('hat', colors.hat)}"  alt="" />
+        </div>
+      </div>`;
+  },
+
+  /**
+   * Return the PNG path for a layer + colour.
+   * The head uses a fixed skin-tone PNG (colour-independent).
+   * legs/body/hat are colour-specific.
+   */
+  _src(layer, color) {
+    if (layer === 'head') return `/images/avatar/head.png`;
+    return `/images/avatar/${layer}-${color}.png`;
+  },
+
+  /**
+   * Update a single layer's colour on an existing avatar element.
+   * @param {HTMLElement} root element returned by render()
+   * @param {string} layer 'shirt' (=body) | 'pants' (=legs) | 'hat'
+   * @param {string} color
+   */
+  setColor(root, layer, color) {
+    const map = { shirt: 'body', pants: 'legs', hat: 'hat' };
+    const real = map[layer];
+    const img = root.querySelector(`.avatar__${real}`);
+    if (!img) return;
+    const next = this._src(real, color);
+    if (img.getAttribute('src') === next) return;
+    // Restart the pop animation by reflowing the element.
+    img.src = next;
+    img.style.animation = 'none';
+    void img.offsetWidth;
+    img.style.animation = '';
+  },
+
+  /** Return the list of valid colour names. */
+  colors() { return [...COLORS]; }
+};
+
+window.Avatar = Avatar;
