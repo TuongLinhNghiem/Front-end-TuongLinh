@@ -1,0 +1,21 @@
+    card.appendChild(title);
+
+    const subtitle = document.createElement("p");
+    subtitle.className = "menu-subtitle";
+    subtitle.textContent = "Head leads. Followers follow.";
+    card.appendChild(subtitle);
+
+    // Difficulty selector.
+    const diffWrap = document.createElement("div");
+    diffWrap.className = "menu-difficulty";
+    const diffLabel = document.createElement("span");
+    diffLabel.className = "menu-difficulty-label";
+    diffLabel.textContent = "Difficulty";
+    diffWrap.appendChild(diffLabel);
+
+    const diffButtons = document.createElement("div");
+    diffButtons.className = "menu-difficulty-buttons";
+    this.diffButtons = {};
+    for (const key of ["normal", "hell"]) {
+      const b = document.createElement("button");
+      b.className = "menu-btn menu-diff-btn";

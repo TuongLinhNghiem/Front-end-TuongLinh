@@ -1,0 +1,496 @@
+/**
+ * game.js
+ * ----------------------------------------------------------------------------
+ * The conductor. Game owns the main loop and coordinates every other module:
+ * snake, food, bombs, input, audio, rendering, timers, and the HUD. It holds
+ * the canonical game state (score, difficulty, counters) and enforces the
+ * rules that span multiple systems (spawn cadence, collisions, win/lose).
+ *
+ * Update order per the spec, each fixed simulation step:
+ *   1. Input          -> (handled asynchronously via InputManager callbacks)
+ *   2. Move snake     -> snake.move()
+ *   3. Check collisions (wall / self)
+ *   4. Handle food    -> food.tryEat()
+ *   5. Handle bombs   -> bomb.tryHit()
+ *   6. Handle spawning-> counters drive big-food and bomb spawns
+ *   7. Update timers  -> food/bomb lifetimes, effects
+ *   8. Render         -> renderer.render(snapshot)
+ *
+ * The loop is fixed-timestep with accumulator interpolation so movement is
+ * deterministic regardless of frame rate, and pausing simply stops stepping.
+ */
+
+import {
+  CONFIG,
+  DIFFICULTIES,
+  GAME_STATE,
+  DIRECTIONS,
+  cell as makeCell,
+  totalCells,
+} from "./utils.js";
+import { occupies, farEnough } from "./collision.js";
+import { Snake } from "./snake.js";
+import { FoodManager } from "./food.js";
+import { BombManager } from "./bomb.js";
+import { Renderer } from "./renderer.js";
+import { InputManager } from "./input.js";
+import { AudioManager, AudioContextLoader } from "./audio.js";
+import { CountdownTimer, DelayTimer } from "./timer.js";
+
+export class Game {
+  constructor({ canvas, assets, hud, onStateChange, onStatsChange }) {
+    this.canvas = canvas;
+    this.assets = assets;
+    this.hud = hud; // DOM HUD controller (sidebar)
+    this.onStateChange = onStateChange || (() => {});
+    this.onStatsChange = onStatsChange || (() => {});
+
+    this.renderer = new Renderer(canvas, assets);
+    this.audio = new AudioManager(assets);
+
+    this.state = GAME_STATE.MENU;
+    this.difficulty = DIFFICULTIES.normal;
+
+    // Entities (created on start).
+    this.snake = null;
+    this.food = null;
+    this.bombs = null;
+
+    // Counters that drive the deterministic spawn cadence.
+    this._regularCounter = 0; // increments per regular food spawned
+    this._bigCounter = 0;     // increments per big food spawned
+
+    // Fixed timestep loop bookkeeping.
+    this._accumulator = 0;
+    this._lastTime = 0;
+    this._rafId = null;
+
+    // Transient visual effects (eat pops, explosions).
+    this._effects = [];
+
+    // Input wiring.
+    this.input = new InputManager({
+      onDirection: (dir) => this._handleDirection(dir),
+      onPauseToggle: () => this.togglePause(),
+    });
+
+    // Expose module constants for debugging/testing (read-only).
+    this._CONFIG = CONFIG;
+    this._DIRECTIONS = DIRECTIONS;
+    this._GAME_STATE = GAME_STATE;
+    this._makeCell = makeCell;
+  }
+
+  // ------------------------------------------------------------------ lifecycle
+
+  /**
+   * Begin a new game with the given difficulty id ("normal" | "hell").
+   */
+  start(difficultyId = "normal") {
+    this.difficulty = DIFFICULTIES[difficultyId] || DIFFICULTIES.normal;
+    this.score = 0;
+    this._regularCounter = 0;
+    this._bigCounter = 0;
+    this._effects = [];
+    this._accumulator = 0;
+    this._lastTime = performance.now();
+
+    // Place the snake head near the center, facing right.
+    const sx = Math.floor(CONFIG.GRID_COLS / 2);
+    const sy = Math.floor(CONFIG.GRID_ROWS / 2);
+    this.snake = new Snake(sx, sy, DIRECTIONS.RIGHT);
+
+    // Food and bomb managers share a spawn locator that avoids all occupants.
+    this.food = new FoodManager(this.difficulty, () => this._findFreeCell());
+    this.bombs = new BombManager(this.difficulty, (head) =>
+      this._findFreeCellForBomb(head)
+    );
+
+    this.food.initialSpawn();
+
+    this.setState(GAME_STATE.PLAYING);
+    this.input.attach();
+
+    // Start (or resume) music if enabled. Resume the audio context first since
+    // this is called from a user gesture (Play button / key).
+    AudioContextLoader.resume().then(() => {
+      if (this.audio.musicEnabled) this.audio.startMusic();
+    });
+
+    this._updateHud();
+    this._loop();
+  }
+
+  /**
+   * Stop the loop and return to the menu.
+   */
+  exitToMenu() {
+    this.stopLoop();
+    this.input.detach();
+    this.audio.stopMusic();
+    this.setState(GAME_STATE.MENU);
+  }
+
+  /**
+   * Restart with the same difficulty.
+   */
+  restart() {
+    this.stopLoop();
+    this.input.detach();
+    this.audio.stopMusic();
+    this.start(this.difficulty.id);
+  }
+
+  stopLoop() {
+    if (this._rafId) cancelAnimationFrame(this._rafId);
+    this._rafId = null;
+  }
+
+  // ------------------------------------------------------------------ state
+
+  setState(newState) {
+    this.state = newState;
+    this.onStateChange(newState);
+  }
+
+  togglePause() {
+    if (this.state === GAME_STATE.PLAYING) {
+      this.setState(GAME_STATE.PAUSED);
+      this.food.pauseTimers();
+      this.bombs.pauseTimers();
+      this.audio.pauseMusic();
+      this._updateHud();
+    } else if (this.state === GAME_STATE.PAUSED) {
+      this.setState(GAME_STATE.PLAYING);
+      this.food.resumeTimers();
+      this.bombs.resumeTimers();
+      this.audio.resumeMusic();
+      this._lastTime = performance.now(); // avoid a huge dt jump
+      this._updateHud();
+    }
+  }
+
+  // ------------------------------------------------------------------ music toggle
+
+  toggleMusic() {
+    const enabled = this.audio.setMusicEnabled(!this.audio.musicEnabled);
+    if (enabled) {
+      if (this.state === GAME_STATE.PLAYING) this.audio.startMusic();
+    } else {
+      this.audio.stopMusic();
+    }
+    this._updateHud();
+    return enabled;
+  }
+
+  // ------------------------------------------------------------------ input
+
+  _handleDirection(dir) {
+    if (this.state !== GAME_STATE.PLAYING) return;
+    if (this.snake) this.snake.setDirection(dir);
+  }
+
+  // ------------------------------------------------------------------ spawn helpers
+
+  /**
+   * Find a free cell not occupied by snake, food, or bombs. Returns a random
+   * free cell or null if none exist (which triggers the win condition).
+   */
+  _findFreeCell() {
+    const occupied = this._occupiedByAll();
+    const free = [];
+    for (let x = 0; x < CONFIG.GRID_COLS; x++) {
+      for (let y = 0; y < CONFIG.GRID_ROWS; y++) {
+        const c = makeCell(x, y);
+        if (!occupies(c, occupied)) free.push(c);
+      }
+    }
+    if (free.length === 0) return null;
+    return free[Math.floor(Math.random() * free.length)];
+  }
+
+  /**
+   * Find a free cell that is also at least BOMB_MIN_DISTANCE_FROM_HEAD away
+   * from the snake head (Manhattan). Falls back to any free cell if the
+   * distance constraint can't be satisfied, but only as a last resort.
+   */
+  _findFreeCellForBomb(head) {
+    const occupied = this._occupiedByAll();
+    const freeFar = [];
+    const freeAny = [];
+    for (let x = 0; x < CONFIG.GRID_COLS; x++) {
+      for (let y = 0; y < CONFIG.GRID_ROWS; y++) {
+        const c = makeCell(x, y);
+        if (occupies(c, occupied)) continue;
+        freeAny.push(c);
+        if (head && farEnough(c, head, CONFIG.BOMB_MIN_DISTANCE_FROM_HEAD)) {
+          freeFar.push(c);
+        }
+      }
+    }
+    const pool = freeFar.length ? freeFar : freeAny;
+    if (pool.length === 0) return null;
+    return pool[Math.floor(Math.random() * pool.length)];
+  }
+
+  /**
+   * Combined occupant list: snake body + food cells + bomb cells.
+   */
+  _occupiedByAll() {
+    const cells = [];
+    if (this.snake) cells.push(...this.snake.occupiedCells);
+    if (this.food) cells.push(...this.food.occupiedCells);
+    if (this.bombs) cells.push(...this.bombs.occupiedCells);
+    return cells;
+  }
+
+  // ------------------------------------------------------------------ the loop
+
+  _loop = (now = performance.now()) => {
+    this._rafId = requestAnimationFrame(this._loop);
+    if (this.state !== GAME_STATE.PLAYING && this.state !== GAME_STATE.PAUSED) {
+      // Even when not playing, keep rendering overlays (won/lost).
+      if (this.state === GAME_STATE.WON || this.state === GAME_STATE.LOST) {
+        this._render();
+      }
+      return;
+    }
+
+    if (this.state === GAME_STATE.PAUSED) {
+      this._render();
+      return;
+    }
+
+    // Fixed-timestep stepping for deterministic movement.
+    const stepMs = this.difficulty.moveIntervalMs;
+    if (!this._lastTime) this._lastTime = now;
+    let dt = now - this._lastTime;
+    this._lastTime = now;
+    // Clamp dt to avoid spiral-of-death after tab switches.
+    if (dt > 250) dt = 250;
+    this._accumulator += dt;
+
+    while (this._accumulator >= stepMs) {
+      this._step();
+      this._accumulator -= stepMs;
+      if (this.state !== GAME_STATE.PLAYING) break;
+    }
+
+    // Update transient effects in real time and render.
+    this._updateEffects(dt);
+    this._render();
+  };
+
+  /**
+   * One fixed simulation step.
+   */
+  _step() {
+    // 2. Move snake.
+    const result = this.snake.move();
+
+    // 3. Collisions.
+    if (result.wallHit) {
+      this._deathCause = "wall";
+      this._endGame(false);
+      return;
+    }
+    if (result.selfHit) {
+      this._deathCause = "self";
+      // Hell: instant game over on any self-collision.
+      if (this.difficulty.selfCollisionInstantGameOver) {
+        this._endGame(false);
+        return;
+      }
+      // Normal: remove the tail follower. If none left, game over.
+      if (this.difficulty.selfCollisionRemovesTail) {
+        const removed = this.snake.removeFollowers(1);
+        if (removed === 0) {
+          // No followers left and self-collision occurred -> game over.
+          this._deathCause = "self-no-followers";
+          this._endGame(false);
+          return;
+        }
+        this.audio.playEffect("bomb", 0.5);
+        this._spawnEffect("explosion", this.snake.head, "#ff6a2c");
+      }
+    }
+
+    // 4. Handle food.
+    const eaten = this.food.tryEat(this.snake.head);
+    if (eaten) {
+      this.score += eaten.score;
+      this.snake.grow(eaten.followers);
+      if (eaten.kind === "regular") {
+        this.audio.playEffect("eatRegular");
+        this._spawnEffect("pop", this.snake.head, "#ffffff");
+      } else {
+        this.audio.playEffect("eatBig");
+        this._spawnEffect("pop", this.snake.head, "#ffd400");
+      }
+      this._updateHud();
+    }
+
+    // 5. Handle bombs.
+    const hitBomb = this.bombs.tryHit(this.snake.head);
+    if (hitBomb) {
+      this.audio.playEffect("bomb");
+      this._spawnEffect("explosion", hitBomb.position, "#ff6a2c");
+      const removed = this.snake.removeFollowers(this.difficulty.bombPenalty);
+      this._updateHud();
+      // (Bombs never directly end the game; losing all followers only matters
+      //  for the Normal self-collision rule, handled on the next self-hit.)
+    }
+
+    // 6. Handle spawning using deterministic counters (NOT probability).
+    //
+    // The FoodManager increments `regularSpawnCounter` each time a regular
+    // food is placed (initial spawn + respawns). We mirror that count and, on
+    // every NEW regular spawn, advance our own regular counter. Whenever that
+    // counter hits BIG_FOOD_EVERY we spawn a big food and reset it - exactly
+    // the spec's counter pattern:
+    //     regularCounter++; if (regularCounter == 5) { spawnBig; regularCounter = 0 }
+    const newRegularSpawns = this.food.regularSpawnCounter - this._regularCounter;
+    if (newRegularSpawns > 0) {
+      this._regularCounter += newRegularSpawns;
+      while (this._regularCounter >= CONFIG.BIG_FOOD_EVERY) {
+        this._regularCounter -= CONFIG.BIG_FOOD_EVERY;
+        // Spawn a big food (and count it toward the bomb cadence).
+        const bigSpawned = this.food.spawnBig();
+        if (bigSpawned) {
+          this._bigCounter += 1;
+          // Bomb cadence: every `bombEvery` big-food spawns, spawn a bomb:
+          //     bigCounter++; if (bigCounter == bombEvery) { spawnBomb; bigCounter = 0 }
+          if (this._bigCounter >= this.difficulty.bombEvery) {
+            this._bigCounter = 0;
+            this.bombs.spawnBomb(this.snake.head);
+          }
+        }
+      }
+    }
+
+    // 7. Update timers for food and bombs (lifetimes + respawns).
+    this.food.update(this.difficulty.moveIntervalMs);
+    this.bombs.update(this.difficulty.moveIntervalMs);
+
+    // Win condition: the player wins ONLY when no remaining valid grid cell
+    // exists for spawning food or bombs because the snake fills the board.
+    //
+    // We account for pending growth: when the snake just ate, its body hasn't
+    // extended yet (growth applies on the NEXT move). If the current occupied
+    // cells plus the pending growth would fill every cell, the snake will have
+    // nowhere to move next tick — that is the win.
+    const occupied = this._occupiedByAll().length;
+    const willOccupy = occupied + this.snake.pendingGrowth;
+    if (willOccupy >= totalCells()) {
+      this._endGame(true);
+      return;
+    }
+
+    // Reset per-tick flags.
+    this.snake.clearJustAte();
+  }
+
+  // ------------------------------------------------------------------ effects
+
+  _spawnEffect(type, position, color) {
+    this._effects.push({
+      type,
+      position,
+      color,
+      progress: 0,
+      durationMs: type === "explosion" ? 450 : 300,
+      elapsed: 0,
+    });
+  }
+
+  _updateEffects(dtMs) {
+    for (const e of this._effects) {
+      e.elapsed += dtMs;
+      e.progress = Math.min(1, e.elapsed / e.durationMs);
+    }
+    this._effects = this._effects.filter((e) => e.progress < 1);
+  }
+
+  // ------------------------------------------------------------------ end game
+
+  _endGame(won) {
+    this.input.detach();
+    this.audio.stopMusic();
+    if (won) {
+      this.audio.playEffect("win");
+      this.setState(GAME_STATE.WON);
+    } else {
+      this.audio.playEffect("gameOver");
+      this.setState(GAME_STATE.LOST);
+    }
+    this._updateHud();
+  }
+
+  // ------------------------------------------------------------------ rendering
+
+  _render() {
+    if (!this.snake) return;
+    const snapshot = {
+      state: this.state,
+      snake: { body: this.snake.body, justAte: this.snake.justAte },
+      foods: this._foodSnapshot(),
+      bombs: this._bombSnapshot(),
+      effects: this._effects,
+    };
+    this.renderer.render(snapshot);
+  }
+
+  _foodSnapshot() {
+    const out = [];
+    for (const f of this.food.regularFoods) {
+      if (f.consumed) continue;
+      out.push({ position: f.position, kind: "regular", elapsedFraction: null });
+    }
+    if (this.food.hasBigFood) {
+      out.push({
+        position: this.food.bigFood.position,
+        kind: "big",
+        elapsedFraction: this.food.bigFood.lifetime
+          ? this.food.bigFood.lifetime.progress
+          : null,
+      });
+    }
+    return out;
+  }
+
+  _bombSnapshot() {
+    return this.bombs.bombs
+      .filter((b) => !b.consumed)
+      .map((b) => ({ position: b.position, elapsedFraction: b.elapsedFraction }));
+  }
+
+  // ------------------------------------------------------------------ resize
+
+  /**
+   * Called by main.js on window resize. Re-fits the canvas and re-renders.
+   */
+  resize(width, height) {
+    this.renderer.resize(width, height);
+    if (this.snake) this._render();
+  }
+
+  // ------------------------------------------------------------------ HUD
+
+  _updateHud() {
+    const stats = {
+      difficulty: this.difficulty.label,
+      snakeLength: this.snake ? this.snake.length : 1,
+      followers: this.snake ? this.snake.followerCount : 0,
+      score: this.score ?? 0,
+      musicOn: this.audio.musicEnabled,
+      state: this.state,
+    };
+    this.onStatsChange(stats);
+  }
+
+  /** Initialize HUD before a game starts (menu state). */
+  initHud() {
+    this.score = 0;
+    this._updateHud();
+  }
+}

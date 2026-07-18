@@ -1,0 +1,1 @@
+375:    // Win condition: the player wins ONLY when there is no remaining valid

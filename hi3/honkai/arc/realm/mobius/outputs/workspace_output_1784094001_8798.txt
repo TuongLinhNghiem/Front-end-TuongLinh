@@ -1,0 +1,8 @@
+wrote /workspace/snake-game/asset/sounds/eat_regular.wav
+wrote /workspace/snake-game/asset/sounds/eat_big.wav
+wrote /workspace/snake-game/asset/sounds/bomb.wav
+wrote /workspace/snake-game/asset/sounds/click.wav
+wrote /workspace/snake-game/asset/sounds/win.wav
+wrote /workspace/snake-game/asset/sounds/game_over.wav
+wrote /workspace/snake-game/asset/sounds/music.wav
+All sounds generated.

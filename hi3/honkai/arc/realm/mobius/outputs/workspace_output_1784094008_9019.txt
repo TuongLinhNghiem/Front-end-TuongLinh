@@ -1,0 +1,30 @@
+asset/images:
+total 556
+drwxr-xr-x 2 root root   4096 Jul 15 05:39 .
+drwxr-xr-x 4 root root   4096 Jul 15 05:38 ..
+-rw-r--r-- 1 root root 269412 Jul 15 05:39 background.png
+-rw-r--r-- 1 root root   1932 Jul 15 05:39 bomb.png
+-rw-r--r-- 1 root root   1978 Jul 15 05:39 food_big.png
+-rw-r--r-- 1 root root   1778 Jul 15 05:39 food_regular.png
+-rw-r--r-- 1 root root 268821 Jul 15 05:39 menu_background.png
+-rw-r--r-- 1 root root   1235 Jul 15 05:39 snake_follower.png
+-rw-r--r-- 1 root root   4091 Jul 15 05:39 snake_head.png
+
+asset/sounds:
+total 860
+drwxr-xr-x 2 root root   4096 Jul 15 05:40 .
+drwxr-xr-x 4 root root   4096 Jul 15 05:38 ..
+-rw-r--r-- 1 root root  44144 Jul 15 05:40 bomb.wav
+-rw-r--r-- 1 root root   4454 Jul 15 05:40 click.wav
+-rw-r--r-- 1 root root  22094 Jul 15 05:40 eat_big.wav
+-rw-r--r-- 1 root root  10628 Jul 15 05:40 eat_regular.wav
+-rw-r--r-- 1 root root  79424 Jul 15 05:40 game_over.wav
+-rw-r--r-- 1 root root 620972 Jul 15 05:40 music.wav
+-rw-r--r-- 1 root root  75014 Jul 15 05:40 win.wav
+asset/images/background.png (1280, 800)
+asset/images/bomb.png (256, 256)
+asset/images/food_big.png (256, 256)
+asset/images/food_regular.png (256, 256)
+asset/images/menu_background.png (1280, 800)
+asset/images/snake_follower.png (256, 256)
+asset/images/snake_head.png (256, 256)

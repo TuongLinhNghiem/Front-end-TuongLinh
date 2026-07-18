@@ -1,0 +1,13 @@
+js/assets.js OK
+js/audio.js OK
+js/bomb.js OK
+js/collision.js OK
+js/food.js OK
+js/game.js OK
+js/input.js OK
+js/menu.js OK
+js/renderer.js OK
+js/snake.js OK
+js/timer.js OK
+js/utils.js OK
+main.js OK

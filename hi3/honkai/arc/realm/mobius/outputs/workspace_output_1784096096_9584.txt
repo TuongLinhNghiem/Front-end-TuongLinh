@@ -1,0 +1,21 @@
+      b.className = "menu-btn menu-diff-btn";
+      b.dataset.diff = key;
+      b.textContent = DIFFICULTIES[key].label;
+      b.addEventListener("click", () => this._selectDifficulty(key));
+      this.diffButtons[key] = b;
+      diffButtons.appendChild(b);
+    }
+    diffWrap.appendChild(diffButtons);
+    card.appendChild(diffWrap);
+
+    // Primary actions.
+    const playBtn = document.createElement("button");
+    playBtn.className = "menu-btn menu-btn-primary";
+    playBtn.textContent = "Play";
+    playBtn.addEventListener("click", () => this.onPlay(this.selectedDifficulty));
+    card.appendChild(playBtn);
+
+    const exitBtn = document.createElement("button");
+    exitBtn.className = "menu-btn menu-btn-secondary";
+    exitBtn.textContent = "Exit";
+    exitBtn.addEventListener("click", () => this.onExit());

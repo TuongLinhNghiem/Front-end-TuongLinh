@@ -1,0 +1,3 @@
+game.js OK
+snake.js OK
+collision.js OK

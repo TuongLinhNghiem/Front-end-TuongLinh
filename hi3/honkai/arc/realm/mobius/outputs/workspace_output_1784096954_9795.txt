@@ -1,0 +1,155 @@
+/**
+ * snake.js
+ * ----------------------------------------------------------------------------
+ * The snake itself. Unlike a classic snake, this one is a large HEAD followed
+ * by smaller FOLLOWER segments. On spawn it is just the head; eating food
+ * grows the follower list.
+ *
+ * The Snake class owns:
+ *   - the ordered list of body cells (index 0 = head)
+ *   - the current direction and a queued next direction (so two quick turns
+ *     in one tick don't reverse the snake into itself)
+ *   - growth logic (how many followers to add on next moves)
+ *   - self-collision handling that respects the active difficulty
+ *
+ * Movement follows classic Snake rules: each tick the head advances one cell
+ * in the current direction and every follower shifts into the previous
+ * segment's old position. Growing means we DON'T drop the tail that tick.
+ */
+
+import {
+  DIRECTIONS,
+  areOpposite,
+  cell as makeCell,
+  CONFIG,
+} from "./utils.js";
+import { hitWall, hitSelf } from "./collision.js";
+
+export class Snake {
+  constructor(startX, startY, startDirection = DIRECTIONS.RIGHT) {
+    // Body cells in order from head (0) to tail (last).
+    this.body = [makeCell(startX, startY)];
+    this.direction = startDirection;
+    // Queue of pending direction changes applied one per tick, so fast key
+    // presses can't skip past a safe turn into a self-collision.
+    this._dirQueue = [];
+    // Pending growth: number of followers to add over upcoming ticks.
+    this._pendingGrowth = 0;
+    // True when the snake ate something this very tick (used by renderer for
+    // effects, and reset each frame by the game).
+    this.justAte = false;
+  }
+
+  /** The head cell. */
+  get head() {
+    return this.body[0];
+  }
+
+  /** Follower cells (everything after the head). */
+  get followers() {
+    return this.body.slice(1);
+  }
+
+  /** Snake Length = Head + Followers, per the spec. */
+  get length() {
+    return this.body.length;
+  }
+
+  /** Number of followers (excluding the head). */
+  get followerCount() {
+    return this.body.length - 1;
+  }
+
+  /**
+   * Enqueue a direction change. Ignores the input if it would reverse the
+   * snake immediately relative to the LAST queued (or current) direction.
+   */
+  setDirection(newDir) {
+    // Reference direction is the last queued one if any, else current.
+    const ref = this._dirQueue.length
+      ? this._dirQueue[this._dirQueue.length - 1]
+      : this.direction;
+    if (areOpposite(newDir, ref)) return;
+    if (newDir.x === ref.x && newDir.y === ref.y) return;
+    // Keep the queue short: at most 2 pending turns.
+    if (this._dirQueue.length < 2) this._dirQueue.push(newDir);
+  }
+
+  /**
+   * Advance the snake one tick. Returns an object describing what happened:
+   *   { wallHit, selfHitHead }
+   * The caller (game.js) decides how to react based on difficulty rules.
+   */
+  move() {
+    // Apply one queued direction, if any, for this tick.
+    if (this._dirQueue.length) {
+      this.direction = this._dirQueue.shift();
+    }
+
+    const head = this.head;
+    const newHead = makeCell(
+      head.x + this.direction.x,
+      head.y + this.direction.y
+    );
+
+    // Pre-compute collision flags against the NEW head position BEFORE moving
+    // the body, so self-collision uses the pre-move body.
+    const wallHit = hitWall(newHead);
+    // Self-collision checks the body excluding the neck (index 1) so a normal
+    // forward step is never a false positive. We pass the current body.
+    const selfHit = hitSelf(newHead, this.body, 1);
+
+    if (wallHit || selfHit) {
+      return { wallHit, selfHit, newHead: null };
+    }
+
+    // Actually move: insert the new head.
+    this.body.unshift(newHead);
+
+    if (this._pendingGrowth > 0) {
+      // Growing: keep the tail (don't pop), consume one growth unit.
+      this._pendingGrowth -= 1;
+    } else {
+      // Normal step: drop the tail.
+      this.body.pop();
+    }
+
+    return { wallHit: false, selfHit: false, newHead };
+  }
+
+  /**
+   * Schedule `count` followers to be added over the next ticks.
+   */
+  grow(count = 1) {
+    this._pendingGrowth += count;
+    this.justAte = true;
+  }
+
+  /**
+   * Remove `count` followers from the tail. Used by bomb penalties and by
+   * Normal-mode self-collision. Never removes the head. Returns the number
+   * actually removed.
+   */
+  removeFollowers(count = 1) {
+    let removed = 0;
+    while (removed < count && this.body.length > 1) {
+      this.body.pop();
+      removed += 1;
+    }
+    return removed;
+  }
+
+  /**
+   * Reset the per-tick "just ate" flag. Called by the game after each frame.
+   */
+  clearJustAte() {
+    this.justAte = false;
+  }
+
+  /**
+   * All cells occupied by the snake (head + followers), in order.
+   */
+  get occupiedCells() {
+    return this.body;
+  }
+}

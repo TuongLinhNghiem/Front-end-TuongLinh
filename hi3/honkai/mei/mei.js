@@ -144,7 +144,6 @@ document.addEventListener("DOMContentLoaded", () => {
       6: "Elysia, the Heart of Humanity",
       7: "Reunion and the Fight with Kevin"
     };
-    return titles[stageNum] || "Unknown Stage";
   }
 
   function updatePortraits() {

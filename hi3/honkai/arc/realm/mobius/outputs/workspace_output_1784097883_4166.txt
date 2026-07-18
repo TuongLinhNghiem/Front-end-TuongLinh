@@ -1,0 +1,5 @@
+js/game.js:383:    const willOccupy = occupied + (this.snake._pendingGrowth || 0);
+js/snake.js:37:    this._pendingGrowth = 0;
+js/snake.js:109:    if (this._pendingGrowth > 0) {
+js/snake.js:111:      this._pendingGrowth -= 1;
+js/snake.js:124:    this._pendingGrowth += count;

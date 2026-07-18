@@ -1,0 +1,14 @@
+snake-game:
+asset
+js
+todo.md
+
+snake-game/asset:
+images
+sounds
+
+snake-game/asset/images:
+
+snake-game/asset/sounds:
+
+snake-game/js:

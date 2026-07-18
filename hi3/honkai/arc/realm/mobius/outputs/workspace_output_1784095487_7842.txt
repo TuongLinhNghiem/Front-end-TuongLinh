@@ -1,0 +1,10 @@
+=== END ===
+=== END ===
+  [3] button "Exit to Menu"
+
+Accessibility tree:
+Page text: 🐍 Snake Head leads. Followers follow. Difficulty Normal Snake Length 1 Score 0 Music: ON Pause Restart Exit to Menu Instructions Move with Arrow Keys or WASD. Eat food to grow followers. Grab the golden big food for bonus growth. Avoid the bombs — they shrink your trail. Regular food: +1 score, +1 follower Big food: +3 score, +2 followers Bomb: removes followers Normal: self-hits shed your tail. Hell: one touch ends the run. Press Space or P to pause/resume. Fill the board to win.
+
+Screenshot: /workspace/.screenshots/step_028.png
+Use see-image to view: /workspace/.screenshots/step_028.png
+=== END ===

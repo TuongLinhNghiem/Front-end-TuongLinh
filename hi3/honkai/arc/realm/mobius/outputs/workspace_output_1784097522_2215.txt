@@ -1,0 +1,26 @@
+
+    // 7. Update timers for food and bombs (lifetimes + respawns).
+    this.food.update(this.difficulty.moveIntervalMs);
+    this.bombs.update(this.difficulty.moveIntervalMs);
+
+    // Win condition: the player wins ONLY when there is no remaining valid
+    // grid cell for spawning food or bombs because the snake fills the board.
+    // We check free-cell availability directly (snake + food + bombs occupy
+    // everything). A bomb that just expired frees a cell, so we re-evaluate
+    // every step.
+    const occupied = this._occupiedByAll().length;
+    if (occupied >= totalCells()) {
+      this._endGame(true);
+      return;
+    }
+
+    // Reset per-tick flags.
+    this.snake.clearJustAte();
+  }
+
+  // ------------------------------------------------------------------ effects
+
+  _spawnEffect(type, position, color) {
+    this._effects.push({
+      type,
+      position,

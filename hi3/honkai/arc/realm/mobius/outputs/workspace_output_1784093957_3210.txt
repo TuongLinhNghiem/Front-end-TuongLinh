@@ -1,0 +1,8 @@
+wrote /workspace/snake-game/asset/images/snake_head.png
+wrote /workspace/snake-game/asset/images/snake_follower.png
+wrote /workspace/snake-game/asset/images/food_regular.png
+wrote /workspace/snake-game/asset/images/food_big.png
+wrote /workspace/snake-game/asset/images/bomb.png
+wrote /workspace/snake-game/asset/images/background.png
+wrote /workspace/snake-game/asset/images/menu_background.png
+All images generated.

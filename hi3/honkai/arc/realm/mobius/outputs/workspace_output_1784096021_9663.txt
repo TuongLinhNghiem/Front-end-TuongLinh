@@ -1,0 +1,4 @@
+=== END ===
+Result: Clicked: [5]
+Result: Clicked: [6]
+Title: {"st":"playing","diff":"normal","moveInt":140,"bigLife":null,"bombLife":5000,"bombPen":1,"instant":false}

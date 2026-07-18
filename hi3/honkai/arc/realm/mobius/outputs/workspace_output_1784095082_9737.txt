@@ -1,0 +1,10 @@
+=== BROWSER STATE ===
+URL: http://localhost:8000/index.html?v=2
+Title: Snake — Head & Followers
+Result: ERROR: screenshot failed — Error: Unsupported screenshot mime type for path "/workspace/.screenshots/check1": None
+
+=== BROWSER STATE ===
+URL: http://localhost:8000/index.html?v=2
+Title: Snake — Head & Followers
+Result: ERROR: screenshot failed — Error: Unsupported screenshot mime type for path "/workspace/.screenshots/check2": None
+

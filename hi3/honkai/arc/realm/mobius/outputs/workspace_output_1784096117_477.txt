@@ -1,0 +1,4 @@
+=== END ===
+Title: normal:true|hell:false
+Result: Clicked: .menu-diff-btn[data-diff='hell']
+Title: normal:false|hell:true sel=hell

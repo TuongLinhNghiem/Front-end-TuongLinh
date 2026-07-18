@@ -1,0 +1,4 @@
+Result: Clicked: [5]
+Title: sel=normal
+Result: Clicked: [6]
+Title: {"st":"playing","diff":"normal","moveInt":140}

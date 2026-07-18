@@ -1,0 +1,35 @@
+# Snake Game - Project Plan
+
+## Phase 1: Project Structure & Assets
+- [x] Create directory structure (js/, asset/images/, asset/sounds/)
+- [x] Create placeholder image assets (head, follower, regular food, big food, bomb, background, menu bg)
+- [x] Create placeholder sound assets (eat, big eat, bomb, click, win, gameover, music)
+- [x] Create assets.js (asset loader/registry)
+
+## Phase 2: Core Utility Modules
+- [x] utils.js (grid math, random helpers, constants)
+- [x] audio.js (sound + music manager)
+- [x] timer.js (lifecycle timers for bombs/big food)
+- [x] collision.js (collision detection helpers)
+
+## Phase 3: Game Entities
+- [x] snake.js (head + followers, movement, growth, self-collision)
+- [x] food.js (regular + big food spawning & state)
+- [x] bomb.js (bomb spawning, lifetime, penalty)
+
+## Phase 4: Rendering & Input
+- [x] renderer.js (canvas rendering, background, order, responsive)
+- [x] input.js (keyboard + queue)
+- [x] menu.js (main menu screen)
+
+## Phase 5: Game Orchestration
+- [x] game.js (game loop, spawn counters, difficulty, win/lose, state)
+
+## Phase 6: UI & Styling
+- [x] index.html (sidebar + canvas layout)
+- [x] style.css (responsive layout, sidebar styling, menu)
+
+## Phase 7: Integration & Testing
+- [x] main.js (bootstrap everything)
+- [x] Verify responsive resize
+- [x] Verify all mechanics work (15/15 automated tests passed)

@@ -1,0 +1,8 @@
+Title: {"st":"paused","musicPlaying":false}
+Result: Clicked: [1]
+Title: {"st":"lost"}
+Result: Clicked: [1]
+Result: Clicked: [0]
+Title: {"musicOn":false}
+Result: Clicked: [0]
+Title: {"musicOn":true}

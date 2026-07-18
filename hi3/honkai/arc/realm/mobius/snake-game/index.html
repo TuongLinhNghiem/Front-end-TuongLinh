@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Snake — Head &amp; Followers</title>
+  <link rel="stylesheet" href="style.css" />
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body>
+  <!-- Loading overlay shown while assets load. -->
+  <div id="loading" class="loading-overlay">
+    <div class="loading-card">
+      <div class="loading-title">Loading Snake…</div>
+      <div class="loading-track"><div id="loading-bar" class="loading-bar"></div></div>
+      <div id="loading-text" class="loading-text">Loading assets…</div>
+    </div>
+  </div>
+
+  <div class="app">
+    <!-- LEFT SIDEBAR (built with HTML/CSS, not on canvas) -->
+    <aside class="sidebar">
+      <header class="sidebar-header">
+        <h1 class="game-title">🐍 Snake</h1>
+        <p class="game-tagline">Head leads. Followers follow.</p>
+      </header>
+
+      <section class="hud">
+        <div class="hud-row">
+          <span class="hud-label">Difficulty</span>
+          <span id="hud-difficulty" class="hud-value">Normal</span>
+        </div>
+        <div class="hud-row">
+          <span class="hud-label">Snake Length</span>
+          <span id="hud-snake-length" class="hud-value">1</span>
+        </div>
+        <div class="hud-row">
+          <span class="hud-label">Score</span>
+          <span id="hud-score" class="hud-value">0</span>
+        </div>
+      </section>
+
+      <section class="sidebar-controls">
+        <button id="btn-music" class="ctrl-btn" data-on="1">Music: ON</button>
+        <button id="btn-pause" class="ctrl-btn" disabled>Pause</button>
+        <button id="btn-restart" class="ctrl-btn" disabled>Restart</button>
+        <button id="btn-exit" class="ctrl-btn" disabled>Exit to Menu</button>
+      </section>
+
+      <section class="instructions">
+        <h2 class="instructions-title">Instructions</h2>
+        <p class="instructions-text">
+          Move with <strong>Arrow Keys</strong> or <strong>WASD</strong>.
+          Eat food to grow followers. Grab the golden big food for bonus
+          growth. Avoid the bombs — they shrink your trail.
+        </p>
+        <ul class="instructions-list">
+          <li><span class="dot dot-regular"></span> Regular food: +1 score, +1 follower</li>
+          <li><span class="dot dot-big"></span> Big food: +3 score, +2 followers</li>
+          <li><span class="dot dot-bomb"></span> Bomb: removes followers</li>
+        </ul>
+        <p class="instructions-text">
+          <strong>Normal:</strong> self-hits shed your tail. <strong>Hell:</strong>
+          one touch ends the run.
+        </p>
+        <p class="instructions-text">
+          Press <strong>Space</strong> or <strong>P</strong> to pause/resume.
+        </p>
+      </section>
+
+      <footer class="sidebar-footer">
+        <span>Fill the board to win.</span>
+      </footer>
+    </aside>
+
+    <!-- RIGHT SIDE: canvas fills all remaining space -->
+    <main id="canvas-container" class="canvas-container">
+      <canvas id="game-canvas"></canvas>
+      <!-- Menu overlay sits above the canvas. -->
+      <div id="menu-root"></div>
+    </main>
+  </div>
+
+  <!-- ES module entry point. type="module" enables import/export. -->
+  <script type="module" src="main.js"></script>
+</body>
+</html>

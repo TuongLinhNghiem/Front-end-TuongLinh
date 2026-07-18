@@ -1,0 +1,8 @@
+=== END ===
+=== END ===
+Title: {"st":"paused"}
+Result: Clicked: [3]
+  [0] button "Music: ON"
+  [1] button "Resume"
+Title: {"st":"menu"}
+=== END ===

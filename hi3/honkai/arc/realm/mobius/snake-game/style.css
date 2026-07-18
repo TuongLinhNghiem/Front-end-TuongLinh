@@ -1,0 +1,469 @@
+/* ===========================================================================
+   style.css
+   ---------------------------------------------------------------------------
+   Layout: a fixed-width left sidebar + a right area where the canvas fills
+   ALL remaining space. The canvas auto-resizes with the browser window
+   (handled by Renderer.resize, triggered from main.js on window resize).
+   =========================================================================== */
+
+:root {
+  --sidebar-width: 280px;
+  --bg: #0f141b;
+  --panel: #161d27;
+  --panel-2: #1e2733;
+  --text: #e6edf3;
+  --text-dim: #9aa7b5;
+  --accent: #4caf6a;
+  --accent-2: #2f7d47;
+  --danger: #e0533d;
+  --warning: #ffcf4d;
+  --border: #2a3441;
+  --radius: 10px;
+  --font: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial,
+    sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  overflow: hidden;
+}
+
+/* ---------------------------------------------------------------------------
+   App grid: sidebar | canvas
+   --------------------------------------------------------------------------- */
+.app {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) 1fr;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* ---------------------------------------------------------------------------
+   Sidebar
+   --------------------------------------------------------------------------- */
+.sidebar {
+  background: linear-gradient(180deg, var(--panel) 0%, var(--panel-2) 100%);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  padding: 18px 16px;
+  gap: 16px;
+  overflow-y: auto;
+  min-width: 0;
+}
+
+.sidebar-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 12px;
+}
+
+.game-title {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.game-tagline {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+/* HUD rows --------------------------------------------------------------- */
+.hud {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hud-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.hud-label {
+  color: var(--text-dim);
+}
+
+.hud-value {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+/* Controls --------------------------------------------------------------- */
+.sidebar-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ctrl-btn {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--text);
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease,
+    transform 0.05s ease;
+  text-align: left;
+}
+
+.ctrl-btn:hover:not(:disabled) {
+  background: #263142;
+  border-color: var(--accent-2);
+}
+
+.ctrl-btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.ctrl-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.ctrl-btn[data-on="0"] {
+  color: var(--text-dim);
+}
+
+#btn-pause[data-state="paused"] {
+  border-color: var(--warning);
+  color: var(--warning);
+}
+
+/* Instructions ----------------------------------------------------------- */
+.instructions {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.instructions-title {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.instructions-text {
+  margin: 0 0 10px;
+  line-height: 1.5;
+}
+
+.instructions-text strong {
+  color: var(--text);
+}
+
+.instructions-list {
+  list-style: none;
+  margin: 0 0 10px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.instructions-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+
+.dot-regular {
+  background: #e0394b;
+}
+
+.dot-big {
+  background: #ffd400;
+}
+
+.dot-bomb {
+  background: #2a2a33;
+  border: 1px solid #555;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  font-size: 11px;
+  color: var(--text-dim);
+  text-align: center;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+/* ---------------------------------------------------------------------------
+   Canvas container (fills remaining space)
+   --------------------------------------------------------------------------- */
+.canvas-container {
+  position: relative;
+  background: #0b0f14;
+  overflow: hidden;
+  min-width: 0;
+  min-height: 0;
+}
+
+#game-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ---------------------------------------------------------------------------
+   Loading overlay
+   --------------------------------------------------------------------------- */
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.loading-overlay.hidden {
+  display: none;
+}
+
+.loading-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  width: 320px;
+  text-align: center;
+}
+
+.loading-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.loading-track {
+  height: 8px;
+  background: var(--bg);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.loading-bar {
+  height: 100%;
+  width: 0%;
+  background: var(--accent);
+  transition: width 0.2s ease;
+}
+
+.loading-text {
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+/* ---------------------------------------------------------------------------
+   Menu overlay (DOM, not canvas)
+   --------------------------------------------------------------------------- */
+.menu-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+  background-image: url("asset/images/menu_background.png");
+  background-color: #0b0f14;
+  z-index: 10;
+}
+
+.menu-overlay.hidden {
+  display: none;
+}
+
+.menu-card {
+  background: rgba(15, 20, 27, 0.82);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px 36px;
+  width: 340px;
+  max-width: 90%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
+}
+
+.menu-title {
+  margin: 0;
+  font-size: 40px;
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.menu-subtitle {
+  margin: -8px 0 4px;
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 13px;
+}
+
+.menu-difficulty {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.menu-difficulty-label {
+  font-size: 12px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.menu-difficulty-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.menu-btn {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--text);
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease,
+    transform 0.05s ease;
+}
+
+.menu-btn:hover {
+  background: #263142;
+}
+
+.menu-btn:active {
+  transform: translateY(1px);
+}
+
+.menu-diff-btn.active {
+  border-color: var(--accent);
+  background: var(--accent-2);
+  color: #fff;
+}
+
+.menu-btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #06210f;
+  font-size: 17px;
+  padding: 14px;
+}
+
+.menu-btn-primary:hover {
+  background: #5cc47d;
+  border-color: #5cc47d;
+}
+
+.menu-btn-secondary {
+  background: transparent;
+  color: var(--text-dim);
+}
+
+.menu-goodbye {
+  text-align: center;
+  color: var(--text);
+  font-size: 14px;
+  padding: 10px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+}
+
+.menu-goodbye.hidden {
+  display: none;
+}
+
+/* ---------------------------------------------------------------------------
+   Responsive tweaks for narrow screens
+   --------------------------------------------------------------------------- */
+@media (max-width: 720px) {
+  :root {
+    --sidebar-width: 220px;
+  }
+  .game-title {
+    font-size: 20px;
+  }
+  .menu-title {
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 520px) {
+  .app {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+  .sidebar {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+    overflow: visible;
+  }
+  .sidebar-header,
+  .instructions,
+  .sidebar-footer {
+    display: none;
+  }
+  .hud {
+    flex-direction: row;
+    gap: 12px;
+    padding: 8px;
+  }
+  .sidebar-controls {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .ctrl-btn {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+}

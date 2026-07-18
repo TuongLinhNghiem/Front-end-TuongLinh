@@ -1,0 +1,2 @@
+Result: Clicked: .menu-btn-primary
+Title: {"st":"lost","diff":"hell","moveInt":80,"bigLife":3000,"bombLife":7000,"bombPen":2,"instant":true,"bombEvery":1}

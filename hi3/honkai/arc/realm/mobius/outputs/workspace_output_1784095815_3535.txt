@@ -1,0 +1,5 @@
+Title: {"st":"playing","len":9,"score":9,"bombs":1,"big":true}
+  [0] button "Music: ON"
+  [1] button "Pause"
+Title: {"st":"lost","musicPlaying":false}
+=== END ===

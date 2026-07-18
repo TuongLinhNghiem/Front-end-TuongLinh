@@ -1,0 +1,49 @@
+total 60
+drwxr-xr-x 4 root root 4096 Jul 15 05:52 .
+drwxr-xr-x 9 user user 4096 Jul 15 06:28 ..
+drwxr-xr-x 4 root root 4096 Jul 15 05:38 asset
+-rw-r--r-- 1 root root 5389 Jul 15 05:39 gen_assets.py
+-rw-r--r-- 1 root root 4252 Jul 15 05:39 gen_sounds.py
+-rw-r--r-- 1 root root 3362 Jul 15 05:51 index.html
+drwxr-xr-x 2 root root 4096 Jul 15 05:49 js
+-rw-r--r-- 1 root root 5706 Jul 15 06:13 main.js
+-rw-r--r-- 1 root root 9082 Jul 15 05:52 style.css
+-rw-r--r-- 1 root root 1335 Jul 15 05:53 todo.md
+---JS---
+total 96
+drwxr-xr-x 2 root root  4096 Jul 15 05:49 .
+drwxr-xr-x 4 root root  4096 Jul 15 05:52 ..
+-rw-r--r-- 1 root root  4453 Jul 15 05:42 assets.js
+-rw-r--r-- 1 root root  6501 Jul 15 05:43 audio.js
+-rw-r--r-- 1 root root  2780 Jul 15 05:46 bomb.js
+-rw-r--r-- 1 root root  2020 Jul 15 05:44 collision.js
+-rw-r--r-- 1 root root  5907 Jul 15 05:45 food.js
+-rw-r--r-- 1 root root 15553 Jul 15 06:17 game.js
+-rw-r--r-- 1 root root  1897 Jul 15 05:46 input.js
+-rw-r--r-- 1 root root  4042 Jul 15 05:48 menu.js
+-rw-r--r-- 1 root root  9329 Jul 15 05:48 renderer.js
+-rw-r--r-- 1 root root  4744 Jul 15 05:45 snake.js
+-rw-r--r-- 1 root root  2290 Jul 15 05:44 timer.js
+-rw-r--r-- 1 root root  4973 Jul 15 05:42 utils.js
+---ASSETS---
+total 556
+drwxr-xr-x 2 root root   4096 Jul 15 05:39 .
+drwxr-xr-x 4 root root   4096 Jul 15 05:38 ..
+-rw-r--r-- 1 root root 269412 Jul 15 05:39 background.png
+-rw-r--r-- 1 root root   1932 Jul 15 05:39 bomb.png
+-rw-r--r-- 1 root root   1978 Jul 15 05:39 food_big.png
+-rw-r--r-- 1 root root   1778 Jul 15 05:39 food_regular.png
+-rw-r--r-- 1 root root 268821 Jul 15 05:39 menu_background.png
+-rw-r--r-- 1 root root   1235 Jul 15 05:39 snake_follower.png
+-rw-r--r-- 1 root root   4091 Jul 15 05:39 snake_head.png
+---SOUNDS---
+total 860
+drwxr-xr-x 2 root root   4096 Jul 15 05:40 .
+drwxr-xr-x 4 root root   4096 Jul 15 05:38 ..
+-rw-r--r-- 1 root root  44144 Jul 15 05:40 bomb.wav
+-rw-r--r-- 1 root root   4454 Jul 15 05:40 click.wav
+-rw-r--r-- 1 root root  22094 Jul 15 05:40 eat_big.wav
+-rw-r--r-- 1 root root  10628 Jul 15 05:40 eat_regular.wav
+-rw-r--r-- 1 root root  79424 Jul 15 05:40 game_over.wav
+-rw-r--r-- 1 root root 620972 Jul 15 05:40 music.wav
+-rw-r--r-- 1 root root  75014 Jul 15 05:40 win.wav

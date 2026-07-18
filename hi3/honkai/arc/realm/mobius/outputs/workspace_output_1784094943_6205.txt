@@ -1,0 +1,4 @@
+30:} from "./utils.js";
+---
+31:import { occupies, farEnough } from "./collision.js";
+220:        if (head && farEnough(c, head, CONFIG.BOMB_MIN_DISTANCE_FROM_HEAD)) {
