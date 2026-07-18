@@ -1,4 +1,0 @@
-node_modules/.package-lock.json
-deps installed
-=== check db ===
--rw-r--r-- 1 root root 32768 Jul 18 09:55 db/tryiton.sqlite

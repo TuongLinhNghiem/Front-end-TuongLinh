@@ -1,5 +1,0 @@
-11271 timeout --preserve-status --signal=KILL 15s bash -lc { cd /workspace ; mkdir -p /workspace/outputs ; } { pgrep -af "node app" | head -5; echo "---"; curl -s -o /dev/null -w "HTTP %{http_code}\n" http://localhost:3000/ 2>/dev/null || echo "no server" __ec=$? } >"/workspace/outputs/workspace_output_1784369768_6600.txt" 2>&1 head -c 80000 "/workspace/outputs/workspace_output_1784369768_6600.txt" ( exit "$__ec" )
-11272 bash -lc { cd /workspace ; mkdir -p /workspace/outputs ; } { pgrep -af "node app" | head -5; echo "---"; curl -s -o /dev/null -w "HTTP %{http_code}\n" http://localhost:3000/ 2>/dev/null || echo "no server" __ec=$? } >"/workspace/outputs/workspace_output_1784369768_6600.txt" 2>&1 head -c 80000 "/workspace/outputs/workspace_output_1784369768_6600.txt" ( exit "$__ec" )
----
-HTTP 000
-no server

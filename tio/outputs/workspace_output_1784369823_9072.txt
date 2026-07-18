@@ -1,7 +1,0 @@
-  async getShops() {
-    const res = await fetch('/data/shops.json');
-    return res.json();
-  }
-};
-
-window.Api = Api;

@@ -1,8 +1,0 @@
----LOG---
-[TryItOn!] Server running → http://localhost:3000
-[error] Error: ENOENT: no such file or directory, stat '/workspace/public/index.html'
-Error: ENOENT: no such file or directory, stat '/workspace/public/500.html'
-[error] Error: ENOENT: no such file or directory, stat '/workspace/public/404.html'
-Error: ENOENT: no such file or directory, stat '/workspace/public/500.html'
-[error] Error: ENOENT: no such file or directory, stat '/workspace/public/404.html'
-Error: ENOENT: no such file or directory, stat '/workspace/public/500.html'

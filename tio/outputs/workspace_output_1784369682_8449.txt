@@ -1,8 +1,0 @@
-total 48
-drwxr-xr-x  2 root root  4096 Jul 18 09:55 .
-drwxr-xr-x 16 user user  4096 Jul 18 10:12 ..
--rw-r--r--  1 root root  1578 Jul 18 09:42 connection.js
--rw-r--r--  1 root root  2112 Jul 18 09:55 init.js
--rw-r--r--  1 root root 32768 Jul 18 09:55 tryiton.sqlite
----TABLES---
-[{"name":"users"},{"name":"sqlite_sequence"},{"name":"outfits"},{"name":"sessions"}]

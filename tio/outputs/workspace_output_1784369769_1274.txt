@@ -1,4 +1,0 @@
-=== SMOKE TEST ===
-
---- Static/HTML pages ---
-GET / (landing): 000

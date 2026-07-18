@@ -1,2 +1,0 @@
-55:  setColor(root, layer, color) {
-58:    const img = root.querySelector(`.avatar__${real}`);

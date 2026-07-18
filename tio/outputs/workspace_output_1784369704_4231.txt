@@ -1,1 +1,0 @@
-[TryItOn!] Server running → http://localhost:3000

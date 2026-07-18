@@ -1,3 +1,0 @@
-public/css/pages.css:95:.avatar-readout {
-public/css/pages.css:102:.flex-center { display: flex; justify-content: center; align-items: center; }
-public/css/pages.css:105:.avatar-readout {

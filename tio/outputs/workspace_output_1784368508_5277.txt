@@ -1,7 +1,0 @@
-node_modules/bcrypt/package.json
-node_modules/express-session/package.json
-node_modules/express/package.json
-node_modules/sqlite3/package.json
----npm status---
-node_modules/.package-lock.json
-lock present

@@ -1,9 +1,0 @@
-/**
- * js/pages/recommend.js
- * Recommendation page logic:
- *   - multi-select colour chips for shirt / pants / hat
- *   - loads shops from /data/shops.json (static demo data)
-...
-1
-=== file size ===
-186 public/js/pages/recommend.js
