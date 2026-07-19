@@ -1,0 +1,9 @@
+public/dashboard.html
+public/index.html
+public/login.html
+public/register.html
+---count---
+public/dashboard.html:1
+public/index.html:1
+public/login.html:1
+public/register.html:1

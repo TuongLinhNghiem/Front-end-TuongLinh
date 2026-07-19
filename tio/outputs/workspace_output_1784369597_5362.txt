@@ -1,0 +1,1 @@
+tables: users, sqlite_sequence, outfits, sessions

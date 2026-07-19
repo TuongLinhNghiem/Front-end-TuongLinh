@@ -1,0 +1,4 @@
+=== LOG ===
+[TryItOn!] Server running → http://localhost:3000
+=== PORT CHECK ===
+HTTP 200

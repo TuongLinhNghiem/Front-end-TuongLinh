@@ -1,0 +1,62 @@
+/* =================================================================
+   css/avatar.css
+   The layered 2D avatar used in the Avatar Designer, Outfit Designer
+   and Wardrobe previews.
+
+   The avatar is built from stacked PNG layers (head, hat, body, legs).
+   Each layer is absolutely positioned inside a fixed-size stage so
+   changing a colour = swapping a single <img src>.
+   ================================================================= */
+
+.avatar-stage {
+  position: relative;
+  width: 260px;
+  height: 360px;
+  margin: 0 auto;
+  background:
+    radial-gradient(circle at 50% 18%, var(--color-light-gray), transparent 60%),
+    var(--color-off-white);
+  border-radius: var(--radius-xl);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.avatar-stage--lg { width: 320px; height: 440px; }
+.avatar-stage--sm { width: 160px; height: 220px; }
+
+.avatar {
+  position: relative;
+  width: 200px;
+  height: 280px;
+}
+
+/* Every layer sits in the same box; the PNG transparency does the compositing. */
+.avatar__layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  transition: opacity var(--dur-base) var(--ease-out),
+              transform var(--dur-base) var(--ease-out);
+  animation: avatar-pop var(--dur-base) var(--ease-out);
+}
+
+/* z-index order: legs (back) → body → head → hat (front) */
+.avatar__legs  { z-index: 1; }
+.avatar__body  { z-index: 2; }
+.avatar__head  { z-index: 3; }
+.avatar__hat   { z-index: 4; }
+
+@keyframes avatar-pop {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Mini avatar for wardrobe cards (smaller) */
+.avatar--mini {
+  width: 120px;
+  height: 168px;
+}

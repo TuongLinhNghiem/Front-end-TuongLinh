@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shop — TryItOn!</title>
+
+  <link rel="stylesheet" href="/css/variables.css" />
+  <link rel="stylesheet" href="/css/base.css" />
+  <link rel="stylesheet" href="/css/navbar.css" />
+  <link rel="stylesheet" href="/css/buttons.css" />
+  <link rel="stylesheet" href="/css/cards.css" />
+  <link rel="stylesheet" href="/css/avatar.css" />
+  <link rel="stylesheet" href="/css/forms.css" />
+  <link rel="stylesheet" href="/css/animations.css" />
+  <link rel="stylesheet" href="/css/utilities.css" />
+  <link rel="stylesheet" href="/css/pages.css" />
+  <link rel="icon" type="image/png" href="/images/avatar/logo.png" />
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body>
+  <div id="navbar"></div>
+
+  <main>
+    <section class="page">
+      <div class="page-header reveal">
+        <h1 class="page-title">Shop</h1>
+        <p class="page-subtitle">Three demo shops, each themed around a single colour. Browse shirts, pants and hats.</p>
+      </div>
+
+      <!-- Shop tabs -->
+      <div class="shop-tabs reveal" data-delay="1" id="shopTabs"></div>
+
+      <!-- Shop info banner -->
+      <div class="card reveal" data-delay="2" id="shopBanner" hidden>
+        <div class="flex gap-4 items-center" style="align-items:center">
+          <span class="swatch" id="shopColorDot" style="width:24px;height:24px"></span>
+          <div>
+            <h3 id="shopName" class="page-title" style="font-size:var(--text-xl)"></h3>
+            <p class="text-muted text-sm" id="shopTagline"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Items grid -->
+      <div class="shop-items reveal" data-delay="3" id="shopItems" style="margin-top:var(--space-6)"></div>
+
+      <p class="text-muted text-sm reveal" data-delay="4" style="margin-top:var(--space-7)">
+        This is a proof-of-concept — no checkout. Head to
+        <a href="/recommend">Recommendations</a> to find the best shops for items you want.
+      </p>
+    </section>
+  </main>
+
+  <script src="/js/utils.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/components/navbar.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/js/pages/shop.js"></script>
+</body>
+</html>

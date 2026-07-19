@@ -1,0 +1,29 @@
+-rw-r--r-- 1 root root  1564 Jul 18 10:11 public/404.html
+-rw-r--r-- 1 root root  1609 Jul 18 10:11 public/500.html
+-rw-r--r-- 1 root root  4267 Jul 18 10:02 public/avatar.html
+-rw-r--r-- 1 root root  3610 Jul 18 09:59 public/dashboard.html
+-rw-r--r-- 1 root root  4671 Jul 18 10:03 public/design.html
+-rw-r--r-- 1 root root 10783 Jul 18 09:57 public/index.html
+-rw-r--r-- 1 root root  2602 Jul 18 09:58 public/login.html
+-rw-r--r-- 1 root root  4150 Jul 18 10:00 public/profile.html
+-rw-r--r-- 1 root root  3032 Jul 18 10:10 public/recommend.html
+-rw-r--r-- 1 root root  3625 Jul 18 09:58 public/register.html
+-rw-r--r-- 1 root root  2725 Jul 18 10:06 public/shop.html
+-rw-r--r-- 1 root root  2083 Jul 18 10:04 public/wardrobe.html
+---PUBLIC---
+404.html
+500.html
+avatar.html
+css
+dashboard.html
+data
+design.html
+images
+index.html
+js
+login.html
+profile.html
+recommend.html
+register.html
+shop.html
+wardrobe.html

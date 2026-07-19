@@ -19,13 +19,11 @@ function requireAuth(req, res, next) {
     res.locals.currentUser = req.session.user;
     return next();
   }
-  // `req.path` is router-relative.  Because this middleware is mounted by
-  // routes/api.js, GET /api/me arrives here as `/me`, so use the mount path
-  // instead of mistakenly redirecting a fetch request to the login HTML.
-  if (req.baseUrl === '/api') {
+  // For API routes, respond with JSON; otherwise redirect.
+  if (req.path.startsWith('/api/')) {
     return res.status(401).json({ error: 'Authentication required.' });
   }
-  return res.redirect('/auth/login');
+  return res.redirect('/login');
 }
 
 function redirectIfAuth(req, res, next) {

@@ -1,0 +1,119 @@
+=== dashboard.html ===
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — TryItOn!</title>
+
+  <link rel="stylesheet" href="/css/variables.css" />
+  <link rel="stylesheet" href="/css/base.css" />
+  <link rel="stylesheet" href="/css/navbar.css" />
+  <link rel="stylesheet" href="/css/buttons.css" />
+  <link rel="stylesheet" href="/css/cards.css" />
+  <link rel="stylesheet" href="/css/avatar.css" />
+  <link rel="stylesheet" href="/css/animations.css" />
+  <link rel="stylesheet" href="/css/utilities.css" />
+  <link rel="stylesheet" href="/css/pages.css" />
+  <link rel="icon" type="image/png" href="/images/avatar/logo.png" />
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body>
+  <div id="navbar"></div>
+
+  <main>
+    <section class="page">
+      <!-- Greeting -->
+      <div class="dash-greeting reveal">
+        <div>
+          <h1 id="greeting">Welcome back 👋</h1>
+          <p id="greetingSub" class="text-muted">Pick up where you left off.</p>
+        </div>
+        <a href="/design" class="btn btn--primary btn--lg">+ Design a new outfit</a>
+      </div>
+
+      <!-- Navigation cards -->
+      <div class="dash-grid">
+        <a href="/avatar" class="nav-card reveal">
+          <div class="nav-card__icon">🧍</div>
+          <div class="nav-card__title">My Avatar</div>
+          <div class="nav-card__desc">Customise your 2D avatar with colours that update instantly.</div>
+          <div class="nav-card__arrow">Open designer →</div>
+        </a>
+
+        <a href="/wardrobe" class="nav-card reveal" data-delay="1">
+          <div class="nav-card__icon">👗</div>
+          <div class="nav-card__title">Wardrobe</div>
+          <div class="nav-card__desc">Browse, edit and duplicate every outfit you've saved.</div>
+          <div class="nav-card__arrow">View wardrobe →</div>
+        </a>
+
+        <a href="/design" class="nav-card reveal" data-delay="2">
+          <div class="nav-card__icon">🎨</div>
+          <div class="nav-card__title">Design Outfit</div>
+          <div class="nav-card__desc">Combine a shirt, pants and hat into a new saved look.</div>
+          <div class="nav-card__arrow">Start designing →</div>
+        </a>
+
+        <a href="/shop" class="nav-card reveal" data-delay="3">
+          <div class="nav-card__icon">🛍️</div>
+          <div class="nav-card__title">Shop</div>
+          <div class="nav-card__desc">Explore three demo shops, each themed around a single colour.</div>
+          <div class="nav-card__arrow">Browse shops →</div>
+        </a>
+
+        <a href="/profile" class="nav-card reveal" data-delay="4">
+          <div class="nav-card__icon">👤</div>
+          <div class="nav-card__title">Profile</div>
+          <div class="nav-card__desc">Review your account details and body measurements.</div>
+          <div class="nav-card__arrow">View profile →</div>
+        </a>
+
+        <a href="/recommend" class="nav-card reveal" data-delay="5">
+          <div class="nav-card__icon">🧭</div>
+          <div class="nav-card__title">Recommendations</div>
+          <div class="nav-card__desc">Pick items to buy and find the best matching shops.</div>
+          <div class="nav-card__arrow">Find shops →</div>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <script src="/js/utils.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/components/navbar.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/js/pages/dashboard.js"></script>
+</body>
+</html>
+=== routes/pages.js ===
+/**
+ * routes/pages.js
+ * Application pages that require authentication.
+ *
+ * Each route simply serves its static HTML file. The page's own
+ * JavaScript then fetches any dynamic data it needs from /api/*.
+ *
+ * `requireAuth` ensures unauthenticated visitors are redirected to
+ * /login before reaching the static file.
+ */
+
+'use strict';
+
+const express = require('express');
+const router = express.Router();
+
+const { requireAuth } = require('../middleware/auth');
+
+// Helper: serve a file from /public.
+const serve = (file) => (req, res) => res.sendFile(file, { root: 'public' });
+
+router.get('/dashboard',    requireAuth, serve('dashboard.html'));
+router.get('/profile',      requireAuth, serve('profile.html'));
+router.get('/avatar',       requireAuth, serve('avatar.html'));
+router.get('/design',       requireAuth, serve('design.html'));
+router.get('/wardrobe',     requireAuth, serve('wardrobe.html'));
+router.get('/shop',         requireAuth, serve('shop.html'));
+router.get('/recommend',    requireAuth, serve('recommend.html'));
+
+module.exports = router;

@@ -1,0 +1,20 @@
+/**
+ * js/pages/avatar.js
+ * Avatar Designer page logic.
+ *
+ * Renders a live 2D avatar and lets the user swap the colour of each
+ * clothing layer (shirt / pants / hat) via swatch buttons. A
+ * "Randomise" button shuffles all three colours at once.
+ *
+ * The chosen colours are persisted to localStorage so they become the
+ * defaults when the user navigates to the Outfit Designer.
+ */
+
+'use strict';
+
+(function () {
+  const COLORS = Avatar.colors();
+
+  // Initial state — restored from localStorage if available.
+  const state = restoreState({
+    shirt: 'red',

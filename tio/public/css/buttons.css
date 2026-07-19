@@ -1,0 +1,91 @@
+/* =================================================================
+   css/buttons.css
+   Reusable button primitives.
+   ================================================================= */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  font-weight: var(--fw-semibold);
+  line-height: 1;
+  white-space: nowrap;
+  transition: transform var(--dur-fast) var(--ease-out),
+              background var(--dur-fast) var(--ease-out),
+              box-shadow var(--dur-fast) var(--ease-out),
+              color var(--dur-fast) var(--ease-out);
+  will-change: transform;
+}
+
+.btn:active { transform: scale(0.97); }
+
+/* Primary — filled accent */
+.btn--primary {
+  background: var(--color-accent);
+  color: #fff;
+  box-shadow: var(--shadow-sm);
+}
+.btn--primary:hover {
+  background: var(--color-accent-hover);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+/* Dark — filled ink (Apple-style) */
+.btn--dark {
+  background: var(--color-ink);
+  color: #fff;
+}
+.btn--dark:hover {
+  background: #000;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Ghost / outline */
+.btn--ghost {
+  background: transparent;
+  color: var(--color-ink);
+  border: 1px solid var(--color-gray);
+}
+.btn--ghost:hover {
+  background: var(--color-light-gray);
+  border-color: var(--color-dark-gray);
+}
+
+/* Subtle / glass */
+.btn--glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  color: var(--color-ink);
+}
+.btn--glass:hover {
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Danger */
+.btn--danger {
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+}
+.btn--danger:hover { background: rgba(255, 59, 48, 0.18); }
+
+/* Sizes */
+.btn--sm { padding: var(--space-2) var(--space-4); font-size: var(--text-xs); }
+.btn--lg { padding: var(--space-4) var(--space-6); font-size: var(--text-base); }
+.btn--block { width: 100%; }
+
+/* Icon-only circular button */
+.btn--icon {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: var(--radius-full);
+}

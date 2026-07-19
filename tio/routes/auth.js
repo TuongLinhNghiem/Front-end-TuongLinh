@@ -1,17 +1,28 @@
+/**
+ * routes/auth.js
+ * Authentication routes: register, login, logout.
+ *
+ * `redirectIfAuth` keeps already-logged-in users out of the auth forms.
+ */
+
 'use strict';
 
 const express = require('express');
-const authController = require('../controllers/authController');
-const { redirectIfAuth } = require('../middleware/auth');
-
 const router = express.Router();
 
-// Mounted at /auth by app.js; route paths here deliberately omit the prefix.
-router.get('/register', redirectIfAuth, authController.showRegister);
-router.post('/register', redirectIfAuth, authController.register);
-router.get('/login', redirectIfAuth, authController.showLogin);
-router.post('/login', redirectIfAuth, authController.login);
-router.get('/logout', authController.logout);
-router.post('/logout', authController.logout);
+const auth = require('../controllers/authController');
+const { redirectIfAuth } = require('../middleware/auth');
+
+// Registration
+router.get('/register', redirectIfAuth, auth.showRegister);
+router.post('/register', auth.register);
+
+// Login
+router.get('/login', redirectIfAuth, auth.showLogin);
+router.post('/login', auth.login);
+
+// Logout (both verbs supported for convenience)
+router.post('/logout', auth.logout);
+router.get('/logout', auth.logout);
 
 module.exports = router;

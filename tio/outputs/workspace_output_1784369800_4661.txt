@@ -1,0 +1,40 @@
+{
+    "shops": [
+        {
+            "id": "shop-a",
+            "name": "Shop A \u2014 The Red Label",
+            "tagline": "Bold, fiery, unforgettable.",
+            "color": "red",
+            "items": [
+                {
+                    "id": "a-shirt",
+                    "category": "shirt",
+                    "color": "red",
+                    "name": "Crimson Tee",
+                    "price": 29
+                },
+                {
+                    "id": "a-pants",
+                    "category": "pants",
+                    "color": "red",
+                    "name": "Scarlet Chinos",
+                    "price": 49
+                },
+                {
+                    "id": "a-hat",
+                    "category": "hat",
+                    "color": "red",
+                    "name": "Ruby Cap",
+                    "price": 19
+                }
+            ]
+        },
+        {
+            "id": "shop-b",
+            "name": "Shop B \u2014 The Blue House",
+            "tagline": "Calm, classic, cool.",
+            "color": "blue",
+            "items": [
+                {
+                    "id": "b-shirt",
+                    "category": "shirt",

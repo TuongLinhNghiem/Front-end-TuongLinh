@@ -1,0 +1,6 @@
+-rw-r--r-- 1 root root 4199 Jul 18 10:01 public/js/pages/profile.js
+/**
+ * js/pages/profile.js
+ * Loads the authenticated user's profile, renders it, and wires the
+ * edit modal so the user can update their username and measurements.
+ */

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Outfit Designer — TryItOn!</title>
+
+  <link rel="stylesheet" href="/css/variables.css" />
+  <link rel="stylesheet" href="/css/base.css" />
+  <link rel="stylesheet" href="/css/navbar.css" />
+  <link rel="stylesheet" href="/css/buttons.css" />
+  <link rel="stylesheet" href="/css/cards.css" />
+  <link rel="stylesheet" href="/css/avatar.css" />
+  <link rel="stylesheet" href="/css/forms.css" />
+  <link rel="stylesheet" href="/css/animations.css" />
+  <link rel="stylesheet" href="/css/utilities.css" />
+  <link rel="stylesheet" href="/css/pages.css" />
+  <link rel="icon" type="image/png" href="/images/avatar/logo.png" />
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body>
+  <div id="navbar"></div>
+
+  <main>
+    <section class="page">
+      <div class="page-header reveal">
+        <h1 class="page-title">Outfit Designer</h1>
+        <p class="page-subtitle">Combine a shirt, pants and hat, name your look, and save it to your wardrobe.</p>
+      </div>
+
+      <div class="designer">
+        <!-- Live preview stage -->
+        <div class="designer__stage reveal" data-delay="1">
+          <div id="outfitPreview" class="flex-center"></div>
+          <div class="avatar-readout">
+            <span class="badge badge--red"    id="readShirt">Red shirt</span>
+            <span class="badge badge--blue"   id="readPants">Blue pants</span>
+            <span class="badge badge--yellow" id="readHat">Yellow hat</span>
+          </div>
+        </div>
+
+        <!-- Controls + save form -->
+        <div class="designer__panel">
+          <!-- Shirt -->
+          <div class="category reveal" data-delay="1">
+            <div class="category__title">Shirt</div>
+            <div class="swatch-row" data-layer="shirt">
+              <button type="button" class="swatch-btn swatch-btn--red is-selected" data-color="red" aria-label="Red shirt"></button>
+              <button type="button" class="swatch-btn swatch-btn--blue" data-color="blue" aria-label="Blue shirt"></button>
+              <button type="button" class="swatch-btn swatch-btn--yellow" data-color="yellow" aria-label="Yellow shirt"></button>
+            </div>
+          </div>
+
+          <!-- Pants -->
+          <div class="category reveal" data-delay="2">
+            <div class="category__title">Pants</div>
+            <div class="swatch-row" data-layer="pants">
+              <button type="button" class="swatch-btn swatch-btn--red" data-color="red" aria-label="Red pants"></button>
+              <button type="button" class="swatch-btn swatch-btn--blue is-selected" data-color="blue" aria-label="Blue pants"></button>
+              <button type="button" class="swatch-btn swatch-btn--yellow" data-color="yellow" aria-label="Yellow pants"></button>
+            </div>
+          </div>
+
+          <!-- Hat -->
+          <div class="category reveal" data-delay="3">
+            <div class="category__title">Hat</div>
+            <div class="swatch-row" data-layer="hat">
+              <button type="button" class="swatch-btn swatch-btn--red" data-color="red" aria-label="Red hat"></button>
+              <button type="button" class="swatch-btn swatch-btn--blue" data-color="blue" aria-label="Blue hat"></button>
+              <button type="button" class="swatch-btn swatch-btn--yellow is-selected" data-color="yellow" aria-label="Yellow hat"></button>
+            </div>
+          </div>
+
+          <!-- Save form -->
+          <form id="saveForm" class="category reveal" data-delay="4">
+            <div class="category__title">Name this outfit</div>
+            <div class="save-bar">
+              <div class="field" style="margin:0">
+                <input
+                  class="field__input"
+                  type="text"
+                  id="outfitName"
+                  placeholder="e.g. Summer Pop"
+                  maxlength="60"
+                  required
+                />
+              </div>
+              <button type="submit" class="btn btn--primary" id="saveBtn">Save outfit</button>
+            </div>
+            <p class="text-muted text-sm mt-3">Outfits are saved to your wardrobe with today's date and your chosen colours.</p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/js/utils.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/components/avatar.js"></script>
+  <script src="/js/components/navbar.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/js/pages/design.js"></script>
+</body>
+</html>
+=== badge / swatch definitions in utilities ===
+public/css/utilities.css:52:.badge {
+public/css/utilities.css:62:.badge--accent { background: var(--color-accent-soft); color: var(--color-accent); }
+public/css/utilities.css:63:.badge--red    { background: rgba(230,57,70,0.12); color: var(--color-red); }
+public/css/utilities.css:64:.badge--blue   { background: rgba(42,109,244,0.12); color: var(--color-blue); }
+public/css/utilities.css:65:.badge--yellow { background: rgba(244,194,13,0.18); color: #b98a00; }
+public/css/cards.css:138:.outfit-card__swatches {
+public/css/cards.css:152:/* Colour swatch */
+public/css/cards.css:153:.swatch {
+public/css/cards.css:160:.swatch--red    { background: var(--color-red); }
+public/css/cards.css:161:.swatch--blue   { background: var(--color-blue); }
+public/css/cards.css:162:.swatch--yellow { background: var(--color-yellow); }

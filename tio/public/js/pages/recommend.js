@@ -1,0 +1,186 @@
+/**
+ * js/pages/recommend.js
+ * Recommendation page logic:
+ *   - multi-select colour chips for shirt / pants / hat
+ *   - loads shops from /data/shops.json (static demo data)
+ *   - scores every shop by counting how many of the user's selected
+ *     (category, colour) picks the shop actually stocks
+ *   - renders a ranked list; the top match gets the .is-best highlight
+ *
+ * NO AI — a simple set-intersection filter + sort.
+ */
+
+'use strict';
+
+(function () {
+  const COLORS      = ['red', 'blue', 'yellow'];
+  const CATEGORIES  = ['shirt', 'pants', 'hat'];
+  const COLOR_LABEL = { red: 'Red', blue: 'Blue', yellow: 'Yellow' };
+
+  // selections[category] = Set of colours the user toggled on.
+  const selections = { shirt: new Set(), pants: new Set(), hat: new Set() };
+
+  let shops = [];
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    try {
+      const data = await Api.getShops();
+      shops = data.shops || [];
+    } catch (_) {
+      document.getElementById('results').innerHTML =
+        '<p class="text-muted">Could not load shop data.</p>';
+      return;
+    }
+
+    renderChips();
+    wireControls();
+    update(); // initial render shows the empty-state prompt
+  });
+
+  /* ---------- Build the colour chips ---------- */
+  function renderChips() {
+    CATEGORIES.forEach((cat) => {
+      const host = document.getElementById('chips-' + cat);
+      if (!host) return;
+      host.innerHTML = COLORS.map((color) => chipHtml(cat, color)).join('');
+    });
+
+    // Delegated click handler on the whole picker panel.
+    const picker = document.querySelector('.picker');
+    if (picker) {
+      picker.addEventListener('click', (e) => {
+        const chip = e.target.closest('.chip');
+        if (!chip) return;
+        const cat   = chip.dataset.category;
+        const color = chip.dataset.color;
+        const set   = selections[cat];
+        if (set.has(color)) set.delete(color);
+        else set.add(color);
+        chip.classList.toggle('is-selected');
+        update();
+      });
+    }
+  }
+
+  function chipHtml(cat, color) {
+    return (
+      '<button type="button" class="chip" data-category="' + cat + '" data-color="' + color + '">' +
+        '<span class="chip__dot swatch--' + color + '"></span>' +
+        COLOR_LABEL[color] +
+      '</button>'
+    );
+  }
+
+  /* ---------- Clear / Select all buttons ---------- */
+  function wireControls() {
+    const clear = document.getElementById('clearBtn');
+    if (clear) {
+      clear.addEventListener('click', () => {
+        CATEGORIES.forEach((c) => selections[c].clear());
+        document.querySelectorAll('.chip.is-selected').forEach((el) => el.classList.remove('is-selected'));
+        update();
+      });
+    }
+
+    const all = document.getElementById('selectAllBtn');
+    if (all) {
+      all.addEventListener('click', () => {
+        CATEGORIES.forEach((c) => COLORS.forEach((color) => selections[c].add(color)));
+        document.querySelectorAll('.chip').forEach((el) => el.classList.add('is-selected'));
+        update();
+      });
+    }
+  }
+
+  /* ---------- Ranking engine ---------- */
+
+  /**
+   * Count how many of the user's picks a shop satisfies.
+   * A "pick" is a { category, color } pair. A shop satisfies it when it
+   * stocks an item with that exact category AND color.
+   *
+   * @returns {{ matched:number, matches:Array, total:number }}
+   */
+  function scoreShop(shop) {
+    let matched = 0;
+    const matches = [];
+
+    CATEGORIES.forEach((cat) => {
+      selections[cat].forEach((color) => {
+        const item = shop.items.find((it) => it.category === cat && it.color === color);
+        if (item) {
+          matched += 1;
+          matches.push({ category: cat, color, name: item.name, price: item.price });
+        }
+      });
+    });
+
+    return { shop, matched, total: totalPicks(), matches };
+  }
+
+  function totalPicks() {
+    return CATEGORIES.reduce((sum, c) => sum + selections[c].size, 0);
+  }
+
+  /* ---------- Render ---------- */
+  function update() {
+    // Summary line under the picker.
+    const total = totalPicks();
+    const summary = document.getElementById('pickSummary');
+    if (summary) {
+      summary.textContent = total === 0
+        ? 'No colours selected yet.'
+        : total + ' colour' + (total === 1 ? '' : 's') + ' selected across ' +
+          CATEGORIES.filter((c) => selections[c].size > 0).length + ' categor' +
+          (CATEGORIES.filter((c) => selections[c].size > 0).length === 1 ? 'y' : 'ies') + '.';
+    }
+
+    const host = document.getElementById('results');
+    if (!host) return;
+
+    if (total === 0) {
+      host.innerHTML = '<p class="text-muted">Pick some colours on the left to see which shops match.</p>';
+      return;
+    }
+
+    // Rank: most matches first, tie-break by shop id for a stable order.
+    const ranked = shops
+      .map(scoreShop)
+      .sort((a, b) => b.matched - a.matched || a.shop.id.localeCompare(b.shop.id));
+
+    const best = ranked[0];
+    host.innerHTML = ranked.map((r, i) => resultCardHtml(r, i, best)).join('');
+  }
+
+  function resultCardHtml(r, index, best) {
+    const isBest = best && best.shop.id === r.shop.id && r.matched > 0;
+    const rank = index + 1;
+    const matchText =
+      r.matched === 0
+        ? 'No matching items in stock.'
+        : r.matched + ' of ' + r.total + ' picks in stock.';
+
+    const matchBadges = r.matches.map((m) =>
+      '<span class="badge badge--' + m.color + '">' +
+        Utils.escape(m.name) + ' · $' + m.price +
+      '</span>'
+    ).join('');
+
+    return (
+      '<div class="result-card' + (isBest ? ' is-best' : '') + '">' +
+        '<div class="result-card__rank">' + rank + '</div>' +
+        '<div style="flex:1; min-width:0">' +
+          '<div class="result-card__name">' +
+            Utils.escape(r.shop.name) +
+            (isBest ? ' <span class="badge badge--accent">Best match</span>' : '') +
+          '</div>' +
+          '<div class="result-card__meta">' + matchText + '</div>' +
+          (matchBadges
+            ? '<div class="flex" style="flex-wrap:wrap; gap:var(--space-2); margin-top:var(--space-3)">' + matchBadges + '</div>'
+            : '') +
+        '</div>' +
+        '<a href="/shop" class="btn btn--ghost btn--sm">Browse shop →</a>' +
+      '</div>'
+    );
+  }
+})();

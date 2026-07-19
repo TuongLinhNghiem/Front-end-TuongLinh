@@ -1,0 +1,40 @@
+/**
+ * js/pages/recommend.js
+ * Recommendation page logic:
+ *   - multi-select colour chips for shirt / pants / hat
+ *   - loads shops from /data/shops.json
+ *   - ranks shops by how many of the user's selected (category, colour)
+ *     picks each shop actually stocks
+ *   - the top shop is highlighted with the .is-best class
+ *
+ * No AI — pure deterministic filtering & sorting.
+ */
+
+'use strict';
+
+(function () {
+  const COLORS      = ['red', 'blue', 'yellow'];
+  const CATEGORIES  = ['shirt', 'pants', 'hat'];
+  const COLOR_LABEL = { red: 'Red', blue: 'Blue', yellow: 'Yellow' };
+  const COLOR_RGB   = {
+    red:    '#e63946',
+    blue:   '#2a6df4',
+    yellow: '#f4c20d'
+  };
+
+  // selections[category] = Set of colours
+  const selections = { shirt: new Set(), pants: new Set(), hat: new Set() };
+
+  let shops = [];
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    try {
+      const data = await Api.getShops();
+      shops = data.shops || [];
+    } catch (_) {
+      document.getElementById('results').innerHTML =
+        '<p class="text-muted">Could not load shops.</p>';
+      return;
+    }
+
+    renderChips();
