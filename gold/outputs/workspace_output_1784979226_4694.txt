@@ -1,0 +1,15 @@
+=== BROWSER STATE ===
+URL: http://localhost:9099/index.html
+Title: Gold Miner - Arcade Adventure
+Result: JS result: FAIL: Leaf activated returns true | PASS: Leaf active flag set | PASS: Leaf count decremented to 0 | PASS: Leaf transforms rock to +750 | PASS: Leaf active cleared after transform
+
+Interactive elements (2):
+  [5] button "Use TNT (T)"
+  [6] button "Lucky Leaf (L)"
+
+Accessibility tree:
+Page text: ROUND 2 GOLD 750 TIME 55 COMBO x1.0 SECTION The Old Mine ⭐3 ⭐2 ⭐1 750 🧨 2 🛡️ 0 ⚙️ L1 Use TNT (T) Lucky Leaf (L) Lucky Leaf active! Next Rock → Diamond.
+
+Screenshot: /workspace/.screenshots/step_014.png
+Use see-image to view: /workspace/.screenshots/step_014.png
+=== END ===

@@ -1,0 +1,15 @@
+=== BROWSER STATE ===
+URL: http://localhost:9099/index.html
+Title: Gold Miner - Arcade Adventure
+Result: JS result: count=7 finalScore=2030 stars=1 threeStarThreshold=7000
+
+Interactive elements (2):
+  [5] button "Use TNT (T)"
+  [6] button "Lucky Leaf (L)"
+
+Accessibility tree:
+Page text: ROUND 1 GOLD 2030 TIME 40 COMBO x1.2 SECTION The Old Mine ⭐3 ⭐2 ⭐1 2030 🧨 2 🛡️ 0 ⚙️ L1 Use TNT (T) Lucky Leaf (L)
+
+Screenshot: /workspace/.screenshots/step_021.png
+Use see-image to view: /workspace/.screenshots/step_021.png
+=== END ===

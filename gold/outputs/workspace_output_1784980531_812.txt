@@ -1,0 +1,57 @@
+=== ROUND_META times ===
+
+  // Round metadata: time limits
+  const ROUND_META = {
+    1:  { time: 60 },
+    2:  { time: 60 },
+    3:  { time: 60 },
+    4:  { time: 60 },
+    5:  { time: 55 },
+    6:  { time: 55 },
+    7:  { time: 55 },
+    8:  { time: 55 },
+    9:  { time: 60 },
+    10: { time: 70 }
+  };
+
+  function getRoundTime(round) {
+    return (ROUND_META[round] || ROUND_META[1]).time;
+  }
+
+  // Select a layout for a round with small controlled random variations.
+  function buildLayout(round) {
+    const layouts = LAYOUTS[round] || LAYOUTS[1];
+    const idx = Math.floor(Math.random() * layouts.length);
+    const chosen = layouts[idx];
+    // Apply small controlled random variations:
+=== combo thresholds ===
+/* ============================================================
+   game.js - Core game class: loop, state, scoring, combos,
+   TNT, Shield, Lucky Leaf, particle effects, UI integration.
+   ============================================================ */
+
+const GameState = {
+  MENU: "menu",
+  PLAYING: "playing",
+  PAUSED: "paused",
+  RESULTS: "results",
+  SHOP: "shop",
+  SECTION: "section",
+--
+    this.clawLevel = 1;
+
+    this.combo = 0;             // consecutive valuable objects collected
+    this.comboMult = 1;
+    this.lastWasLowValue = false;
+
+    this.particles = [];
+    this.toasts = [];           // floating text
+    this.flashAlpha = 0;
+    this.shakeTime = 0;
+
+    this._timerWarningPlayed = false;
+
+    this.save = SaveManager.load();
+--
+    this.round = round;
+    this.score = 0;

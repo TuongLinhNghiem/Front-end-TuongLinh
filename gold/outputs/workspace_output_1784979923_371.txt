@@ -1,0 +1,14 @@
+[eval]:11
+for(let r=1;r<=10;r++){const ls=L[r];const t=Scoring.getThresholds(r);const mx=ls.map(l=>{let b=0,c2=0,m=1;l.forEach(o=>{if(V.includes(o.t)){c2++;if(c2>=8)m=1.3;else if(c2>=5)m=1.2;else if(c2>=3)m=1.1;else m=1;b+=Math.round(VAL[o.t]*m);}});return b;});const allReach=mx.every(m=>m>=t.threeStar);if(!allReach)allOK=false;console.log('R'+r+': maxes=['+mx.join(',')+'] 3star='+t.threeStar+' OK='+allReach+' min='+t.minTarget);}
+                                             ^
+
+ReferenceError: Scoring is not defined
+    at [eval]:11:46
+    at runScriptInThisContext (node:internal/vm:209:10)
+    at node:internal/process/execution:118:14
+    at [eval]-wrapper:6:24
+    at runScript (node:internal/process/execution:101:62)
+    at evalScript (node:internal/process/execution:133:3)
+    at node:internal/main/eval_string:51:3
+
+Node.js v20.20.2

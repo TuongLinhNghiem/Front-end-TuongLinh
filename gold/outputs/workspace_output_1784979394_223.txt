@@ -1,0 +1,10 @@
+Round 1: layouts=3 valuableGold ranges: min=1560 max=2340
+Round 2: layouts=3 valuableGold ranges: min=2520 max=2820
+Round 3: layouts=3 valuableGold ranges: min=4500 max=4740
+Round 4: layouts=3 valuableGold ranges: min=6300 max=7800
+Round 5: layouts=3 valuableGold ranges: min=4800 max=6900
+Round 6: layouts=3 valuableGold ranges: min=5400 max=7200
+Round 7: layouts=3 valuableGold ranges: min=5400 max=7500
+Round 8: layouts=3 valuableGold ranges: min=5400 max=6300
+Round 9: layouts=3 valuableGold ranges: min=6000 max=8100
+Round 10: layouts=3 valuableGold ranges: min=7800 max=8700

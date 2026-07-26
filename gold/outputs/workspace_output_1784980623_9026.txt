@@ -1,0 +1,76 @@
+    src.stop(t0 + duration);
+  }
+
+  // Named sound effects
+  const sfx = {
+    launch() { tone(220, 0.18, "sawtooth", 0.2); },
+    clawExtend() { tone(180, 0.1, "square", 0.08); },
+    collect() { tone(660, 0.08, "sine", 0.25); tone(880, 0.12, "sine", 0.2, 0.08); },
+    gold() { tone(523, 0.08, "triangle", 0.3); tone(784, 0.12, "triangle", 0.25, 0.06); },
+    diamond() { tone(880, 0.1, "triangle", 0.3); tone(1175, 0.15, "triangle", 0.25, 0.08); tone(1568, 0.2, "triangle", 0.2, 0.16); },
+    rock() { tone(120, 0.2, "square", 0.18); },
+    mystery() { tone(440, 0.06, "triangle", 0.3); tone(330, 0.06, "triangle", 0.3, 0.07); tone(440, 0.1, "triangle", 0.3, 0.14); },
+    tnt() { noise(0.6, 0.5, 600); tone(80, 0.5, "sawtooth", 0.4); },
+    shield() { tone(300, 0.3, "sine", 0.3); tone(450, 0.4, "sine", 0.25, 0.1); },
+    leaf() { tone(523, 0.1, "sine", 0.3); tone(659, 0.1, "sine", 0.3, 0.1); tone(784, 0.2, "sine", 0.25, 0.2); },
+    timerWarning() { tone(880, 0.08, "square", 0.2); },
+    star() { tone(784, 0.1, "triangle", 0.3); tone(988, 0.1, "triangle", 0.3, 0.1); tone(1319, 0.3, "triangle", 0.25, 0.2); },
+    roundComplete() { tone(523, 0.1, "triangle", 0.3); tone(659, 0.1, "triangle", 0.3, 0.1); tone(784, 0.2, "triangle", 0.3, 0.2); tone(1047, 0.4, "triangle", 0.25, 0.4); },
+    buy() { tone(660, 0.08, "sine", 0.25); tone(990, 0.12, "sine", 0.2, 0.08); },
+    error() { tone(200, 0.2, "sawtooth", 0.25); },
+    combo() { tone(660, 0.06, "sine", 0.2); tone(880, 0.1, "sine", 0.2, 0.06); },
+    fail() { tone(330, 0.2, "sawtooth", 0.3); tone(220, 0.4, "sawtooth", 0.25, 0.2); }
+  };
+
+  // Simple looped background music using scheduled notes
+  function startMusic() {
+    if (!ctx || muted) return;
+    stopMusic();
+    musicGain.gain.cancelScheduledValues(ctx.currentTime);
+    musicGain.gain.linearRampToValueAtTime(0.08, ctx.currentTime + 1.5);
+    scheduleMusicLoop();
+  }
+
+  let musicTimer = null;
+  function scheduleMusicLoop() {
+    if (!ctx) return;
+    const baseNotes = [261.63, 329.63, 392.00, 329.63, 261.63, 293.66, 349.23, 293.66];
+    let step = 0;
+    function nextNote() {
+      if (!musicGain || muted) return;
+      const t0 = ctx.currentTime;
+      const freq = baseNotes[step % baseNotes.length];
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime(freq, t0);
+      g.gain.setValueAtTime(0, t0);
+      g.gain.linearRampToValueAtTime(0.5, t0 + 0.05);
+      g.gain.exponentialRampToValueAtTime(0.001, t0 + 0.4);
+      osc.connect(g);
+      g.connect(musicGain);
+      osc.start(t0);
+      osc.stop(t0 + 0.5);
+      step++;
+      musicTimer = setTimeout(nextNote, 400);
+    }
+    nextNote();
+  }
+
+  function stopMusic() {
+    if (musicTimer) { clearTimeout(musicTimer); musicTimer = null; }
+    if (musicGain && ctx) {
+      musicGain.gain.cancelScheduledValues(ctx.currentTime);
+      musicGain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.5);
+    }
+  }
+
+  function setMuted(m) {
+    muted = m;
+    if (muted) stopMusic();
+  }
+
+  return {
+    init,
+    resume,
+    sfx,

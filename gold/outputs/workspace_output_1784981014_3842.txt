@@ -1,0 +1,20 @@
+=== Final File Structure ===
+./README.md
+./index.html
+./js/audioManager.js
+./js/claw.js
+./js/game.js
+./js/inventory.js
+./js/levels.js
+./js/main.js
+./js/objects.js
+./js/player.js
+./js/saveManager.js
+./js/scoring.js
+./js/shop.js
+./js/upgrades.js
+./style.css
+./todo.md
+---
+=== Total lines of code ===
+  3991 total

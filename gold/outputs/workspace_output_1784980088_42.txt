@@ -1,0 +1,36 @@
+=== JS FILES ===
+total 120
+drwxr-xr-x 2 root root  4096 Jul 25 11:21 .
+drwxr-xr-x 4 root root  4096 Jul 25 11:14 ..
+-rw-r--r-- 1 root root  5547 Jul 25 11:15 audioManager.js
+-rw-r--r-- 1 root root  4492 Jul 25 11:16 claw.js
+-rw-r--r-- 1 root root 32183 Jul 25 11:34 game.js
+-rw-r--r-- 1 root root  1405 Jul 25 11:18 inventory.js
+-rw-r--r-- 1 root root 18717 Jul 25 11:45 levels.js
+-rw-r--r-- 1 root root   983 Jul 25 11:21 main.js
+-rw-r--r-- 1 root root 12190 Jul 25 11:16 objects.js
+-rw-r--r-- 1 root root  2184 Jul 25 11:17 player.js
+-rw-r--r-- 1 root root  1741 Jul 25 11:14 saveManager.js
+-rw-r--r-- 1 root root  1739 Jul 25 11:39 scoring.js
+-rw-r--r-- 1 root root  4269 Jul 25 11:19 shop.js
+-rw-r--r-- 1 root root   791 Jul 25 11:18 upgrades.js
+---
+=== File sizes (lines) ===
+   151 js/audioManager.js
+   145 js/claw.js
+   905 js/game.js
+    41 js/inventory.js
+   521 js/levels.js
+    28 js/main.js
+   362 js/objects.js
+    80 js/player.js
+    59 js/saveManager.js
+    41 js/scoring.js
+   118 js/shop.js
+    24 js/upgrades.js
+   169 index.html
+   518 style.css
+  3162 total
+---
+=== Check server still running ===
+root        1643  0.0  0.4 451872 19836 ?        S    11:23   0:00 python3 -m http.server 9099

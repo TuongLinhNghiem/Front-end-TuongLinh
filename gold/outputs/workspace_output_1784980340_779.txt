@@ -1,0 +1,10 @@
+=== BROWSER STATE ===
+URL: http://localhost:9099/index.html
+Title: Gold Miner - Arcade Adventure
+Result: Clicked: [4]
+Warning: Overlay/modal detected - consider using dismiss_overlay
+
+Interactive elements (4):
+  [0] button "New Game"
+  [1] button "Continue"
+  [2] button "How to Play"

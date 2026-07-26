@@ -1,0 +1,11 @@
+R1: maxes=[2030,1415,2105] 3star=1200 ALL_reach3=true minTarget=300
+R2: maxes=[2405,2295,2570] 3star=1900 ALL_reach3=true minTarget=500
+R3: maxes=[5595,6000,7225] 3star=3400 ALL_reach3=true minTarget=900
+R4: maxes=[5850,6100,7275] 3star=5000 ALL_reach3=true minTarget=1200
+R5: maxes=[5475,7625,5475] 3star=3800 ALL_reach3=true minTarget=1000
+R6: maxes=[6975,6125,8575] 3star=4300 ALL_reach3=true minTarget=1100
+R7: maxes=[10175,6775,8575] 3star=4100 ALL_reach3=true minTarget=1100
+R8: maxes=[8925,6775,10875] 3star=4300 ALL_reach3=true minTarget=1100
+R9: maxes=[7275,9375,8475] 3star=4800 ALL_reach3=true minTarget=1200
+R10: maxes=[9750,10600,9775] 3star=6200 ALL_reach3=true minTarget=1600
+ALL_ROUNDS_ALL_LAYOUTS_REACH_3STAR=true

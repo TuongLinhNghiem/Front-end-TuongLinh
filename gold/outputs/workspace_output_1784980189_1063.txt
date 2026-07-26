@@ -1,0 +1,4 @@
+135:    <div id="final-screen" class="overlay hidden">
+140:          <div class="results-row"><span>Total Gold Earned:</span><span id="final-gold">0</span></div>
+141:          <div class="results-row"><span>Total Stars:</span><span id="final-stars">0 / 30</span></div>
+142:          <div class="results-row"><span>Three-Star Rounds:</span><span id="final-three">0 / 10</span></div>

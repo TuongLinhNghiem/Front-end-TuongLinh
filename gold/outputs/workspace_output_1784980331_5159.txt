@@ -1,0 +1,15 @@
+=== BROWSER STATE ===
+URL: http://localhost:9099/index.html
+Title: Gold Miner - Arcade Adventure
+Result: Clicked: [2]
+Warning: Overlay/modal detected - consider using dismiss_overlay
+
+Interactive elements (1):
+  [4] button "Back"
+
+Accessibility tree:
+Page text: How to Play Space / Click — Launch the claw when it points at a treasure. T — Use TNT to destroy a Rock or nearby Worms. L — Activate Lucky Leaf to turn the next Rock into a Diamond. Escape — Pause the game. Aim for Gold, Diamonds and the Golden Treasure. Avoid Worms (no reward, wastes time) and Rocks (slow to pull). Reach the round's gold target to pass. Earn 1–3 stars based on your score. Spend gold in the shop on TNT, Shields, Lucky Leaves and Claw Speed upgrades. Back
+
+Screenshot: /workspace/.screenshots/step_034.png
+Use see-image to view: /workspace/.screenshots/step_034.png
+=== END ===

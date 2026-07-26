@@ -1,0 +1,21 @@
+// Comprehensive logic test - injected into the game via browser js
+(function(){
+  const g = window.__game;
+  const results = [];
+  function log(name, cond) { results.push((cond ? "PASS" : "FAIL") + ": " + name); }
+---injecting---
+=== BROWSER STATE ===
+URL: http://localhost:9099/index.html
+Title: Gold Miner - Arcade Adventure
+Result: JS result: (undefined)
+
+Interactive elements (2):
+  [5] button "Use TNT (T)"
+  [6] button "Lucky Leaf (L)"
+
+Accessibility tree:
+Page text: ROUND 2 GOLD 310 TIME 8 COMBO x1.1 SECTION The Old Mine ⭐3 ⭐2 ⭐1 310 🧨 2 🛡️ 0 ⚙️ L1 Use TNT (T) Lucky Leaf (L) Lucky Leaf active! Next Rock → Diamond.
+
+Screenshot: /workspace/.screenshots/step_010.png
+Use see-image to view: /workspace/.screenshots/step_010.png
+=== END ===

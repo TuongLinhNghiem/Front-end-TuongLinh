@@ -1,0 +1,14 @@
+index: 200
+css: 200
+main.js: 200
+game.js: 200
+claw.js: 200
+objects.js: 200
+levels.js: 200
+shop.js: 200
+inventory.js: 200
+upgrades.js: 200
+scoring.js: 200
+saveManager.js: 200
+audioManager.js: 200
+player.js: 200

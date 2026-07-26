@@ -1,0 +1,77 @@
+=== shop PRICES ===
+  const PRICES = {
+    tntSingle: 500,
+    tntBundle: 1300,   // 3 TNT
+    shield: 800,
+    luckyLeaf: 1000
+  };
+
+  const SHOP_DIALOGS = [
+    "Welcome back, miner! Let's see what we have today.",
+    "That TNT costs 500 gold. Don't waste it on nothing!",
+    "A Lucky Leaf costs 1000 gold. Turn a Rock into a Diamond!",
+--
+      disabled: gold < PRICES.tntSingle,
+      onClick: () => callbacks.buyTNT(1, PRICES.tntSingle)
+    }));
+=== upgrades ===
+  const MAX_LEVEL = 5;
+  // Price to go from current level to the next
+  const PRICES = { 2: 600, 3: 900, 4: 1400, 5: 2000 };
+
+  function priceForNextLevel(level) {
+    if (level >= MAX_LEVEL) return null;
+    return PRICES[level + 1];
+  }
+
+  function canUpgrade(level) { return level < MAX_LEVEL; }
+
+  // Speed multiplier per level
+  function multiplier(level) {
+    return [1.0, 1.1, 1.2, 1.35, 1.5][Math.min(Math.max(level - 1, 0), 4)];
+  }
+
+  return { MAX_LEVEL, PRICES, priceForNextLevel, canUpgrade, multiplier };
+})();
+=== scoring thresholds ===
+/* ============================================================
+   scoring.js - Three-star scoring system
+   Each round has minTarget, 1-star, 2-star, 3-star thresholds.
+   Thresholds calibrated to the actual max achievable score of each
+   round's layouts (so every layout can reach 3 stars with skilled play).
+   3-star ≈ 80% of the weakest layout's max; 2-star ≈ 55%; 1-star ≈ 33%;
+   min target ≈ 20%.
+   ============================================================ */
+
+const Scoring = (function () {
+  const thresholds = {
+    1:  { minTarget: 300,  oneStar: 500,  twoStar: 800,  threeStar: 1200 },
+    2:  { minTarget: 500,  oneStar: 800,  twoStar: 1300, threeStar: 1900 },
+    3:  { minTarget: 900,  oneStar: 1500, twoStar: 2400, threeStar: 3400 },
+    4:  { minTarget: 1200, oneStar: 2000, twoStar: 3300, threeStar: 5000 },
+    5:  { minTarget: 1000, oneStar: 1600, twoStar: 2500, threeStar: 3800 },
+    6:  { minTarget: 1100, oneStar: 1800, twoStar: 2900, threeStar: 4300 },
+    7:  { minTarget: 1100, oneStar: 1800, twoStar: 2900, threeStar: 4100 },
+    8:  { minTarget: 1100, oneStar: 1800, twoStar: 2900, threeStar: 4300 },
+    9:  { minTarget: 1200, oneStar: 2000, twoStar: 3200, threeStar: 4800 },
+    10: { minTarget: 1600, oneStar: 2600, twoStar: 4200, threeStar: 6200 }
+  };
+
+  function getThresholds(round) {
+    return thresholds[round] || thresholds[1];
+  }
+
+  function calcStars(round, score) {
+    const t = getThresholds(round);
+    if (score >= t.threeStar) return 3;
+    if (score >= t.twoStar) return 2;
+    if (score >= t.oneStar) return 1;
+    return 0;
+  }
+
+  function passed(round, score) {
+    return score >= getThresholds(round).minTarget;
+  }
+
+  return { getThresholds, calcStars, passed };
+})();

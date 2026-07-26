@@ -1,0 +1,48 @@
+# Gold Miner Game - Build Plan
+
+## Phase 1: Core Structure
+- [x] Create project structure
+- [ ] index.html (canvas + UI containers)
+- [ ] style.css (menus, HUD, shop, results)
+- [ ] main.js (entry, boot)
+
+## Phase 2: Core Gameplay
+- [ ] game.js (game loop, state machine)
+- [ ] claw.js (swing, launch, retrieve)
+- [ ] player.js
+- [ ] objects.js (object types, collision, scoring)
+- [ ] levels.js (10 rounds, layouts)
+- [ ] scoring.js (stars)
+
+## Phase 3: Systems
+- [ ] shop.js
+- [ ] inventory.js
+- [ ] upgrades.js
+- [ ] saveManager.js
+- [ ] audioManager.js
+- [ ] combo system (in game.js)
+
+## Phase 4: Integration & UI
+- [ ] HUD
+- [ ] Results screen
+- [ ] Final screen
+- [ ] Pause menu
+- [ ] Start menu
+
+## Phase 5: Testing & Polish
+- [ ] Test edge cases
+- [ ] Difficulty balancing
+- [ ] Documentation
+- [ ] Serve & verify
+---
+total 40
+drwxr-xr-x 4 root root  4096 Jul 25 11:14 .
+drwxr-xr-x 9 user user  4096 Jul 25 11:47 ..
+drwxr-xr-x 4 root root  4096 Jul 25 11:11 assets
+-rw-r--r-- 1 root root  7532 Jul 25 11:12 index.html
+drwxr-xr-x 2 root root  4096 Jul 25 11:21 js
+-rw-r--r-- 1 root root 10803 Jul 25 11:14 style.css
+-rw-r--r-- 1 root root   823 Jul 25 11:12 todo.md
+---
+Server check:
+200

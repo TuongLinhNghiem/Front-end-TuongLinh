@@ -1,0 +1,10 @@
+R1: min=1560 max=2340
+R2: min=2520 max=2820
+R3: min=4500 max=4740
+R4: min=6300 max=7800
+R5: min=6000 max=8100
+R6: min=6600 max=9000
+R7: min=5400 max=9000
+R8: min=5400 max=11100
+R9: min=6000 max=8100
+R10: min=7800 max=8700

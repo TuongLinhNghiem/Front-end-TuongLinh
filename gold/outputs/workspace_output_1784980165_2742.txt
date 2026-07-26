@@ -1,0 +1,56 @@
+      this._lastPassedContribution = 0;
+    }
+    this.startRound(this.round);
+  }
+
+  showFinal() {
+    this.state = GameState.FINAL;
+    document.getElementById("shop-screen").classList.add("hidden");
+    document.getElementById("final-screen").classList.remove("hidden");
+    const totalStars = Object.values(this.save.bestStars).reduce((a, b) => a + b, 0);
+    const threeStarRounds = Object.values(this.save.bestStars).filter(s => s === 3).length;
+    document.getElementById("final-gold").textContent = this.totalGold;
+    document.getElementById("final-stars").textContent = `${totalStars} / 30`;
+    document.getElementById("final-three").textContent = `${threeStarRounds} / 10`;
+    AudioManager.sfx.roundComplete();
+    AudioManager.sfx.star();
+  }
+
+  replayFinalRound() {
+    document.getElementById("final-screen").classList.add("hidden");
+    this.startRound(10);
+  }
+  restartGame() {
+    document.getElementById("final-screen").classList.add("hidden");
+    this.startNewGame();
+  }
+
+  // ---------- HUD ----------
+  updateHUD() {
+    document.getElementById("hud-round").textContent = this.round;
+    document.getElementById("hud-gold").textContent = this.score;
+    document.getElementById("hud-timer").textContent = Math.ceil(this.timeLeft);
+    document.getElementById("hud-combo").textContent = `x${this.comboMult.toFixed(1)}`;
+    document.getElementById("hud-section").textContent = LayoutManager.getSection(this.round).name;
+    document.getElementById("tnt-count").textContent = this.inventory.tnt;
+    document.getElementById("shield-count").textContent = this.inventory.shield;
+    const leafEl = document.getElementById("hud-leaf");
+    if (this.inventory.luckyLeaf > 0 || this.inventory.luckyLeafActive) {
+      leafEl.classList.remove("active-hidden");
+      leafEl.classList.toggle("is-active", this.inventory.luckyLeafActive);
+      document.getElementById("leaf-active").textContent = this.inventory.luckyLeafActive ? "Active" : this.inventory.luckyLeaf;
+    } else {
+      leafEl.classList.add("active-hidden");
+    }
+    document.getElementById("claw-level").textContent = `L${this.clawLevel}`;
+    // Enable/disable TNT/leaf buttons
+    document.getElementById("btn-use-tnt").disabled = !this.inventory.hasTNT();
+    document.getElementById("btn-use-leaf").disabled = !(this.inventory.hasLuckyLeaf() || this.inventory.luckyLeafActive);
+    if (this.timeLeft > 10) document.getElementById("hud-timer-wrap").classList.remove("warning");
+  }
+
+  updateStarMeter() {
+    const meter = document.getElementById("star-meter");
+    const t = Scoring.getThresholds(this.round);
+    // Build only once per round; we cache by checking child count
+    if (meter.childElementCount === 0) {

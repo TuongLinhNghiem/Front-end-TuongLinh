@@ -1,0 +1,83 @@
+        o("worm", 660, 320, { move: true, range: 180, moveSpeed: 150 }),
+        o("movingDiamond", 480, 280, { move: true, range: 300, moveSpeed: 180 }),
+        o("movingDiamond", 200, 440, { move: true, range: 140, moveSpeed: 160 }),
+        o("movingDiamond", 760, 440, { move: true, range: 140, moveSpeed: 160 }),
+        o("diamond", 480, 540),
+        o("mysteryBag", 480, 460),
+        o("largeGold", 480, 220),
+        o("largeGold", 200, 220),
+        o("largeGold", 760, 220),
+        o("goldenTreasure", 300, 540),
+        o("goldenTreasure", 660, 540)
+      ]
+    ],
+
+    // ---------- ROUND 9: high-value in difficult positions, TNT/Leaf needed ----------
+    9: [
+      [
+        o("worm", 200, 300, { move: true, range: 180, moveSpeed: 150 }),
+        o("worm", 760, 300, { move: true, range: 180, moveSpeed: 150 }),
+        o("rock", 480, 360),
+        o("rock", 300, 460),
+        o("rock", 660, 460),
+        o("movingDiamond", 480, 460, { move: true, range: 220, moveSpeed: 170 }),
+        o("diamond", 200, 540),
+        o("diamond", 760, 540),
+        o("goldenTreasure", 480, 540),
+        o("mysteryBag", 480, 220)
+      ],
+      [
+        o("rock", 200, 320),
+        o("rock", 760, 320),
+        o("rock", 480, 380),
+        o("movingDiamond", 300, 460, { move: true, range: 160, moveSpeed: 170 }),
+        o("movingDiamond", 660, 460, { move: true, range: 160, moveSpeed: 170 }),
+        o("diamond", 480, 520),
+        o("goldenTreasure", 200, 540),
+        o("goldenTreasure", 760, 540),
+        o("mysteryBag", 480, 240),
+        o("worm", 480, 300, { move: true, range: 240, moveSpeed: 140 })
+      ],
+      [
+        o("worm", 480, 300, { move: true, range: 280, moveSpeed: 150 }),
+        o("rock", 300, 400),
+        o("rock", 660, 400),
+        o("rock", 480, 460),
+        o("movingDiamond", 200, 440, { move: true, range: 140, moveSpeed: 170 }),
+        o("movingDiamond", 760, 440, { move: true, range: 140, moveSpeed: 170 }),
+        o("goldenTreasure", 480, 540),
+        o("diamond", 200, 540),
+        o("diamond", 760, 540),
+        o("mysteryBag", 480, 240)
+      ]
+    ],
+
+    // ---------- ROUND 10: FINAL - Golden Temple, all mechanics ----------
+    10: [
+      [
+        o("worm", 200, 280, { move: true, range: 180, moveSpeed: 160 }),
+        o("worm", 760, 280, { move: true, range: 180, moveSpeed: 160 }),
+        o("rock", 480, 340),
+        o("rock", 300, 440),
+        o("rock", 660, 440),
+        o("movingDiamond", 480, 420, { move: true, range: 280, moveSpeed: 180 }),
+        o("mysteryBag", 200, 520, { move: true, range: 120, moveSpeed: 90 }),
+        o("mysteryBag", 760, 520, { move: true, range: 120, moveSpeed: 90 }),
+        o("goldenTreasure", 480, 540),
+        o("diamond", 200, 540),
+        o("diamond", 760, 540),
+        o("largeGold", 480, 220)
+      ],
+      [
+        o("worm", 480, 300, { move: true, range: 300, moveSpeed: 170 }),
+        o("movingDiamond", 200, 380, { move: true, range: 140, moveSpeed: 180 }),
+        o("movingDiamond", 760, 380, { move: true, range: 140, moveSpeed: 180 }),
+        o("rock", 300, 460),
+        o("rock", 660, 460),
+        o("rock", 480, 520),
+        o("goldenTreasure", 200, 540),
+        o("goldenTreasure", 760, 540),
+        o("diamond", 480, 460),
+        o("mysteryBag", 480, 240),
+        o("largeGold", 480, 220)
+      ],

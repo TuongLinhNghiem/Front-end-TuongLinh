@@ -1,0 +1,31 @@
+total 120
+drwxr-xr-x 2 root root  4096 Jul 25 11:21 .
+drwxr-xr-x 4 root root  4096 Jul 25 11:14 ..
+-rw-r--r-- 1 root root  5547 Jul 25 11:15 audioManager.js
+-rw-r--r-- 1 root root  4492 Jul 25 11:16 claw.js
+-rw-r--r-- 1 root root 32433 Jul 25 11:21 game.js
+-rw-r--r-- 1 root root  1405 Jul 25 11:18 inventory.js
+-rw-r--r-- 1 root root 16434 Jul 25 11:18 levels.js
+-rw-r--r-- 1 root root   983 Jul 25 11:21 main.js
+-rw-r--r-- 1 root root 12190 Jul 25 11:16 objects.js
+-rw-r--r-- 1 root root  2184 Jul 25 11:17 player.js
+-rw-r--r-- 1 root root  1741 Jul 25 11:14 saveManager.js
+-rw-r--r-- 1 root root  1628 Jul 25 11:17 scoring.js
+-rw-r--r-- 1 root root  4269 Jul 25 11:19 shop.js
+-rw-r--r-- 1 root root   791 Jul 25 11:18 upgrades.js
+---
+./index.html
+./js/audioManager.js
+./js/claw.js
+./js/game.js
+./js/inventory.js
+./js/levels.js
+./js/main.js
+./js/objects.js
+./js/player.js
+./js/saveManager.js
+./js/scoring.js
+./js/shop.js
+./js/upgrades.js
+./style.css
+./todo.md

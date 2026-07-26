@@ -1,0 +1,81 @@
+    // ---------- ROUND 7: faster moving, more worms ----------
+    7: [
+      [
+        o("worm", 200, 300, { move: true, range: 160, moveSpeed: 120 }),
+        o("worm", 760, 300, { move: true, range: 160, moveSpeed: 120 }),
+        o("movingDiamond", 480, 320, { move: true, range: 240, moveSpeed: 150 }),
+        o("movingDiamond", 300, 440, { move: true, range: 140, moveSpeed: 140 }),
+        o("movingDiamond", 660, 440, { move: true, range: 140, moveSpeed: 140 }),
+        o("diamond", 480, 540),
+        o("mysteryBag", 200, 540),
+        o("mysteryBag", 760, 540),
+        o("largeGold", 480, 220)
+      ],
+      [
+        o("worm", 300, 340, { move: true, range: 160, moveSpeed: 130 }),
+        o("worm", 660, 340, { move: true, range: 160, moveSpeed: 130 }),
+        o("movingDiamond", 480, 280, { move: true, range: 280, moveSpeed: 160 }),
+        o("diamond", 200, 460),
+        o("diamond", 760, 460),
+        o("mysteryBag", 480, 460),
+        o("largeGold", 200, 540),
+        o("largeGold", 760, 540),
+        o("rock", 480, 580)
+      ],
+      [
+        o("worm", 480, 300, { move: true, range: 280, moveSpeed: 140 }),
+        o("movingDiamond", 200, 400, { move: true, range: 140, moveSpeed: 150 }),
+        o("movingDiamond", 760, 400, { move: true, range: 140, moveSpeed: 150 }),
+        o("movingDiamond", 480, 460, { move: true, range: 220, moveSpeed: 160 }),
+        o("diamond", 300, 540),
+        o("diamond", 660, 540),
+        o("mysteryBag", 480, 560),
+        o("largeGold", 480, 220),
+        o("largeGold", 200, 220),
+        o("largeGold", 760, 220),
+        o("mediumGold", 300, 460),
+        o("mediumGold", 660, 460)
+      ]
+    ],
+
+    // ---------- ROUND 8: difficult placement, moving obstacles ----------
+    8: [
+      [
+        o("worm", 200, 280, { move: true, range: 180, moveSpeed: 140 }),
+        o("worm", 760, 280, { move: true, range: 180, moveSpeed: 140 }),
+        o("worm", 480, 360, { move: true, range: 280, moveSpeed: 150 }),
+        o("movingDiamond", 300, 460, { move: true, range: 160, moveSpeed: 160 }),
+        o("movingDiamond", 660, 460, { move: true, range: 160, moveSpeed: 160 }),
+        o("diamond", 480, 540),
+        o("mysteryBag", 200, 540),
+        o("mysteryBag", 760, 540),
+        o("largeGold", 480, 220),
+        o("rock", 480, 580)
+      ],
+      [
+        o("movingDiamond", 480, 280, { move: true, range: 300, moveSpeed: 170 }),
+        o("worm", 200, 380, { move: true, range: 160, moveSpeed: 150 }),
+        o("worm", 760, 380, { move: true, range: 160, moveSpeed: 150 }),
+        o("diamond", 300, 480),
+        o("diamond", 660, 480),
+        o("mysteryBag", 480, 540),
+        o("largeGold", 200, 540),
+        o("largeGold", 760, 540),
+        o("worm", 480, 460, { move: true, range: 200, moveSpeed: 130 })
+      ],
+      [
+        o("worm", 300, 320, { move: true, range: 180, moveSpeed: 150 }),
+        o("worm", 660, 320, { move: true, range: 180, moveSpeed: 150 }),
+        o("movingDiamond", 480, 280, { move: true, range: 300, moveSpeed: 180 }),
+        o("movingDiamond", 200, 440, { move: true, range: 140, moveSpeed: 160 }),
+        o("movingDiamond", 760, 440, { move: true, range: 140, moveSpeed: 160 }),
+        o("diamond", 480, 540),
+        o("mysteryBag", 480, 460),
+        o("largeGold", 480, 220),
+        o("largeGold", 200, 220),
+        o("largeGold", 760, 220),
+        o("goldenTreasure", 300, 540),
+        o("goldenTreasure", 660, 540)
+      ]
+    ],
+

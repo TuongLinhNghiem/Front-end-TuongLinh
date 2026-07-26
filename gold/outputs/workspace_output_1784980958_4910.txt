@@ -1,0 +1,15 @@
+=== BROWSER STATE ===
+URL: http://localhost:9099/index.html
+Title: Gold Miner - Arcade Adventure
+Result: Clicked: [12]
+Warning: Overlay/modal detected - consider using dismiss_overlay
+
+Interactive elements (6):
+  [12] button "Buy 1 TNT"
+  [13] button "Buy 3 TNT"
+  [14] button "Buy Shield"
+  [15] button "Buy Lucky Leaf"
+  [16] button "Upgrade to L2"
+  [17] button "Continue to Next Round"
+
+Accessibility tree:

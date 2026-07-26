@@ -1,0 +1,40 @@
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+  <div id="menu-screen" class="overlay">
+        <button id="btn-new-game" class="btn btn-primary">New Game</button>
+        <button id="btn-continue" class="btn btn-secondary">Continue</button>
+        <button id="btn-instructions" class="btn btn-secondary">How to Play</button>
+        <button id="btn-reset-save" class="btn btn-danger">Reset Save</button>
+        <span id="save-stars">Total Stars: 0 / 30</span>
+  <div id="instructions-screen" class="overlay hidden">
+      <button id="btn-instructions-back" class="btn btn-primary">Back</button>
+  <div id="game-container">
+    <canvas id="game-canvas" width="960" height="640"></canvas>
+    <div id="hud" class="hidden">
+        <div class="hud-item"><span class="hud-label">Round</span><span id="hud-round" class="hud-value">1</span></div>
+        <div class="hud-item"><span class="hud-label">Gold</span><span id="hud-gold" class="hud-value">0</span></div>
+        <div class="hud-item hud-timer" id="hud-timer-wrap"><span class="hud-label">Time</span><span id="hud-timer" class="hud-value">60</span></div>
+        <div class="hud-item"><span class="hud-label">Combo</span><span id="hud-combo" class="hud-value">x1</span></div>
+        <div class="hud-item"><span class="hud-label">Section</span><span id="hud-section" class="hud-value">The Old Mine</span></div>
+        <div class="star-meter" id="star-meter"></div>
+          <div class="hud-consumable" id="hud-tnt"><span class="icon">🧨</span><span id="tnt-count">0</span></div>
+          <div class="hud-consumable" id="hud-shield"><span class="icon">🛡️</span><span id="shield-count">0</span></div>
+          <div class="hud-consumable active-hidden" id="hud-leaf"><span class="icon">🍀</span><span id="leaf-active">Ready</span></div>
+          <div class="hud-consumable"><span class="icon">⚙️</span><span id="claw-level">L1</span></div>
+        <button id="btn-use-tnt" class="consumable-btn">Use TNT (T)</button>
+        <button id="btn-use-leaf" class="consumable-btn">Lucky Leaf (L)</button>
+    <div id="pause-screen" class="overlay hidden">
+        <button id="btn-resume" class="btn btn-primary">Resume</button>
+        <button id="btn-quit-to-menu" class="btn btn-secondary">Quit to Menu</button>
+    <div id="section-screen" class="overlay hidden">
+        <h2 id="section-title">Section Complete</h2>
+        <p id="section-text"></p>
+        <button id="btn-section-continue" class="btn btn-primary">Continue</button>
+    <div id="results-screen" class="overlay hidden">
+        <h2 id="results-title">ROUND COMPLETE!</h2>
+          <div class="results-row"><span>Gold Earned:</span><span id="results-gold">0</span></div>
+          <div class="results-row"><span>Best Previous:</span><span id="results-best">0</span></div>
+          <div class="star-progress" id="results-star-progress"></div>
+        <div class="results-stars" id="results-stars"></div>
+          <button id="btn-results-shop" class="btn btn-primary">Continue to Shop</button>
+          <button id="btn-results-replay" class="btn btn-secondary">Replay Round</button>
+    <div id="shop-screen" class="overlay hidden">

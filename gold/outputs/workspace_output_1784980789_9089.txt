@@ -1,0 +1,13 @@
+829 README.md
+---
+# ⛏️ Gold Miner — The Arcade Adventure
+
+A complete, polished browser-based arcade game inspired by the classic Gold Miner genre, built entirely with HTML5 Canvas, CSS, and vanilla JavaScript. No frameworks, no backend, no build tools — just open the page and play.
+
+---
+...
+## Credits
+
+Built as a complete browser-based arcade game using only HTML5 Canvas, CSS, and vanilla JavaScript. All graphics are procedurally drawn, and all audio is procedurally synthesized — no external assets required.
+
+Enjoy the adventure, miner! ⛏️✨

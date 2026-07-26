@@ -1,0 +1,88 @@
+=== levels.js sections and times ===
+  const SECTION_THEMES = {
+    1: { name: "The Old Mine",   bg: "mine",   rounds: [1,2,3] },
+    2: { name: "The Lost Jungle", bg: "jungle", rounds: [4,5,6] },
+    3: { name: "Ancient Ruins",  bg: "ruins",  rounds: [7,8,9] },
+    4: { name: "The Golden Temple", bg: "temple", rounds: [10] }
+  };
+--
+  function getSection(round) {
+    for (const key in SECTION_THEMES) {
+      if (SECTION_THEMES[key].rounds.includes(round)) return SECTION_THEMES[key];
+    }
+    return SECTION_THEMES[1];
+  }
+
+  // Helper to make object specs cleaner
+  function o(t, x, y, extra) { return { t, x, y, ...(extra || {}) }; }
+
+--
+  function getRoundTime(round) {
+    return (ROUND_META[round] || ROUND_META[1]).time;
+  }
+
+  // Select a layout for a round with small controlled random variations.
+  function buildLayout(round) {
+--
+  return { LAYOUTS, getRoundTime, buildLayout, getSection, SECTION_THEMES };
+})();
+=== saveManager defaults ===
+/* ============================================================
+   saveManager.js - localStorage save system
+   ============================================================ */
+
+const SaveManager = (function () {
+  const KEY = "goldMiner_save_v1";
+
+  const defaultData = {
+    bestScores: {},      // { roundNumber: bestScore }
+    bestStars: {},       // { roundNumber: bestStarRating (1-3) }
+    totalStars: 0,
+    completedRounds: [], // list of round numbers completed
+    clawSpeedLevel: 1,   // permanent upgrade 1-5
+    inventory: {
+      tnt: 0,
+      shield: 0,
+      luckyLeaf: 0
+    },
+    highestRoundReached: 1,
+    lastRoundPlayed: 0
+  };
+
+  function load() {
+    try {
+      const raw = localStorage.getItem(KEY);
+      if (!raw) return { ...defaultData, bestScores: {}, bestStars: {}, completedRounds: [] };
+      const parsed = JSON.parse(raw);
+      // merge with defaults to handle missing fields
+      return {
+        ...defaultData,
+        ...parsed,
+        inventory: { ...defaultData.inventory, ...(parsed.inventory || {}) },
+        bestScores: parsed.bestScores || {},
+        bestStars: parsed.bestStars || {},
+        completedRounds: parsed.completedRounds || []
+      };
+    } catch (e) {
+      console.warn("Save load error, using defaults", e);
+      return { ...defaultData, bestScores: {}, bestStars: {}, completedRounds: [] };
+    }
+  }
+
+  function save(data) {
+    try {
+      localStorage.setItem(KEY, JSON.stringify(data));
+    } catch (e) {
+      console.warn("Save error", e);
+    }
+  }
+
+  function reset() {
+    try {
+      localStorage.removeItem(KEY);
+    } catch (e) {}
+    return { ...defaultData, bestScores: {}, bestStars: {}, completedRounds: [] };
+  }
+
+  return { load, save, reset };
+})();

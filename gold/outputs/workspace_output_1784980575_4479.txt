@@ -1,0 +1,8 @@
+  let sfxGain = null;
+      sfxGain = ctx.createGain();
+      sfxGain.gain.value = 0.25;
+      sfxGain.connect(ctx.destination);
+    g.connect(sfxGain);
+    g.connect(sfxGain);
+  const sfx = {
+    sfx,

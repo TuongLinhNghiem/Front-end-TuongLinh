@@ -1,0 +1,25 @@
+        <h2 id="section-title">Section Complete</h2>
+        <p id="section-text"></p>
+        <button id="btn-section-continue" class="btn btn-primary">Continue</button>
+    <div id="results-screen" class="overlay hidden">
+        <h2 id="results-title">ROUND COMPLETE!</h2>
+          <div class="results-row"><span>Gold Earned:</span><span id="results-gold">0</span></div>
+          <div class="results-row"><span>Best Previous:</span><span id="results-best">0</span></div>
+          <div class="star-progress" id="results-star-progress"></div>
+        <div class="results-stars" id="results-stars"></div>
+          <button id="btn-results-shop" class="btn btn-primary">Continue to Shop</button>
+          <button id="btn-results-replay" class="btn btn-secondary">Replay Round</button>
+    <div id="shop-screen" class="overlay hidden">
+          <div class="shop-owner-dialog" id="shop-dialog">Welcome back, miner!</div>
+          <div class="shop-gold">Gold: <span id="shop-gold">0</span></div>
+        <div class="shop-grid" id="shop-grid"></div>
+          <div id="shop-inventory-list"></div>
+          <span>Claw Speed: Level <span id="shop-claw-level">1</span> / 5</span>
+        <button id="btn-shop-continue" class="btn btn-primary">Continue to Next Round</button>
+    <div id="final-screen" class="overlay hidden">
+          <div class="results-row"><span>Total Gold Earned:</span><span id="final-gold">0</span></div>
+          <div class="results-row"><span>Total Stars:</span><span id="final-stars">0 / 30</span></div>
+          <div class="results-row"><span>Three-Star Rounds:</span><span id="final-three">0 / 10</span></div>
+          <button id="btn-final-replay" class="btn btn-primary">Replay Round 10</button>
+          <button id="btn-final-restart" class="btn btn-secondary">Restart Game</button>
+    <div id="toast" class="toast hidden"></div>

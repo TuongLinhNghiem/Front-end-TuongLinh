@@ -1,0 +1,10 @@
+  function init() {
+  function resume() {
+  function tone(freq, duration, type, volume, whenOffset) {
+  function noise(duration, volume, filterFreq) {
+  function startMusic() {
+  function scheduleMusicLoop() {
+    function nextNote() {
+  function stopMusic() {
+  function setMuted(m) {
+    isMuted: () => muted

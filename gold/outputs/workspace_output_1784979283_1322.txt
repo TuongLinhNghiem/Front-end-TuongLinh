@@ -1,0 +1,15 @@
+=== BROWSER STATE ===
+URL: http://localhost:9099/index.html
+Title: Gold Miner - Arcade Adventure
+Result: JS result: PASS: Has TNT | PASS: Rocks exist in layout | PASS: TNT destroyed at least 1 rock | PASS: TNT count decremented | PASS: TNT with no inventory shows message (no crash)
+
+Interactive elements (2):
+  [5] button "Use TNT (T)"
+  [6] button "Lucky Leaf (L)"
+
+Accessibility tree:
+Page text: ROUND 1 GOLD 0 TIME 48 COMBO x1.0 SECTION The Old Mine ⭐3 ⭐2 ⭐1 0 🧨 2 🛡️ 0 ⚙️ L1 Use TNT (T) Lucky Leaf (L) No TNT available!
+
+Screenshot: /workspace/.screenshots/step_017.png
+Use see-image to view: /workspace/.screenshots/step_017.png
+=== END ===

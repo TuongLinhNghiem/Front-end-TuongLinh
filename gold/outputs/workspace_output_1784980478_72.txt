@@ -1,0 +1,52 @@
+=== objects.js OBJECT_DEFS ===
+const OBJECT_DEFS = {
+  smallGold:      { type: "smallGold",      rarity: RARITY.COMMON, value: 100,  size: 18, pullSpeed: 5.5, name: "Small Gold",    color: "#ffce3a" },
+  mediumGold:     { type: "mediumGold",     rarity: RARITY.COMMON, value: 250,  size: 28, pullSpeed: 4.0, name: "Medium Gold",   color: "#ffce3a" },
+  largeGold:      { type: "largeGold",      rarity: RARITY.COMMON, value: 500,  size: 40, pullSpeed: 1.8, name: "Large Gold",    color: "#ffce3a" },
+  rock:           { type: "rock",           rarity: RARITY.COMMON, value: 50,   size: 38, pullSpeed: 0.9, name: "Rock",         color: "#888888" },
+  worm:           { type: "worm",           rarity: RARITY.COMMON, value: 0,    size: 22, pullSpeed: 2.5, name: "Worm",         color: "#c0706b", move: true, moveSpeed: 80 },
+  diamond:        { type: "diamond",        rarity: RARITY.RARE,   value: 750,  size: 22, pullSpeed: 5.5, name: "Diamond",      color: "#5ee0ff" },
+  mysteryBag:     { type: "mysteryBag",     rarity: RARITY.RARE,   value: "random", size: 26, pullSpeed: 3.5, name: "Mystery Bag", color: "#b35ec2", move: true, moveSpeed: 60 },
+  movingDiamond:  { type: "movingDiamond",  rarity: RARITY.RARE,   value: 1000, size: 22, pullSpeed: 4.0, name: "Moving Diamond", color: "#5ee0ff", move: true, moveSpeed: 120 },
+  goldenTreasure: { type: "goldenTreasure", rarity: RARITY.EPIC,   value: 1500, size: 50, pullSpeed: 0.7, name: "Golden Treasure", color: "#ffd700" },
+  tnt:            { type: "tnt",            rarity: RARITY.COMMON, value: 0,    size: 30, pullSpeed: 4.0, name: "TNT",          color: "#e06464" }
+};
+
+class GameObject {
+  constructor(type, x, y, opts) {
+    const def = OBJECT_DEFS[type];
+    this.type = type;
+    this.def = def;
+    this.x = x;
+    this.y = y;
+    this.baseY = y;
+    this.size = def.size;
+    this.value = def.value;
+    this.pullSpeed = def.pullSpeed;
+    this.rarity = def.rarity;
+    this.name = def.name;
+    this.color = def.color;
+    this.removed = false;
+    this.collected = false;
+    this.spinPhase = Math.random() * Math.PI * 2;
+
+    // movement options
+    this.move = opts && opts.move ? true : !!def.move;
+    this.moveSpeed = (opts && opts.moveSpeed) ? opts.moveSpeed : (def.moveSpeed || 0);
+    this.moveDir = (opts && opts.moveDir) ? opts.moveDir : (Math.random() < 0.5 ? -1 : 1);
+    this.minX = (opts && opts.minX !== undefined) ? opts.minX : (x - 100);
+    this.maxX = (opts && opts.maxX !== undefined) ? opts.maxX : (x + 100);
+    // ensure move bounds are within canvas
+    this.minX = Math.max(40, this.minX);
+    this.maxX = Math.min(920, this.maxX);
+=== RARITY ===
+const RARITY = { COMMON: "common", RARE: "rare", EPIC: "epic" };
+
+// Object type definitions. weights used for layout randomization.
+const OBJECT_DEFS = {
+  smallGold:      { type: "smallGold",      rarity: RARITY.COMMON, value: 100,  size: 18, pullSpeed: 5.5, name: "Small Gold",    color: "#ffce3a" },
+  mediumGold:     { type: "mediumGold",     rarity: RARITY.COMMON, value: 250,  size: 28, pullSpeed: 4.0, name: "Medium Gold",   color: "#ffce3a" },
+  largeGold:      { type: "largeGold",      rarity: RARITY.COMMON, value: 500,  size: 40, pullSpeed: 1.8, name: "Large Gold",    color: "#ffce3a" },
+  rock:           { type: "rock",           rarity: RARITY.COMMON, value: 50,   size: 38, pullSpeed: 0.9, name: "Rock",         color: "#888888" },
+  worm:           { type: "worm",           rarity: RARITY.COMMON, value: 0,    size: 22, pullSpeed: 2.5, name: "Worm",         color: "#c0706b", move: true, moveSpeed: 80 },
+  diamond:        { type: "diamond",        rarity: RARITY.RARE,   value: 750,  size: 22, pullSpeed: 5.5, name: "Diamond",      color: "#5ee0ff" },

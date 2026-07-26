@@ -1,0 +1,25 @@
+
+  updateComboMult() {
+    if (this.combo >= 8) this.comboMult = 1.3;
+    else if (this.combo >= 5) this.comboMult = 1.2;
+    else if (this.combo >= 3) this.comboMult = 1.1;
+    else this.comboMult = 1.0;
+    if (this.comboMult > 1) AudioManager.sfx.combo();
+  }
+
+  resetCombo() {
+    this.combo = 0;
+    this.comboMult = 1.0;
+  }
+
+  checkStarThreshold() {
+    const t = Scoring.getThresholds(this.round);
+    // Mark achieved by simple comparison; the results screen handles final reveal
+    if (this.score === t.oneStar || this.score === t.twoStar || this.score === t.threeStar) {
+      AudioManager.sfx.star();
+    }
+  }
+
+  // ---------- MYSTERY BAG ----------
+  resolveMysteryBag(obj) {
+    AudioManager.sfx.mystery();

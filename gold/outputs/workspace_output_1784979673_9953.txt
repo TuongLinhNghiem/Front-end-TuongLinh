@@ -1,0 +1,18 @@
+=== BROWSER STATE ===
+URL: http://localhost:9099/index.html
+Title: Gold Miner - Arcade Adventure
+Result: JS result: R1: layoutMaxes=[2030,1415,2105] 3star=1200 ALL_reach3star=true | R2: layoutMaxes=[2405,2295,2570] 3star=1900 ALL_reach3star=true | R3: layoutMaxes=[1945,3215,1800] 3star=3400 ALL_reach3star=false | R4: layoutMaxes=[4600,3725,6025] 3star=5000 ALL_reach3star=false | R5: layoutMaxes=[4325,5200,4325] 3star=3800 ALL_reach3star=true | R6: layoutMaxes=[4575,4950,7325] 3star=4300 ALL_reach3star=true | R7: layoutMaxes=[4525,3725,7325] 3star=4100 ALL_reach3star=false | R8: layoutMaxes=[3375,3725,9625] 3star=4300 ALL_reach3star=false | R9: layoutMaxes=[4225,6275,5375] 3star=4800 ALL_reach3star=false | R10: layoutMaxes=[4750,6800,5975] 3star=6200 ALL_reach3star=false
+Warning: Overlay/modal detected - consider using dismiss_overlay
+
+Interactive elements (4):
+  [0] button "New Game"
+  [1] button "Continue"
+  [2] button "How to Play"
+  [3] button "Reset Save"
+
+Accessibility tree:
+Page text: ⛏️ GOLD MINER The Arcade Adventure New Game Continue How to Play Reset Save Total Stars: 1 / 30
+
+Screenshot: /workspace/.screenshots/step_024.png
+Use see-image to view: /workspace/.screenshots/step_024.png
+=== END ===

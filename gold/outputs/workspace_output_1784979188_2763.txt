@@ -1,0 +1,16 @@
+=== BROWSER STATE ===
+URL: http://localhost:9099/index.html
+Title: Gold Miner - Arcade Adventure
+Result: JS result: PASS: Mystery +1000 | PASS: Shield not consumed on +1000 | PASS: Shield blocks -500 | PASS: Shield consumed | PASS: Mystery -500 no shield | FAIL: Leaf activated | FAIL: Leaf count-- | FAIL: Leaf transforms rock +750 | PASS: Leaf consumed after transform | PASS: Rock +50 | PASS: Rock resets combo | PASS: Worm 0 gold | PASS: Worm resets combo
+Warning: Overlay/modal detected - consider using dismiss_overlay
+
+Interactive elements (2):
+  [10] button "Continue to Shop"
+  [11] button "Replay Round"
+
+Accessibility tree:
+Page text: ROUND FAILED Gold Earned: 310 Best Previous: 0 (⭐0) — Continue to Shop Replay Round
+
+Screenshot: /workspace/.screenshots/step_011.png
+Use see-image to view: /workspace/.screenshots/step_011.png
+=== END ===
