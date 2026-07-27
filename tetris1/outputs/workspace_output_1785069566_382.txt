@@ -1,0 +1,38 @@
+# Tetris UI/UX Upgrade — Build Plan
+
+## Phase 1: Rebuild Game JavaScript (all modules missing)
+- [x] constants.js — CONFIG: dimensions, colors, gravity table, controls, game states
+- [x] tetromino.js — 7 piece definitions, SRS rotation states, wall kick data
+- [x] board.js — grid, collision, line detection, line clearing
+- [x] spawner.js — 7-bag randomizer
+- [x] rotation.js — SRS rotation with wall kicks
+- [x] ghost.js — ghost piece projection
+- [x] hold.js — hold piece system
+- [x] scoring.js — scoring, combo, back-to-back
+- [x] levelSystem.js — level progression, gravity speed table
+- [x] saveManager.js — localStorage persistence
+- [x] audioManager.js — Web Audio API procedural sounds
+- [x] inputManager.js — keyboard handling with DAS/ARR
+- [x] game.js — game loop, state machine, rendering, effects
+- [x] main.js — entry point, boot
+
+## Phase 2: Upgrade HTML Structure
+- [x] Add enhanced UI elements (combo flash, line-clear popups, level-up banner)
+- [x] Add mobile/touch controls for responsive design
+- [x] Add settings panel (mute toggle) (sound toggle, piece preview count)
+
+## Phase 3: Upgrade CSS (Visual Polish)
+- [x] Modern glassmorphism panels with animated gradients
+- [x] Glowing neon block styles, animated background grid
+- [x] Smooth transitions, keyframe animations for all states
+- [x] Responsive layout for mobile
+- [x] Enhanced HUD with animated stat counters
+- [x] Touch control button styling
+
+## Phase 4: Verify & Test
+- [x] Start server, load page, verify no console errors
+- [ ] Test play → spawn pieces → move/rotate/drop
+- [x] Test line clears, scoring, level-up
+- [x] Test pause/resume, game over, restart
+- [x] Test hold, ghost, 7-bag
+- [x] Screenshot final result

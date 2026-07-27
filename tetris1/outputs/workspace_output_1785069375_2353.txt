@@ -1,0 +1,16 @@
+=== BROWSER STATE ===
+URL: http://localhost:9098/index.html
+Title: Tetris Clone — Arcade Edition
+Result: Pressed KeyZ
+Warning: Overlay/modal detected - consider using dismiss_overlay
+
+Interactive elements (2):
+  [12] button "Play Again"
+  [13] button "Main Menu"
+
+Accessibility tree:
+Page text: Game Over FINAL SCORE 0 HIGH SCORE 1356 LEVEL REACHED 1 LINES CLEARED 0 PLAY AGAIN MAIN MENU
+
+Screenshot: /workspace/.screenshots/step_021.png
+Use see-image to view: /workspace/.screenshots/step_021.png
+=== END ===

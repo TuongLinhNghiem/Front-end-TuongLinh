@@ -1,0 +1,14 @@
+=== BROWSER STATE ===
+URL: http://localhost:9098/index.html
+Title: Tetris Clone — Arcade Edition
+Result: Pressed Space
+
+Interactive elements (1):
+  [0] button "🔊"
+
+Accessibility tree:
+Page text: 🔊 SCORE 6 LEVEL 1 LINES 0 COMBO 0 NEXT HOLD
+
+Screenshot: /workspace/.screenshots/step_006.png
+Use see-image to view: /workspace/.screenshots/step_006.png
+=== END ===

@@ -1,0 +1,62 @@
+=== BROWSER STATE ===
+URL: http://localhost:9098/index.html
+Title: Tetris Clone — Arcade Edition
+Result: Navigated to http://localhost:9098/index.html (title: Tetris Clone — Arcade Edition, status: 200)
+Warning: Overlay/modal detected - consider using dismiss_overlay
+
+Interactive elements (2):
+  [1] button "▶ Play"
+  [2] button "Reset Save"
+
+Accessibility tree:
+Page text: TETRIS ARCADE EDITION HIGH SCORE 0 BEST LEVEL 0 MOST LINES 0 ▶ PLAY Move Left ← Move Right → Soft Drop ↓ Rotate CW ↑ Rotate CCW Z Hard Drop Space Hold Piece C Pause P / Esc RESET SAVE
+
+Errors: Console Errors (15):
+   • Failed to load resource: the server responded with a status of 404 (File not found) (http://localhost:9098/js/constants.js:0)
+   • Failed to load resource: the server responded with a status of 404 (File not found) (http://localhost:9098/js/tetromino.js:0)
+   • Failed to load resource: the server responded with a status of 404 (File not found) (http://localhost:9098/js/board.js:0)
+   • Failed to load resource: the server responded with a status of 404 (File not found) (http://localhost:9098/js/rotation.js:0)
+   • Failed to load resource: the server responded with a status of 404 (File not found) (http://localhost:9098/js/spawner.js:0)
+   • Failed to load resource: the server responded with a status of 404 (File not found) (http://localhost:9098/js/hold.js:0)
+   • Failed to load resource: the server responded with a status of 404 (File not found) (http://localhost:9098/js/scoring.js:0)
+   • Failed to load resource: the server responded with a status of 404 (File not found) (http://localhost:9098/js/levelSystem.js:0)
+   • Failed to load resource: the server responded with a status of 404 (File not found) (http://localhost:9098/js/ghost.js:0)
+   • Failed to load resource: the server responded with a status of 404 (File not found) (http://localhost:9098/js/audioManager.js:0)
+   • Failed to load resource: the server responded with a status of 404 (File not found) (http://localhost:9098/js/saveManager.js:0)
+   • Failed to load resource: the server responded with a status of 404 (File not found) (http://localhost:9098/js/inputManager.js:0)
+   • Failed to load resource: the server responded with a status of 404 (File not found) (http://localhost:9098/js/main.js:0)
+   • Failed to load resource: the server responded with a status of 404 (File not found) (http://localhost:9098/js/game.js:0)
+   • Failed to load resource: the server responded with a status of 404 (File not found) (http://localhost:9098/favicon.ico:0)
+Network Errors (28):
+   • GET http://localhost:9098/js/constants.js → 404 File not found
+   • GET http://localhost:9098/js/constants.js → FAILED: net::ERR_ABORTED
+   • GET http://localhost:9098/js/tetromino.js → 404 File not found
+   • GET http://localhost:9098/js/tetromino.js → FAILED: net::ERR_ABORTED
+   • GET http://localhost:9098/js/board.js → 404 File not found
+   • GET http://localhost:9098/js/board.js → FAILED: net::ERR_ABORTED
+   • GET http://localhost:9098/js/rotation.js → 404 File not found
+   • GET http://localhost:9098/js/rotation.js → FAILED: net::ERR_ABORTED
+   • GET http://localhost:9098/js/spawner.js → 404 File not found
+   • GET http://localhost:9098/js/spawner.js → FAILED: net::ERR_ABORTED
+   • GET http://localhost:9098/js/hold.js → 404 File not found
+   • GET http://localhost:9098/js/hold.js → FAILED: net::ERR_ABORTED
+   • GET http://localhost:9098/js/scoring.js → 404 File not found
+   • GET http://localhost:9098/js/scoring.js → FAILED: net::ERR_ABORTED
+   • GET http://localhost:9098/js/levelSystem.js → 404 File not found
+   • GET http://localhost:9098/js/levelSystem.js → FAILED: net::ERR_ABORTED
+   • GET http://localhost:9098/js/ghost.js → 404 File not found
+   • GET http://localhost:9098/js/ghost.js → FAILED: net::ERR_ABORTED
+   • GET http://localhost:9098/js/audioManager.js → 404 File not found
+   • GET http://localhost:9098/js/audioManager.js → FAILED: net::ERR_ABORTED
+   • GET http://localhost:9098/js/saveManager.js → 404 File not found
+   • GET http://localhost:9098/js/saveManager.js → FAILED: net::ERR_ABORTED
+   • GET http://localhost:9098/js/inputManager.js → 404 File not found
+   • GET http://localhost:9098/js/inputManager.js → FAILED: net::ERR_ABORTED
+   • GET http://localhost:9098/js/main.js → 404 File not found
+   • GET http://localhost:9098/js/main.js → FAILED: net::ERR_ABORTED
+   • GET http://localhost:9098/js/game.js → 404 File not found
+   • GET http://localhost:9098/js/game.js → FAILED: net::ERR_ABORTED
+
+Screenshot: /workspace/.screenshots/step_000.png
+Use see-image to view: /workspace/.screenshots/step_000.png
+=== END ===

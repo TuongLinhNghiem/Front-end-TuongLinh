@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Tetris Clone — Arcade Edition</title>
+  <link rel="stylesheet" href="style.css">
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body>
+  <div id="app">
+
+    <!-- Animated background layers -->
+    <div class="bg-grid"></div>
+    <div class="bg-orbs">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+    </div>
+
+    <!-- Main game canvas -->
+    <canvas id="game-canvas" width="760" height="660"></canvas>
+
+    <!-- Top controls (mute button, visible during gameplay) -->
+    <div class="top-controls" id="top-controls" style="display:none;">
+      <button class="icon-btn" id="btn-mute" title="Toggle Sound">🔊</button>
+    </div>
+
+    <!-- HUD (shown during gameplay) -->
+    <div id="hud" class="hidden">
+      <!-- Left side: score, level, lines, combo -->
+      <div class="hud-side hud-left">
+        <div class="hud-panel glow-cyan">
+          <div class="hud-label">Score</div>
+          <div class="hud-value" id="stat-score">0</div>
+        </div>
+        <div class="hud-row">
+          <div class="hud-panel-small">
+            <div class="hud-label">Level</div>
+            <div class="hud-value-small" id="stat-level">1</div>
+          </div>
+          <div class="hud-panel-small">
+            <div class="hud-label">Lines</div>
+            <div class="hud-value-small" id="stat-lines">0</div>
+          </div>
+        </div>
+        <div class="hud-panel glow-orange">
+          <div class="hud-label">Combo</div>
+          <div class="hud-value" id="stat-combo">0</div>
+        </div>
+      </div>
+
+      <!-- Right side: next, hold previews -->
+      <div class="hud-side hud-right">
+        <div class="preview-panel">
+          <div class="hud-label">Next</div>
+          <canvas class="preview-canvas" id="next-canvas" width="110" height="90"></canvas>
+        </div>
+        <div class="preview-panel">
+          <div class="hud-label">Hold</div>
+          <canvas class="preview-canvas" id="hold-canvas" width="110" height="90"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile touch controls -->
+    <div class="touch-controls" id="touch-controls" style="display:none;">
+      <div class="touch-row">
+        <button class="touch-btn" data-action="rotateCCW">↺</button>
+        <button class="touch-btn" data-action="rotateCW">↻</button>
+        <button class="touch-btn touch-hold" data-action="hold">HOLD</button>
+      </div>
+      <div class="touch-row touch-dpad">
+        <button class="touch-btn touch-left" data-action="left">◀</button>
+        <button class="touch-btn touch-down" data-action="down">▼</button>
+        <button class="touch-btn touch-right" data-action="right">▶</button>
+      </div>
+      <div class="touch-row">
+        <button class="touch-btn touch-drop" data-action="hardDrop">DROP</button>
+      </div>
+    </div>
+
+    <!-- Main Menu Screen -->
+    <div id="menu-screen" class="overlay">
+      <div class="panel menu-panel">
+        <div class="logo-wrap">
+          <h1 class="game-title">TETRIS</h1>
+          <div class="subtitle">Arcade Edition</div>
+        </div>
+
+        <div class="high-score-display">
+          <div class="hs-item">
+            <div class="hs-label">High Score</div>
+            <div class="hs-value" id="menu-high-score">0</div>
+          </div>
+          <div class="hs-item">
+            <div class="hs-label">Best Level</div>
+            <div class="hs-value" id="menu-high-level">0</div>
+          </div>
+          <div class="hs-item">
+            <div class="hs-label">Most Lines</div>
+            <div class="hs-value" id="menu-high-lines">0</div>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-pulse" id="btn-play">▶ Play</button>
+
+        <div class="instructions">
+          <div class="instr-title">Controls</div>
+          <div class="ctrl-row"><span class="action">Move Left</span><span class="key">←</span></div>
+          <div class="ctrl-row"><span class="action">Move Right</span><span class="key">→</span></div>
+          <div class="ctrl-row"><span class="action">Soft Drop</span><span class="key">↓</span></div>
+          <div class="ctrl-row"><span class="action">Rotate CW</span><span class="key">↑</span></div>
+          <div class="ctrl-row"><span class="action">Rotate CCW</span><span class="key">Z</span></div>
+          <div class="ctrl-row"><span class="action">Hard Drop</span><span class="key">Space</span></div>
+          <div class="ctrl-row"><span class="action">Hold Piece</span><span class="key">C</span></div>
+          <div class="ctrl-row"><span class="action">Pause</span><span class="key">P / Esc</span></div>
+        </div>
+
+        <button class="btn btn-secondary" id="btn-reset-save">Reset Save</button>
+      </div>
+    </div>
+
+    <!-- Pause Screen -->
+    <div id="pause-screen" class="overlay hidden">
+      <div class="panel">
+        <h2>⏸ Paused</h2>
+        <div class="pause-score-box">
+          <div class="pause-label">Current Score</div>
+          <div class="pause-value" id="pause-score">0</div>
+        </div>
+        <button class="btn btn-primary" id="btn-resume">Resume</button>
+        <button class="btn btn-secondary" id="btn-quit">Quit to Menu</button>
+      </div>
+    </div>
+
+    <!-- Game Over Screen -->
+    <div id="gameover-screen" class="overlay hidden">
+      <div class="panel">
+        <h2 class="gameover-title">Game Over</h2>
+        <div class="gameover-stats">
+          <div class="gameover-stat highlight">
+            <div class="label">Final Score</div>
+            <div class="value" id="go-score">0</div>
+          </div>
+          <div class="gameover-stat">
+            <div class="label">High Score</div>
+            <div class="value" id="go-high-score">0</div>
+          </div>
+          <div class="gameover-stat">
+            <div class="label">Level Reached</div>
+            <div class="value" id="go-level">1</div>
+          </div>
+          <div class="gameover-stat">
+            <div class="label">Lines Cleared</div>
+            <div class="value" id="go-lines">0</div>
+          </div>
+        </div>
+        <button class="btn btn-primary" id="btn-restart">Play Again</button>
+        <button class="btn btn-secondary" id="btn-menu">Main Menu</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Scripts loaded in dependency order -->
+  <script src="js/constants.js"></script>
+  <script src="js/tetromino.js"></script>
+  <script src="js/board.js"></script>
+  <script src="js/spawner.js"></script>
+  <script src="js/rotation.js"></script>
+  <script src="js/ghost.js"></script>
+  <script src="js/hold.js"></script>
+  <script src="js/scoring.js"></script>
+  <script src="js/levelSystem.js"></script>
+  <script src="js/saveManager.js"></script>
+  <script src="js/audioManager.js"></script>
+  <script src="js/inputManager.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

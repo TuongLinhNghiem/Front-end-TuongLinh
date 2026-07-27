@@ -1,0 +1,86 @@
+127.0.0.1 - - [26/Jul/2026 12:09:43] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 12:09:43] "GET /style.css HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 12:09:43] code 404, message File not found
+127.0.0.1 - - [26/Jul/2026 12:09:43] "GET /js/constants.js HTTP/1.1" 404 -
+127.0.0.1 - - [26/Jul/2026 12:09:43] code 404, message File not found
+127.0.0.1 - - [26/Jul/2026 12:09:43] "GET /js/tetromino.js HTTP/1.1" 404 -
+127.0.0.1 - - [26/Jul/2026 12:09:43] code 404, message File not found
+127.0.0.1 - - [26/Jul/2026 12:09:43] "GET /js/board.js HTTP/1.1" 404 -
+127.0.0.1 - - [26/Jul/2026 12:09:43] code 404, message File not found
+127.0.0.1 - - [26/Jul/2026 12:09:43] "GET /js/rotation.js HTTP/1.1" 404 -
+127.0.0.1 - - [26/Jul/2026 12:09:43] code 404, message File not found
+127.0.0.1 - - [26/Jul/2026 12:09:43] "GET /js/spawner.js HTTP/1.1" 404 -
+127.0.0.1 - - [26/Jul/2026 12:09:43] code 404, message File not found
+127.0.0.1 - - [26/Jul/2026 12:09:43] "GET /js/hold.js HTTP/1.1" 404 -
+127.0.0.1 - - [26/Jul/2026 12:09:43] code 404, message File not found
+127.0.0.1 - - [26/Jul/2026 12:09:43] "GET /js/scoring.js HTTP/1.1" 404 -
+127.0.0.1 - - [26/Jul/2026 12:09:43] code 404, message File not found
+127.0.0.1 - - [26/Jul/2026 12:09:43] "GET /js/levelSystem.js HTTP/1.1" 404 -
+127.0.0.1 - - [26/Jul/2026 12:09:43] code 404, message File not found
+127.0.0.1 - - [26/Jul/2026 12:09:43] "GET /js/ghost.js HTTP/1.1" 404 -
+127.0.0.1 - - [26/Jul/2026 12:09:43] code 404, message File not found
+127.0.0.1 - - [26/Jul/2026 12:09:43] "GET /js/saveManager.js HTTP/1.1" 404 -
+127.0.0.1 - - [26/Jul/2026 12:09:43] code 404, message File not found
+127.0.0.1 - - [26/Jul/2026 12:09:43] "GET /js/audioManager.js HTTP/1.1" 404 -
+127.0.0.1 - - [26/Jul/2026 12:09:43] code 404, message File not found
+127.0.0.1 - - [26/Jul/2026 12:09:43] "GET /js/inputManager.js HTTP/1.1" 404 -
+127.0.0.1 - - [26/Jul/2026 12:09:43] code 404, message File not found
+127.0.0.1 - - [26/Jul/2026 12:09:43] "GET /js/main.js HTTP/1.1" 404 -
+127.0.0.1 - - [26/Jul/2026 12:09:43] code 404, message File not found
+127.0.0.1 - - [26/Jul/2026 12:09:43] "GET /js/game.js HTTP/1.1" 404 -
+127.0.0.1 - - [26/Jul/2026 12:09:43] code 404, message File not found
+127.0.0.1 - - [26/Jul/2026 12:09:43] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [26/Jul/2026 12:22:38] "GET /index.html HTTP/1.1" 304 -
+127.0.0.1 - - [26/Jul/2026 12:22:38] "GET /style.css HTTP/1.1" 304 -
+127.0.0.1 - - [26/Jul/2026 12:22:38] "GET /js/constants.js HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 12:22:38] "GET /js/tetromino.js HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 12:22:38] "GET /js/board.js HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 12:22:38] "GET /js/spawner.js HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 12:22:38] "GET /js/rotation.js HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 12:22:38] "GET /js/ghost.js HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 12:22:38] "GET /js/hold.js HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 12:22:38] "GET /js/scoring.js HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 12:22:38] "GET /js/levelSystem.js HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 12:22:38] "GET /js/saveManager.js HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 12:22:38] "GET /js/audioManager.js HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 12:22:38] "GET /js/inputManager.js HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 12:22:38] "GET /js/game.js HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 12:22:38] "GET /js/main.js HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 12:22:48] code 404, message File not found
+127.0.0.1 - - [26/Jul/2026 12:22:48] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [26/Jul/2026 12:29:32] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 12:29:32] "GET /style.css HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 12:29:32] "GET /js/constants.js HTTP/1.1" 304 -
+127.0.0.1 - - [26/Jul/2026 12:29:32] "GET /js/tetromino.js HTTP/1.1" 304 -
+127.0.0.1 - - [26/Jul/2026 12:29:32] "GET /js/board.js HTTP/1.1" 304 -
+127.0.0.1 - - [26/Jul/2026 12:29:32] "GET /js/spawner.js HTTP/1.1" 304 -
+127.0.0.1 - - [26/Jul/2026 12:29:32] "GET /js/rotation.js HTTP/1.1" 304 -
+127.0.0.1 - - [26/Jul/2026 12:29:32] "GET /js/ghost.js HTTP/1.1" 304 -
+127.0.0.1 - - [26/Jul/2026 12:29:32] "GET /js/hold.js HTTP/1.1" 304 -
+127.0.0.1 - - [26/Jul/2026 12:29:32] "GET /js/scoring.js HTTP/1.1" 304 -
+127.0.0.1 - - [26/Jul/2026 12:29:32] "GET /js/levelSystem.js HTTP/1.1" 304 -
+127.0.0.1 - - [26/Jul/2026 12:29:32] "GET /js/saveManager.js HTTP/1.1" 304 -
+127.0.0.1 - - [26/Jul/2026 12:29:32] "GET /js/audioManager.js HTTP/1.1" 304 -
+127.0.0.1 - - [26/Jul/2026 12:29:32] "GET /js/inputManager.js HTTP/1.1" 304 -
+127.0.0.1 - - [26/Jul/2026 12:29:32] "GET /js/game.js HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jul/2026 12:29:32] "GET /js/main.js HTTP/1.1" 304 -
+127.0.0.1 - - [26/Jul/2026 12:30:02] code 404, message File not found
+127.0.0.1 - - [26/Jul/2026 12:30:02] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [26/Jul/2026 12:38:15] "GET /index.html HTTP/1.1" 304 -
+127.0.0.1 - - [26/Jul/2026 12:38:15] "GET /style.css HTTP/1.1" 304 -
+127.0.0.1 - - [26/Jul/2026 12:38:15] "GET /js/tetromino.js HTTP/1.1" 304 -
+127.0.0.1 - - [26/Jul/2026 12:38:15] "GET /js/constants.js HTTP/1.1" 304 -
+127.0.0.1 - - [26/Jul/2026 12:38:15] "GET /js/board.js HTTP/1.1" 304 -
+127.0.0.1 - - [26/Jul/2026 12:38:15] "GET /js/spawner.js HTTP/1.1" 304 -
+127.0.0.1 - - [26/Jul/2026 12:38:15] "GET /js/rotation.js HTTP/1.1" 304 -
+127.0.0.1 - - [26/Jul/2026 12:38:15] "GET /js/ghost.js HTTP/1.1" 304 -
+127.0.0.1 - - [26/Jul/2026 12:38:15] "GET /js/hold.js HTTP/1.1" 304 -
+127.0.0.1 - - [26/Jul/2026 12:38:15] "GET /js/scoring.js HTTP/1.1" 304 -
+127.0.0.1 - - [26/Jul/2026 12:38:15] "GET /js/levelSystem.js HTTP/1.1" 304 -
+127.0.0.1 - - [26/Jul/2026 12:38:15] "GET /js/saveManager.js HTTP/1.1" 304 -
+127.0.0.1 - - [26/Jul/2026 12:38:15] "GET /js/audioManager.js HTTP/1.1" 304 -
+127.0.0.1 - - [26/Jul/2026 12:38:15] "GET /js/inputManager.js HTTP/1.1" 304 -
+127.0.0.1 - - [26/Jul/2026 12:38:15] "GET /js/game.js HTTP/1.1" 304 -
+127.0.0.1 - - [26/Jul/2026 12:38:15] "GET /js/main.js HTTP/1.1" 304 -
+127.0.0.1 - - [26/Jul/2026 12:40:23] code 404, message File not found
+127.0.0.1 - - [26/Jul/2026 12:40:23] "GET /favicon.ico HTTP/1.1" 404 -

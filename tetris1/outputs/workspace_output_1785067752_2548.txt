@@ -1,0 +1,50 @@
+/workspace/.psiphon_data/ca.psiphon.PsiphonTunnel.tunnel-core/datastore/psiphon.boltdb
+/workspace/.psiphon_data/ca.psiphon.PsiphonTunnel.tunnel-core/remote_server_list
+/workspace/.psiphon_data/ca.psiphon.PsiphonTunnel.tunnel-core/migration_complete
+/workspace/.agent_hooks/startup/_readme.txt
+/workspace/.agent_hooks/run_all_hooks.py
+/workspace/.agent_hooks/shutdown/_readme.txt
+/workspace/.agent_hooks/shutdown/00_track_processes_on_ports.py
+/workspace/outputs/workspace_output_1785067748_9603.txt
+/workspace/outputs/workspace_output_1785067752_836.txt
+/workspace/outputs/workspace_output_1785067752_2548.txt
+/workspace/outputs/workspace_output_1785067748_484.txt
+/workspace/outputs/workspace_output_1785067748_5929.txt
+/workspace/outputs/workspace_output_1785067743_2824.txt
+/workspace/outputs/workspace_output_1785067743_477.txt
+/workspace/outputs/workspace_output_1785067743_2622.txt
+/workspace/outputs/workspace_output_1785067743_4591.txt
+/workspace/style.css
+/workspace/index.html
+/workspace/todo.md
+/workspace/.browser_data/Default/Cookies-journal
+/workspace/.browser_data/Default/Secure Preferences
+/workspace/.browser_data/Default/Reporting and NEL-journal
+/workspace/.browser_data/Default/PreferredApps
+/workspace/.browser_data/Default/SCT Auditing Pending Reports
+/workspace/.browser_data/Default/BrowsingTopicsSiteData-journal
+/workspace/.browser_data/Default/SharedStorage
+/workspace/.browser_data/Default/LOCK
+/workspace/.browser_data/Default/Login Data-journal
+/workspace/.browser_data/Default/Top Sites
+/workspace/.browser_data/Default/AutofillAiModelCache/LOCK
+/workspace/.browser_data/Default/AutofillAiModelCache/LOG.old
+/workspace/.browser_data/Default/AutofillAiModelCache/LOG
+/workspace/.browser_data/Default/AccessibilityAnnotatorDatabase-wal
+/workspace/.browser_data/Default/Network Persistent State
+/workspace/.browser_data/Default/Login Data For Account-journal
+/workspace/.browser_data/Default/Safe Browsing Cookies-journal
+/workspace/.browser_data/Default/Collaboration/MessageDB
+/workspace/.browser_data/Default/Collaboration/MessageDB-journal
+/workspace/.browser_data/Default/Cache/Cache_Data/sqldb1-wal
+/workspace/.browser_data/Default/Cache/Cache_Data/index
+/workspace/.browser_data/Default/Cache/Cache_Data/sqldb1
+/workspace/.browser_data/Default/Cache/Cache_Data/sqldb0-wal
+/workspace/.browser_data/Default/Cache/Cache_Data/sqldb2-wal
+/workspace/.browser_data/Default/Cache/Cache_Data/sqldb0
+/workspace/.browser_data/Default/Cache/Cache_Data/sqldb2
+/workspace/.browser_data/Default/Cache/No_Vary_Search/journal.baj
+/workspace/.browser_data/Default/Cache/No_Vary_Search/snapshot.baf
+/workspace/.browser_data/Default/Session Storage/LOCK
+/workspace/.browser_data/Default/Session Storage/000003.log
+/workspace/.browser_data/Default/Session Storage/LOG

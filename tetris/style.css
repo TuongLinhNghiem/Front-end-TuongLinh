@@ -1,0 +1,359 @@
+/* ============================================================
+   style.css — Tetris clone visual styling.
+   Modern arcade aesthetic with neon accents on dark background.
+   ============================================================ */
+
+/* ---- Reset & base ---- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  background: #0a0a12;
+  color: #e8e8f0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Main app container */
+#app {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a12 70%);
+}
+
+/* Animated background gradient */
+#app::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, #0d0d1a 0%, #1a1a2e 50%, #0d0d1a 100%);
+  z-index: 0;
+}
+
+/* Game canvas */
+#game-canvas {
+  position: relative;
+  z-index: 1;
+  border-radius: 8px;
+  box-shadow: 0 0 40px rgba(100, 100, 255, 0.1), 0 4px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* ---- Overlays ---- */
+.overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  background: rgba(10, 10, 18, 0.85);
+  backdrop-filter: blur(6px);
+}
+
+.overlay.hidden {
+  display: none;
+}
+
+/* ---- Panel / Dialog ---- */
+.panel {
+  background: linear-gradient(180deg, #1c1c30 0%, #14142a 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 40px;
+  min-width: 320px;
+  max-width: 460px;
+  text-align: center;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  animation: panelFadeIn 0.3s ease-out;
+}
+
+@keyframes panelFadeIn {
+  from { opacity: 0; transform: translateY(10px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.panel h1 {
+  font-size: 2.4em;
+  font-weight: 800;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #00d4e6, #a64fd0);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 30px rgba(0, 212, 230, 0.3);
+}
+
+.panel .subtitle {
+  font-size: 0.9em;
+  color: #8888a0;
+  margin-bottom: 28px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.panel h2 {
+  font-size: 1.8em;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #e8e8f0;
+}
+
+/* ---- Buttons ---- */
+.btn {
+  display: block;
+  width: 100%;
+  padding: 12px 24px;
+  margin: 8px 0;
+  font-size: 1em;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: translateY(0); }
+
+.btn-primary {
+  background: linear-gradient(135deg, #00d4e6, #0090b8);
+  color: #0a0a12;
+  box-shadow: 0 4px 15px rgba(0, 212, 230, 0.3);
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #2d2d4a, #1a1a30);
+  color: #e8e8f0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #e63946, #b02030);
+  color: #fff;
+}
+
+/* ---- High score display on menu ---- */
+.high-score-display {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin: 20px 0;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+}
+
+.hs-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hs-label {
+  font-size: 0.7em;
+  color: #8888a0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.hs-value {
+  font-size: 1.4em;
+  font-weight: 700;
+  color: #f7d51d;
+}
+
+/* ---- Instructions ---- */
+.instructions {
+  text-align: left;
+  margin: 20px 0;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  font-size: 0.9em;
+  line-height: 1.8;
+}
+
+.instructions .ctrl-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.instructions .ctrl-row:last-child { border-bottom: none; }
+
+.instructions .key {
+  font-family: "Consolas", monospace;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.85em;
+  color: #00d4e6;
+}
+
+.instructions .action {
+  color: #c0c0d0;
+}
+
+/* ---- Game Over screen ---- */
+.gameover-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 20px 0;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+.gameover-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gameover-stat .label {
+  font-size: 0.75em;
+  color: #8888a0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.gameover-stat .value {
+  font-size: 1.5em;
+  font-weight: 700;
+  color: #f7d51d;
+  margin-top: 4px;
+}
+
+.gameover-stat.highlight .value {
+  color: #00d4e6;
+}
+
+/* ---- HUD (in-game overlay) ---- */
+#hud {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 5;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#hud.hidden { display: none; }
+
+.hud-side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+}
+
+.hud-left {
+  margin-right: 20px;
+  align-items: flex-end;
+}
+
+.hud-right {
+  margin-left: 20px;
+  align-items: flex-start;
+}
+
+.hud-panel {
+  background: rgba(20, 20, 35, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 14px 18px;
+  min-width: 150px;
+  pointer-events: auto;
+}
+
+.hud-label {
+  font-size: 0.7em;
+  color: #8888a0;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 4px;
+}
+
+.hud-value {
+  font-size: 1.6em;
+  font-weight: 700;
+  color: #f7d51d;
+}
+
+.hud-value.small {
+  font-size: 1.1em;
+}
+
+.preview-panel {
+  background: rgba(20, 20, 35, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 12px;
+  text-align: center;
+}
+
+.preview-canvas {
+  display: block;
+  margin: 0 auto;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+}
+
+/* ---- Top bar controls ---- */
+.top-controls {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 6;
+  display: flex;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background: rgba(20, 20, 35, 0.8);
+  color: #e8e8f0;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-btn:hover {
+  background: rgba(40, 40, 60, 0.9);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 800px) {
+  .panel { min-width: 280px; padding: 28px 20px; }
+  .panel h1 { font-size: 1.8em; }
+  .hud-panel { min-width: 110px; padding: 10px 14px; }
+  .hud-value { font-size: 1.3em; }
+  .preview-canvas { width: 80px; height: 80px; }
+}
+
+/* ---- Scrollbar styling ---- */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #0a0a12; }
+::-webkit-scrollbar-thumb { background: #2a2a40; border-radius: 4px; }
