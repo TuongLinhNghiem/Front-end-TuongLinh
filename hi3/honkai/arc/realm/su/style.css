@@ -441,13 +441,12 @@ html, body {
 /* ---- HUD (in-game overlay) ---- */
 #hud {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 0; left: 0; right: 0; bottom: 0;
   z-index: 5;
-  width: min(1120px, calc(100vw - 40px));
-  height: 660px;
-  transform: translate(-50%, -50%);
   pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   display: grid;
   grid-template-columns: 220px 760px 220px;
